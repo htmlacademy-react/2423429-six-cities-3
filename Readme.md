@@ -1,7 +1,7 @@
 # Личный проект «Шесть городов»
 
 * Студент: [Кирилл Астрамович](https://up.htmlacademy.ru/react-individual/3/user/2423429).
-* Наставник: `Неизвестно`.
+* Наставник: [Алексей Хабиров](https://htmlacademy.ru/profile/alex_khab).
 
 ---
 
