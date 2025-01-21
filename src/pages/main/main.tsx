@@ -12,10 +12,7 @@ function Main({placesCount}: NumberOfPlaces): JSX.Element {
       <Header />
       <main className="page__main page__main--index">
         <h1 className="visually-hidden">Cities</h1>
-
         <Tabs />
-
-
         <div className="cities">
           <div className="cities__places-container container">
             <Places placesCount={placesCount} />
