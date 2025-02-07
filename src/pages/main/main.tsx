@@ -2,11 +2,11 @@ import Header from '../../components/header';
 import Places from '../../components/places';
 import Tabs from '../../components/tabs';
 
-type NumberOfPlaces = {
+type MainProps = {
   placesCount: number;
 }
 
-function Main({placesCount}: NumberOfPlaces): JSX.Element {
+function Main({placesCount}: MainProps): JSX.Element {
   return (
     <div className="page page--gray page--main">
       <Header />

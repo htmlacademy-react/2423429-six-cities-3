@@ -1,7 +1,6 @@
-type NumberOfPlaces = {
+type PlacesProps = {
   placesCount: number;
 }
-
 
 function PlacesList(): JSX.Element {
 
@@ -176,7 +175,7 @@ function PlacesList(): JSX.Element {
   );
 }
 
-function Places({placesCount}:NumberOfPlaces): JSX.Element {
+function Places({placesCount}:PlacesProps): JSX.Element {
 
   return (
     <section className="cities__places places">
