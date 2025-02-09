@@ -1,7 +1,7 @@
 import {Route, BrowserRouter, Routes} from 'react-router-dom';
 import { lazy, Suspense } from 'react';
-import { AppRoute } from '../const';
-
+import { AppRoute, AuthorizationStatus } from '../const';
+import PrivateRoute from '../components/private-route/private-route';
 //Импортируем главный экран
 import Main from '../pages/main/main';
 
@@ -28,7 +28,13 @@ function App({placesCount}: AppScreenProps): JSX.Element {
           />
           <Route
             path={AppRoute.Login}
-            element={<AuthScreenPreview />}
+            element={
+              <PrivateRoute
+                authorizationStatus={AuthorizationStatus.NoAuth}
+              >
+                <AuthScreenPreview />
+              </PrivateRoute>
+            }
           />
           <Route
             path={AppRoute.Favorites}
