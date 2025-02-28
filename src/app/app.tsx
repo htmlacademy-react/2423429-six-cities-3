@@ -29,16 +29,12 @@ function App({placesCount}: AppScreenProps): JSX.Element {
           />
           <Route
             path={AppRoute.Login}
-            element={
-              <PrivateRoute authorizationStatus={AuthorizationStatus.NoAuth}>
-                <AuthScreenPreview />
-              </PrivateRoute>
-            }
+            element={<AuthScreenPreview />}
           />
           <Route
             path={AppRoute.Favorites}
             element = {
-              <PrivateRoute authorizationStatus={AuthorizationStatus.NoAuth}>
+              <PrivateRoute authorizationStatus={AuthorizationStatus.Auth}>
                 <FavoritesPreview />
               </PrivateRoute>
             }
