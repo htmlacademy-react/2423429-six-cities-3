@@ -3,6 +3,9 @@ import { lazy, Suspense } from 'react';
 import { AppRoute, AuthorizationStatus } from '../const';
 import PrivateRoute from '../components/private-route/private-route';
 
+import { offers } from '../mocks/offers';
+import { Offer } from '../types/offer';
+
 //Импортируем главный экран
 import Main from '../pages/main/main';
 
@@ -12,14 +15,16 @@ const AuthScreenPreview = lazy(() => import ('../pages/auth-screen/auth-screen')
 const FavoritesEmptyPreview = lazy(() => import ('../pages/favorites/favorites-empty')) ;
 const FavoritesPreview = lazy(() => import ('../pages/favorites/favorites')) ;
 const OfferScreenPreview = lazy(() => import ('../pages/offer/offer')) ;
-import { offers } from '../mocks/offers';
 
 type AppScreenProps = {
   placesCount: number;
-  offers: offers;
+  offers: Offer[];
 }
 
 function App({placesCount, offers}: AppScreenProps): JSX.Element {
+  const listingOffer = offers;
+  console.log(listingOffer);
+  
   return (
     <BrowserRouter>
       <Suspense fallback={<div>Loading....</div>}>
