@@ -12,13 +12,14 @@ const AuthScreenPreview = lazy(() => import ('../pages/auth-screen/auth-screen')
 const FavoritesEmptyPreview = lazy(() => import ('../pages/favorites/favorites-empty')) ;
 const FavoritesPreview = lazy(() => import ('../pages/favorites/favorites')) ;
 const OfferScreenPreview = lazy(() => import ('../pages/offer/offer')) ;
-
+import { offers } from '../mocks/offers';
 
 type AppScreenProps = {
   placesCount: number;
+  offers: offers;
 }
 
-function App({placesCount}: AppScreenProps): JSX.Element {
+function App({placesCount, offers}: AppScreenProps): JSX.Element {
   return (
     <BrowserRouter>
       <Suspense fallback={<div>Loading....</div>}>
