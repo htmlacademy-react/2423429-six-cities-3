@@ -22,16 +22,15 @@ type AppScreenProps = {
 }
 
 function App({placesCount, offers}: AppScreenProps): JSX.Element {
-  const listingOffer = offers;
-  console.log(listingOffer);
-  
+
   return (
     <BrowserRouter>
       <Suspense fallback={<div>Loading....</div>}>
         <Routes>
           <Route
             path={AppRoute.Root}
-            element={<Main placesCount={placesCount} />}
+            element={<Main placesCount={placesCount} 
+                            offers={offers} />}
           />
           <Route
             path={AppRoute.Login}
