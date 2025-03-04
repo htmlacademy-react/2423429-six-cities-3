@@ -13,3 +13,5 @@ function FavoritesEmpty() : JSX.Element {
 }
 
 export default FavoritesEmpty;
+
+// ОСТАВИЛ ДЛЯ ОРИЕНТИРА ЧЕМ ОТЛИЧАЕТСЯ ОТ favorites
