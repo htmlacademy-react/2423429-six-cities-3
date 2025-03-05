@@ -33,14 +33,14 @@ function PlacesCard({placeOffer}: PlacesCardProps): JSX.Element {
       </div>
       <div className="place-card__rating rating">
         <div className="place-card__stars rating__stars">
-          <span style={{ width: '80%' }}></span>
+          <span style={{ width: `${placeOffer.rating * 20}%` }}></span>
           <span className="visually-hidden">Rating</span>
         </div>
       </div>
       <h2 className="place-card__name">
         <a href="#">{placeOffer.title}</a>
       </h2>
-      <p className="place-card__type">Apartment</p>
+      <p className="place-card__type">{placeOffer.type}</p>
     </div>
   </article>
   );
