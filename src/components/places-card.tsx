@@ -5,8 +5,6 @@ type PlacesCardProps = {
 };
 
 function PlacesCard({ placeOffer }: PlacesCardProps): JSX.Element {
-  console.log(placeOffer);
-
   return (
     <article className="cities__card place-card">
       {placeOffer.isPremium && (
