@@ -1,5 +1,6 @@
 import Header from '../../components/header';
-import Places from '../../components/places';
+import PlacesList from '../../components/places-list';
+import Sorting from '../../components/sorting';
 import Tabs from '../../components/tabs';
 import { Offer } from '../../types/offer';
 
@@ -9,17 +10,6 @@ type MainProps = {
 
 function Main({offers}: MainProps): JSX.Element {
 
-  function CreatePlaceTemplate(): JSX.Element[] {
-
-    return (
-      offers.map((place) => (
-        <Places key ={place.id} offer={place} />))
-    );
-
-
-  }
-
-
   return (
     <div className="page page--gray page--main">
       <Header />
@@ -28,7 +18,12 @@ function Main({offers}: MainProps): JSX.Element {
         <Tabs />
         <div className="cities">
           <div className="cities__places-container container">
-            {CreatePlaceTemplate({offers})}
+          <section className="cities__places places">
+              <h2 className="visually-hidden">Places</h2>
+              <b className="places__found">{offers.length} places to stay in Amsterdam</b>
+              <Sorting />
+              <PlacesList offers={offers} />
+          </section>
             <div className="cities__right-section">
               <section className="cities__map map"></section>
             </div>
