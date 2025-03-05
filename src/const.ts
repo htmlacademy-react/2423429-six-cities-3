@@ -1,7 +1,3 @@
-export const Setting = {
-  placesCount: 3
-};
-
 
 export enum AppRoute {
   Root = '/',

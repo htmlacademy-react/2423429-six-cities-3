@@ -71,3 +71,4 @@ export const offers: Offer[] = [
         "rating": 3.2
       },
   ]
+  
