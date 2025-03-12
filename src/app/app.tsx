@@ -15,9 +15,7 @@ const NotFoundScreenPreview = lazy(
 const AuthScreenPreview = lazy(
   () => import('../pages/auth-screen/auth-screen')
 );
-const FavoritesEmptyPreview = lazy(
-  () => import('../pages/favorites/favorites-empty')
-);
+
 const FavoritesPreview = lazy(() => import('../pages/favorites/favorites'));
 const OfferScreenPreview = lazy(() => import('../pages/offer/offer'));
 
@@ -42,10 +40,11 @@ function App({ offers, authorizationStatus }: AppScreenProps): JSX.Element {
             }
           />
           <Route
-            path={AppRoute.FavoritesEmpty}
-            element={<FavoritesEmptyPreview />}
+            path={AppRoute.Offer}
+            element={
+              <OfferScreenPreview authorizationStatus={authorizationStatus} />
+            }
           />
-          <Route path={AppRoute.Offer} element={<OfferScreenPreview />} />
           <Route path="*" element={<NotFoundScreenPreview />} />
         </Routes>
       </Suspense>

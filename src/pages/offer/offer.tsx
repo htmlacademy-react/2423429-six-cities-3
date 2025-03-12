@@ -1,5 +1,6 @@
 import Header from '../../components/header';
 import { Reviews } from '../../components/review/review';
+import { AuthorizationStatus } from '../../const';
 
 function OfferScreen(): JSX.Element {
   return (
@@ -135,7 +136,9 @@ function OfferScreen(): JSX.Element {
                 </div>
               </div>
               <section className="offer__reviews reviews">
-                <Reviews isAuth={a} />
+                <Reviews
+                  isAuth={authorizationStatus === AuthorizationStatus.Auth}
+                />
               </section>
             </div>
           </div>
