@@ -23,9 +23,10 @@ const OfferScreenPreview = lazy(() => import('../pages/offer/offer'));
 
 type AppScreenProps = {
   offers: Offer[];
+  authorizationStatus: AuthorizationStatus;
 };
 
-function App({ offers }: AppScreenProps): JSX.Element {
+function App({ offers, authorizationStatus }: AppScreenProps): JSX.Element {
   return (
     <BrowserRouter>
       <Suspense fallback={<div>Loading....</div>}>
@@ -35,7 +36,7 @@ function App({ offers }: AppScreenProps): JSX.Element {
           <Route
             path={AppRoute.Favorites}
             element={
-              <PrivateRoute authorizationStatus={AuthorizationStatus.Auth}>
+              <PrivateRoute authorizationStatus={authorizationStatus}>
                 <FavoritesPreview />
               </PrivateRoute>
             }
