@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Offer } from '../types/offer';
-import PlacesCard from './places-card';
+import { Offer } from '../../types/offer';
+import PlacesCard from '../places-card/places-card';
 import { Nullable } from 'vitest';
 
 type PlacesListProps = {

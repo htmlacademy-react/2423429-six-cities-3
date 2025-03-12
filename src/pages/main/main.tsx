@@ -1,7 +1,7 @@
-import Header from '../../components/header';
-import PlacesList from '../../components/places-list';
-import Sorting from '../../components/sorting';
-import Tabs from '../../components/tabs';
+import Header from '../../components/header/header';
+import PlacesList from '../../components/places-list/places-list';
+import Sorting from '../../components/sorting/sorting';
+import Tabs from '../../components/tabs/tabs';
 import { Offer } from '../../types/offer';
 
 type MainProps = {

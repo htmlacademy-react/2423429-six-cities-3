@@ -29,7 +29,7 @@ export const ReviewForm: FC = () => {
             <input
               className="form__rating-input visually-hidden"
               name="rating"
-              value={rating.value}
+              defaultValue={rating.value}
               id={`${rating.value}-stars`}
               type="radio"
               onChange={handleChange}
@@ -61,7 +61,7 @@ export const ReviewForm: FC = () => {
         <button
           className="reviews__submit form__submit button"
           type="submit"
-          disabled
+          disabled={review.review.length < 50 && review.rating === 0}
         >
           Submit
         </button>

@@ -39,12 +39,7 @@ function App({ offers, authorizationStatus }: AppScreenProps): JSX.Element {
               </PrivateRoute>
             }
           />
-          <Route
-            path={AppRoute.Offer}
-            element={
-              <OfferScreenPreview authorizationStatus={authorizationStatus} />
-            }
-          />
+          <Route path={AppRoute.Offer} element={<OfferScreenPreview />} />
           <Route path="*" element={<NotFoundScreenPreview />} />
         </Routes>
       </Suspense>
