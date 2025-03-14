@@ -1,6 +1,4 @@
-import { FC, Fragment, ReactEventHandler, useState, ChangeEvent } from 'react';
-
-type TChangeHandler = ReactEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+import { FC, Fragment, useState, ChangeEvent } from 'react';
 
 const ratings = [
   { value: 5, title: 'perfect' },
