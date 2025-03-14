@@ -1,4 +1,4 @@
-import { FC, Fragment, ReactEventHandler, useState } from 'react';
+import { FC, Fragment, ReactEventHandler, useState, ChangeEvent } from 'react';
 
 type TChangeHandler = ReactEventHandler<HTMLInputElement | HTMLTextAreaElement>;
 
@@ -13,8 +13,10 @@ const ratings = [
 export const ReviewForm: FC = () => {
   const [review, setReview] = useState({ rating: 0, review: '' });
 
-  const handleChange: TChangeHandler = (event) => {
-    const { name, value } = event.currentTarget;
+  const handleChange = (
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = event.target;
     setReview({ ...review, [name]: value });
   };
 

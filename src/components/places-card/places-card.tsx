@@ -4,25 +4,16 @@ import { AppRoute } from '../../const';
 
 type PlacesCardProps = {
   placeOffer: Offer;
-  handleHover: (offer?: Offer) => void;
+  onCardHover: (offer?: Offer) => void;
 };
 
-function PlacesCard({ placeOffer, handleHover }: PlacesCardProps): JSX.Element {
-  const handleMouseOn = () => {
-    handleHover(placeOffer);
-    console.log(placeOffer.id);
-  };
-
-  const handleMouseOff = () => {
-    handleHover();
-    console.log('убрал курсор');
-  };
+function PlacesCard({ placeOffer, onCardHover }: PlacesCardProps): JSX.Element {
   return (
     <Link to={`${AppRoute.Offer}:${placeOffer.id}`}>
       <article
         className="cities__card place-card"
-        onMouseEnter={handleMouseOn}
-        onMouseLeave={handleMouseOff}
+        onMouseEnter={() => onCardHover(placeOffer)}
+        onMouseLeave={() => onCardHover()}
       >
         {placeOffer.isPremium && (
           <div className="place-card__mark">
