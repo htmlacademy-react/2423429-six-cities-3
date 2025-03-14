@@ -7,6 +7,7 @@ import { Offer } from '../types/offer';
 
 //Импортируем главный экран
 import Main from '../pages/main/main';
+import Loader from '../components/loader/loader';
 
 // Динамически импортируем остальные экраны
 const NotFoundScreenPreview = lazy(
@@ -27,7 +28,7 @@ type AppScreenProps = {
 function App({ offers, authorizationStatus }: AppScreenProps): JSX.Element {
   return (
     <BrowserRouter>
-      <Suspense fallback={<div>Loading....</div>}>
+      <Suspense fallback={<Loader />}>
         <Routes>
           <Route path={AppRoute.Root} element={<Main offers={offers} />} />
           <Route path={AppRoute.Login} element={<AuthScreenPreview />} />

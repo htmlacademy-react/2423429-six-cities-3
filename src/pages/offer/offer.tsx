@@ -135,7 +135,7 @@ function OfferScreen(): JSX.Element {
                 </div>
               </div>
               <section className="offer__reviews reviews">
-                <Reviews isAuth={true} />
+                <Reviews isAuth />
               </section>
             </div>
           </div>
