@@ -70,4 +70,50 @@ export const offers: Offer[] = [
     isPremium: true,
     rating: 3.2,
   },
+  {
+    id: '90bcbf9d-b034-4f15-9e8c-cb5586cf534d',
+    title: 'House in countryside',
+    type: 'house',
+    price: 552,
+    previewImage: 'https://15.design.htmlacademy.pro/static/hotel/8.jpg',
+    city: {
+      name: 'Paris',
+      location: {
+        latitude: 48.85661,
+        longitude: 2.351499,
+        zoom: 13,
+      },
+    },
+    location: {
+      latitude: 48.868610000000004,
+      longitude: 2.342499,
+      zoom: 16,
+    },
+    isFavorite: false,
+    isPremium: true,
+    rating: 3.1,
+  },
+  {
+    id: '2651be00-ab36-4a36-90bf-0e15adfa9703',
+    title: 'Perfectly located Castro',
+    type: 'house',
+    price: 867,
+    previewImage: 'https://15.design.htmlacademy.pro/static/hotel/1.jpg',
+    city: {
+      name: 'Brussels',
+      location: {
+        latitude: 50.846557,
+        longitude: 4.351697,
+        zoom: 13,
+      },
+    },
+    location: {
+      latitude: 50.854557,
+      longitude: 4.364697,
+      zoom: 16,
+    },
+    isFavorite: false,
+    isPremium: false,
+    rating: 1.1,
+  },
 ];
