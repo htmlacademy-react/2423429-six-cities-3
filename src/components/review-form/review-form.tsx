@@ -1,4 +1,4 @@
-import { FC, Fragment, useState, ChangeEvent } from 'react';
+import { Fragment, useState, ChangeEvent } from 'react';
 
 const ratings = [
   { value: 5, title: 'perfect' },
@@ -8,7 +8,7 @@ const ratings = [
   { value: 1, title: 'terribly' },
 ];
 
-export const ReviewForm: FC = () => {
+function ReviewForm(): JSX.Element {
   const [review, setReview] = useState({ rating: 0, review: '' });
 
   const handleChange = (
@@ -68,4 +68,6 @@ export const ReviewForm: FC = () => {
       </div>
     </form>
   );
-};
+}
+
+export default ReviewForm;

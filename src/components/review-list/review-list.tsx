@@ -1,6 +1,4 @@
-import { FC } from 'react';
-
-export const ReviewsList: FC = () => {
+function ReviewsList(): JSX.Element {
   return (
     <>
       <h2 className="reviews__title">
@@ -40,4 +38,6 @@ export const ReviewsList: FC = () => {
       </ul>
     </>
   );
-};
+}
+
+export default ReviewsList;
