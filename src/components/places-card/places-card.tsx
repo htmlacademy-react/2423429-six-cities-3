@@ -1,6 +1,7 @@
 import { generatePath, Link } from 'react-router-dom';
 import { Offer } from '../../types/offer';
 import { AppRoute } from '../../const';
+import RatingCalculation from '../../utils';
 
 type PlacesCardProps = {
   placeOffer: Offer;
@@ -38,13 +39,6 @@ function PlacesCard({
   const containerClass = cardClasses[variant];
   const imageWrapperClass = imageWrapperClasses[variant];
   const { width, height } = imageSizes[variant];
-
-  // Для простоты оба варианта сходны в вычислении рейтинга,
-  // можно задать условие, если расчёт отличается.
-  const ratingWidth =
-    variant === 'cities'
-      ? `${placeOffer.rating * 20}%`
-      : `${(placeOffer.rating / 5) * 100}%`;
 
   return (
     <Link to={generatePath(AppRoute.Offer, { id: placeOffer.id })}>
@@ -95,7 +89,9 @@ function PlacesCard({
           </div>
           <div className="place-card__rating rating">
             <div className="place-card__stars rating__stars">
-              <span style={{ width: ratingWidth }}></span>
+              <span
+                style={{ width: `${RatingCalculation(placeOffer)}%` }}
+              ></span>
               <span className="visually-hidden">Rating</span>
             </div>
           </div>
