@@ -12,4 +12,4 @@ export enum AuthorizationStatus {
   Unknown = 'UNKNOWN',
 }
 
-export  const RATING = 5 ;
+export const RATING = 5 ;
