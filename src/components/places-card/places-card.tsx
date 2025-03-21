@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { generatePath, Link } from 'react-router-dom';
 import { Offer } from '../../types/offer';
 import { AppRoute } from '../../const';
 
@@ -47,7 +47,7 @@ function PlacesCard({
       : `${(placeOffer.rating / 5) * 100}%`;
 
   return (
-    <Link to={`${AppRoute.Offer}:${placeOffer.id}`}>
+    <Link to={generatePath(AppRoute.Offer, { id: placeOffer.id })}>
       <article
         className={containerClass}
         onMouseEnter={() => onCardHover && onCardHover(placeOffer)}
