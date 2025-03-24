@@ -1,8 +1,3 @@
-export const Setting = {
-  placesCount: 3
-};
-
-
 export enum AppRoute {
   Root = '/',
   Login = '/login',
@@ -11,9 +6,10 @@ export enum AppRoute {
   Offer = '/offer/:id',
 }
 
-
 export enum AuthorizationStatus {
   Auth = 'AUTH',
   NoAuth = 'NO_AUTH',
   Unknown = 'UNKNOWN',
 }
+
+export const RATING = 5 ;
