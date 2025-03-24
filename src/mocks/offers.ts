@@ -25,7 +25,7 @@ export const offers: Offer[] = [
     rating: 3.1,
   },
   {
-    id: '2651be00-ab36-4a36-90bf-0e15adfa9703',
+    id: '2651be00-ab36-4a36-90bf-0e15adfa9713',
     title: 'Perfectly located Castro',
     type: 'house',
     price: 867,
@@ -71,7 +71,7 @@ export const offers: Offer[] = [
     rating: 3.2,
   },
   {
-    id: '90bcbf9d-b034-4f15-9e8c-cb5586cf534d',
+    id: '90bcbf9d-b034-4f15-9e8c-cb5586cg534d',
     title: 'House in countryside',
     type: 'house',
     price: 552,
