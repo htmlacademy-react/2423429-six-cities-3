@@ -3,8 +3,6 @@ import Header from '../../components/header/header';
 import PlacesCard from '../../components/places-card/places-card';
 import { Offer } from '../../types/offer';
 
-import './favorites.css';
-
 type FavoritesProps = {
   offers: Offer[];
 };
@@ -41,9 +39,11 @@ function Favorites({ offers }: FavoritesProps): JSX.Element {
                   </div>
                   <div className="favorites__places">
                     {groupedOffers[city].map((offer) => (
-                      <div key={offer.id} className="favorites__places-item">
-                        <PlacesCard placeOffer={offer} variant="favorites" />
-                      </div>
+                      <PlacesCard
+                        key={offer.id}
+                        placeOffer={offer}
+                        variant="favorites"
+                      />
                     ))}
                   </div>
                 </li>

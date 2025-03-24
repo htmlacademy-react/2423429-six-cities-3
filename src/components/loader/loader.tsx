@@ -4,7 +4,7 @@ function Loader(): JSX.Element {
   return (
     <div className="loader">
       <div className="spinner"></div>
-      <p>Loading...</p>
+      <p className="loader_text">Loading...</p>
     </div>
   );
 }
