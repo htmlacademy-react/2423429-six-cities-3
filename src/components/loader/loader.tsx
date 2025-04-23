@@ -1,4 +1,4 @@
-import './loader.css'; // Импортируйте файл стилей
+import './loader.css';
 
 function Loader(): JSX.Element {
   return (
