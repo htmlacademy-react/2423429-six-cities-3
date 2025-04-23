@@ -1,6 +1,6 @@
 import Header from '../../components/header/header';
 import { Reviews } from '../../components/review/review';
-import Map from '../../components/map/map';
+//import Map from '../../components/map/map';
 
 function OfferScreen(): JSX.Element {
   return (

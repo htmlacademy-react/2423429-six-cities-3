@@ -33,7 +33,7 @@ const useMap = (
       instance.addLayer(layer);
       setMap(instance);
       isRenderedRef.current = true;
-    } 
+    }
   }, [mapRef, map, cityInfo]);
 
   return map;
