@@ -140,7 +140,7 @@ function OfferScreen(): JSX.Element {
               </section>
             </div>
           </div>
-          <Map className="offer__map" />
+          {/* <Map className="offer__map" /> */}
         </section>
         <div className="container">
           <section className="near-places places">

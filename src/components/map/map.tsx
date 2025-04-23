@@ -1,39 +1,33 @@
 import cn from 'classnames';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { Offer, City } from '../../types/offer';
-import { URL_MARKER_CURRENT, URL_MARKER_DEFAULT } from '../../const';
+import { Offer } from '../../types/offer';
 import { useEffect, useRef } from 'react';
 import useMap from '../../hooks/use-map';
 
 type MapProps = {
   className: string;
-  City: City;
   offers: Offer[];
-  activeOfferId?: string | null;
+  activeOfferId?: string;
 };
 
 const defaultMarkerIcon = new L.Icon({
-  iconUrl: URL_MARKER_DEFAULT,
+  iconUrl: '../img/pin.svg',
   iconSize: [40, 40],
   iconAnchor: [20, 40],
 });
 
 const activeMarkerIcon = new L.Icon({
-  iconUrl: URL_MARKER_CURRENT,
+  iconUrl: '../img/pin-active.svg',
   iconSize: [40, 40],
   iconAnchor: [20, 40],
 });
 
-function Map({
-  className,
-  City,
-  offers,
-  activeOfferId,
-}: MapProps): JSX.Element {
+function Map({ className, offers, activeOfferId }: MapProps): JSX.Element {
   const mapContainerRef = useRef<HTMLDivElement>(null);
-  // Передаём два аргумента: ссылку на контейнер и информацию о городе
-  const map = useMap(mapContainerRef, City);
+
+  const city = offers[0].city;
+  const map = useMap(mapContainerRef, city);
 
   useEffect(() => {
     if (map) {
