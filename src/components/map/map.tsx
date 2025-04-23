@@ -13,13 +13,13 @@ type MapProps = {
 
 const defaultMarkerIcon = new L.Icon({
   iconUrl: '../img/pin.svg',
-  iconSize: [40, 40],
+  iconSize: [27, 39],
   iconAnchor: [20, 40],
 });
 
 const activeMarkerIcon = new L.Icon({
   iconUrl: '../img/pin-active.svg',
-  iconSize: [40, 40],
+  iconSize: [27, 39],
   iconAnchor: [20, 40],
 });
 
