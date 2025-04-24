@@ -46,7 +46,7 @@ function Map({ className, offers, activeOfferId }: MapProps): JSX.Element {
               offer.id === activeOfferId ? activeMarkerIcon : defaultMarkerIcon,
           }
         );
-        addLayerToGroup({marker);
+        addLayerToGroup(marker);
       });
     }
   }, [activeOfferId, map, offers, addLayerToGroup, clearLayerGroup]);

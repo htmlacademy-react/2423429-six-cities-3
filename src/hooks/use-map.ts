@@ -51,7 +51,7 @@ const useMap = (
     }
   }, [mapRef, cityInfo]);
 
-  const addLayerToGroup = (layer: LayerGroup): void => {
+  const addLayerToGroup = (layer: any): void => {
     layerGroupRef.current?.addLayer(layer);
   };
 
