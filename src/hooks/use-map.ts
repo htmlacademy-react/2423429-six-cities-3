@@ -10,8 +10,8 @@ const useMap = (
   cityInfo: City
 ): {
   map: Map | null;
-  addLayerToGroup: (layer: any) => void;
-  clearLayerGroup: () => void
+  addLayerToGroup: (layer: LayerGroup) => void;
+  clearLayerGroup: () => void;
   } => {
   const [map, setMap] = useState<Map | null>(null);
   const isRenderedRef = useRef<boolean>(false);
@@ -51,7 +51,7 @@ const useMap = (
     }
   }, [mapRef, cityInfo]);
 
-  const addLayerToGroup = (layer: any): void => {
+  const addLayerToGroup = (layer: LayerGroup): void => {
     layerGroupRef.current?.addLayer(layer);
   };
 

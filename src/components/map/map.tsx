@@ -1,5 +1,5 @@
 import cn from 'classnames';
-import L from 'leaflet';
+import L, { Marker } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { Offer } from '../../types/offer';
 import { useEffect, useRef } from 'react';
@@ -46,7 +46,7 @@ function Map({ className, offers, activeOfferId }: MapProps): JSX.Element {
               offer.id === activeOfferId ? activeMarkerIcon : defaultMarkerIcon,
           }
         );
-        addLayerToGroup(marker);
+        addLayerToGroup({marker);
       });
     }
   }, [activeOfferId, map, offers, addLayerToGroup, clearLayerGroup]);
