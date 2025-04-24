@@ -44,6 +44,7 @@ const useMap = (
 
       return () => {
         if (map) {
+          clearLayerGroup();
           map.remove(); 
         }
       };
