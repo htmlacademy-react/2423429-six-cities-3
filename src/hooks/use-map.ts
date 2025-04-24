@@ -1,5 +1,5 @@
 import {useEffect, useState, useRef, MutableRefObject} from 'react';
-import {Map, TileLayer} from 'leaflet';
+import {Map, TileLayer, LayerGroup} from 'leaflet';
 import {City} from '../types/offer';
 
 const TITLE_LAYER_URL_PATTERN = 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png';
@@ -8,9 +8,14 @@ const TILE_LAYER_ATTRIBUTION = '&copy; <a href="https://www.openstreetmap.org/co
 const useMap = (
   mapRef: MutableRefObject<HTMLElement | null>,
   cityInfo: City
-): Map | null => {
+): {
+  map: Map | null;
+  addLayerToGroup: (layer: any) => void;
+  clearLayerGroup: () => void
+  } => {
   const [map, setMap] = useState<Map | null>(null);
   const isRenderedRef = useRef<boolean>(false);
+  const layerGroupRef = useRef<LayerGroup | null>(null);
 
   useEffect(() => {
     if (mapRef.current !== null && !isRenderedRef.current) {
@@ -33,10 +38,27 @@ const useMap = (
       instance.addLayer(layer);
       setMap(instance);
       isRenderedRef.current = true;
-    }
-  }, [mapRef, map, cityInfo]);
 
-  return map;
+      layerGroupRef.current = new LayerGroup();
+      instance.addLayer(layerGroupRef.current);
+
+      return () => {
+        if (map) {
+          map.remove(); 
+        }
+      };
+    }
+  }, [mapRef, cityInfo]);
+
+  const addLayerToGroup = (layer: any): void => {
+    layerGroupRef.current?.addLayer(layer);
+  };
+
+  const clearLayerGroup = (): void => {
+    layerGroupRef.current?.clearLayers();
+  };
+
+  return { map, addLayerToGroup, clearLayerGroup };
 };
 
 export default useMap;

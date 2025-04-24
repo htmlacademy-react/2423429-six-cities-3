@@ -26,19 +26,17 @@ const activeMarkerIcon = new L.Icon({
 function Map({ className, offers, activeOfferId }: MapProps): JSX.Element {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const city = offers[0].city;
-  const map = useMap(mapContainerRef, city);
+  const { map, addLayerToGroup, clearLayerGroup } = useMap(
+    mapContainerRef,
+    city
+  );
 
   useEffect(() => {
-    if (map) {
-      map.eachLayer((layer) => {
-        if (layer instanceof L.TileLayer) {
-          return;
-        }
-        map.removeLayer(layer);
-      });
+    if (map && addLayerToGroup && clearLayerGroup) {
+      clearLayerGroup();
 
       offers.forEach((offer) => {
-        L.marker(
+        const marker = L.marker(
           {
             lat: offer.location.latitude,
             lng: offer.location.longitude,
@@ -47,10 +45,11 @@ function Map({ className, offers, activeOfferId }: MapProps): JSX.Element {
             icon:
               offer.id === activeOfferId ? activeMarkerIcon : defaultMarkerIcon,
           }
-        ).addTo(map);
+        );
+        addLayerToGroup(marker);
       });
     }
-  }, [activeOfferId, map, offers]);
+  }, [activeOfferId, map, offers, addLayerToGroup, clearLayerGroup]);
 
   return <section className={cn(className, 'map')} ref={mapContainerRef} />;
 }
