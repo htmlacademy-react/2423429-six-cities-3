@@ -5,7 +5,7 @@ import { AppRoute, AuthorizationStatus } from '../const';
 import PrivateRoute from '../components/private-route/private-route';
 import Loader from '../components/loader/loader';
 
-import { Offer } from '../types/offer';
+import { Offer, TReview } from '../types/offer';
 
 //Импортируем главный экран
 import Main from '../pages/main/main';
@@ -21,10 +21,11 @@ const OfferPreview = lazy(() => import('../pages/offer/offer'));
 
 type AppProps = {
   offers: Offer[];
+  reviews: TReview[];
   authorizationStatus: AuthorizationStatus;
 };
 
-function App({ offers, authorizationStatus }: AppProps): JSX.Element {
+function App({ offers, reviews, authorizationStatus }: AppProps): JSX.Element {
   return (
     <BrowserRouter>
       <Suspense fallback={<Loader />}>
@@ -39,7 +40,10 @@ function App({ offers, authorizationStatus }: AppProps): JSX.Element {
               </PrivateRoute>
             }
           />
-          <Route path={AppRoute.Offer} element={<OfferPreview />} />
+          <Route
+            path={AppRoute.Offer}
+            element={<OfferPreview reviews={reviews} />}
+          />
           <Route path="*" element={<NotFoundPreview />} />
         </Routes>
       </Suspense>

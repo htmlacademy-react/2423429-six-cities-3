@@ -10,7 +10,6 @@ type PlacesCardProps = {
   variant?: 'cities' | 'favorites';
 };
 
-// Объекты с настройками для разных вариантов карточки
 const cardClasses = {
   cities: 'cities__card place-card',
   favorites: 'favorites__card place-card',

@@ -4,11 +4,16 @@ import PlacesCard from '../places-card/places-card';
 type PlacesListProps = {
   offers: Offer[];
   onCardHover?: (offer?: Offer) => void;
+  className?: string;
 };
 
-function PlacesList({ offers, onCardHover }: PlacesListProps): JSX.Element {
+function PlacesList({
+  offers,
+  onCardHover,
+  className = 'cities__places-list places__list',
+}: PlacesListProps): JSX.Element {
   return (
-    <div className="cities__places-list places__list">
+    <div className={className}>
       {offers.map((offer) => (
         <PlacesCard
           key={offer.id}

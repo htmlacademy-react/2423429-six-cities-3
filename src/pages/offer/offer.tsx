@@ -1,6 +1,6 @@
 import Header from '../../components/header/header';
 import { Reviews } from '../../components/review/review';
-import Map from '../../components/map/map';
+//import Map from '../../components/map/map';
 import NearPlacesList from '../../components/near-places-list/near-places-list';
 import { Offer, TReview, City } from '../../types/offer';
 
@@ -14,10 +14,8 @@ type OfferScreenProps = {
 
 export default function OfferScreen({
   isAuth,
-  offer,
   reviews,
   nearOffers,
-  city,
 }: OfferScreenProps): JSX.Element {
   return (
     <div className="page">
@@ -151,13 +149,17 @@ export default function OfferScreen({
                   </p>
                 </div>
               </div>
-              <section className="offer__reviews reviews">
+            </div>
+          </div>
+        </section>
+        <section className="offer__reviews reviews">
           <Reviews isAuth={isAuth} reviews={reviews} />
-              </section>
+        </section>
 
         <section className="offer__map map">
           {/*   <Map city={city} offers={[offer, ...nearOffers]} /> */}
         </section>
+
         <div className="container">
           <NearPlacesList offers={nearOffers} />
         </div>
@@ -165,5 +167,3 @@ export default function OfferScreen({
     </div>
   );
 }
-
-export default OfferScreen;

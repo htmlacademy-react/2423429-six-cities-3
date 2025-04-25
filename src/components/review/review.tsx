@@ -1,13 +1,16 @@
-import ReviewForm from '../review-form/review-form';
 import ReviewsList from '../review-list/review-list';
+import ReviewForm from '../review-form/review-form';
+import { TReview } from '../../types/offer';
+
 type TReviewsProps = {
   isAuth: boolean;
+  reviews: TReview[];
 };
 
-export function Reviews({ isAuth }: TReviewsProps): JSX.Element {
+export function Reviews({ isAuth, reviews }: TReviewsProps): JSX.Element {
   return (
     <>
-      <ReviewsList />
+      <ReviewsList reviews={reviews} />
       {isAuth && <ReviewForm />}
     </>
   );

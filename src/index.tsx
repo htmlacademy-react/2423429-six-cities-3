@@ -1,7 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './app/app';
+
 import { offers } from './mocks/offers';
+import { reviews } from './mocks/reviews';
 import { AuthorizationStatus } from './const';
 
 const root = ReactDOM.createRoot(
@@ -10,6 +12,10 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <App offers={offers} authorizationStatus={AuthorizationStatus.Auth} />
+    <App
+      offers={offers}
+      reviews={reviews}
+      authorizationStatus={AuthorizationStatus.Auth}
+    />
   </React.StrictMode>
 );
