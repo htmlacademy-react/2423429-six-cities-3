@@ -55,11 +55,11 @@ const useMap = (
     layerGroupRef.current?.clearLayers();
   }, []);
 
-  const values = useMemo(() => ({ 
+  const values = useMemo(() => ({
     map,
     addMarkerToLayer,
     clearLayerGroup
-  }), [map, addMarkerToLayer, clearLayerGroup])
+  }), [map, addMarkerToLayer, clearLayerGroup]);
 
   return values;
 };
