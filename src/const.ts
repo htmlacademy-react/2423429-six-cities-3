@@ -13,5 +13,3 @@ export enum AuthorizationStatus {
 }
 
 export const RATING = 5 ;
-
-////
