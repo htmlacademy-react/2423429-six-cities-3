@@ -1,6 +1,6 @@
 import Header from '../../components/header/header';
 import { Reviews } from '../../components/review/review';
-import Map from '../../components/map/map';
+//import Map from '../../components/map/map';
 
 function OfferScreen(): JSX.Element {
   return (
@@ -140,7 +140,7 @@ function OfferScreen(): JSX.Element {
               </section>
             </div>
           </div>
-          <Map className="offer__map" />
+          {/* <Map className="offer__map" /> */}
         </section>
         <div className="container">
           <section className="near-places places">

@@ -4,12 +4,20 @@ import Sorting from '../../components/sorting/sorting';
 import Tabs from '../../components/tabs/tabs';
 import { Offer } from '../../types/offer';
 import Map from '../../components/map/map';
+import { Nullable } from 'vitest';
+import { useState } from 'react';
 
 type MainProps = {
   offers: Offer[];
 };
 
 function Main({ offers }: MainProps): JSX.Element {
+  const [activeOffer, setActiveOffer] = useState<Nullable<Offer>>(null);
+
+  const onCardHover = (offer?: Offer) => {
+    setActiveOffer(offer || null);
+  };
+
   return (
     <div className="page page--gray page--main">
       <Header />
@@ -24,10 +32,14 @@ function Main({ offers }: MainProps): JSX.Element {
                 {offers.length} places to stay in Amsterdam
               </b>
               <Sorting />
-              <PlacesList offers={offers} />
+              <PlacesList offers={offers} onCardHover={onCardHover} />
             </section>
             <div className="cities__right-section">
-              <Map className="cities__map" />
+              <Map
+                offers={offers}
+                className="cities__map"
+                activeOfferId={activeOffer?.id}
+              />
             </div>
           </div>
         </div>

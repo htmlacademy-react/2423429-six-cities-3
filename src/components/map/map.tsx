@@ -1,11 +1,59 @@
 import cn from 'classnames';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+import { Offer } from '../../types/offer';
+import { useEffect, useRef } from 'react';
+import useMap from '../../hooks/use-map';
 
 type MapProps = {
   className: string;
+  offers: Offer[];
+  activeOfferId?: string;
 };
 
-function Map({ className }: MapProps): JSX.Element {
-  return <section className={cn(className, 'map')}></section>;
+const defaultMarkerIcon = new L.Icon({
+  iconUrl: '../img/pin.svg',
+  iconSize: [27, 39],
+  iconAnchor: [20, 40],
+});
+
+const activeMarkerIcon = new L.Icon({
+  iconUrl: '../img/pin-active.svg',
+  iconSize: [27, 39],
+  iconAnchor: [20, 40],
+});
+
+function Map({ className, offers, activeOfferId }: MapProps): JSX.Element {
+  const mapContainerRef = useRef<HTMLDivElement>(null);
+  const city = offers[0].city;
+  const { map, addMarkerToLayer, clearLayerGroup } = useMap(
+    mapContainerRef,
+    city
+  );
+
+  useEffect(() => {
+    if (map) {
+      offers.forEach((offer) => {
+        const marker = L.marker(
+          {
+            lat: offer.location.latitude,
+            lng: offer.location.longitude,
+          },
+          {
+            icon:
+              offer.id === activeOfferId ? activeMarkerIcon : defaultMarkerIcon,
+          }
+        );
+        addMarkerToLayer(marker);
+      });
+
+      return () => {
+        clearLayerGroup();
+      };
+    }
+  }, [activeOfferId, map, offers, addMarkerToLayer, clearLayerGroup]);
+
+  return <section className={cn(className, 'map')} ref={mapContainerRef} />;
 }
 
 export default Map;
