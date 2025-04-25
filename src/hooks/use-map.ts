@@ -1,16 +1,17 @@
-import {useEffect, useState, useRef, MutableRefObject} from 'react';
-import {Map, TileLayer, LayerGroup} from 'leaflet';
+import {useEffect, useState, useRef, MutableRefObject, useCallback, useMemo} from 'react';
+import {Map, TileLayer, LayerGroup, Marker} from 'leaflet';
 import {City} from '../types/offer';
 
 const TITLE_LAYER_URL_PATTERN = 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png';
 const TILE_LAYER_ATTRIBUTION = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>';
+const CURRENT_ZOOM = 13;
 
 const useMap = (
   mapRef: MutableRefObject<HTMLElement | null>,
   cityInfo: City
 ): {
   map: Map | null;
-  addLayerToGroup: (layer: LayerGroup) => void;
+  addMarkerToLayer: (marker: Marker) => void;
   clearLayerGroup: () => void;
   } => {
   const [map, setMap] = useState<Map | null>(null);
@@ -25,7 +26,7 @@ const useMap = (
           lat: latitude,
           lng: longitude,
         },
-        zoom: 13
+        zoom: CURRENT_ZOOM
       });
 
       const layer = new TileLayer(
@@ -41,25 +42,26 @@ const useMap = (
 
       layerGroupRef.current = new LayerGroup();
       instance.addLayer(layerGroupRef.current);
-
-      return () => {
-        if (map) {
-          clearLayerGroup();
-          map.remove(); 
-        }
-      };
     }
   }, [mapRef, cityInfo]);
 
-  const addLayerToGroup = (layer: any): void => {
-    layerGroupRef.current?.addLayer(layer);
-  };
+  const addMarkerToLayer = useCallback((marker: Marker) => {
+    if (layerGroupRef.current) {
+      marker.addTo(layerGroupRef.current);
+    }
+  }, []);
 
-  const clearLayerGroup = (): void => {
+  const clearLayerGroup = useCallback(() => {
     layerGroupRef.current?.clearLayers();
-  };
+  }, []);
 
-  return { map, addLayerToGroup, clearLayerGroup };
+  const values = useMemo(() => ({ 
+    map,
+    addMarkerToLayer,
+    clearLayerGroup
+  }), [map, addMarkerToLayer, clearLayerGroup])
+
+  return values;
 };
 
 export default useMap;

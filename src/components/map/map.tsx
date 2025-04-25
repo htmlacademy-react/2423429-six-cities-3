@@ -1,5 +1,5 @@
 import cn from 'classnames';
-import L, { Marker } from 'leaflet';
+import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { Offer } from '../../types/offer';
 import { useEffect, useRef } from 'react';
@@ -26,15 +26,13 @@ const activeMarkerIcon = new L.Icon({
 function Map({ className, offers, activeOfferId }: MapProps): JSX.Element {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const city = offers[0].city;
-  const { map, addLayerToGroup, clearLayerGroup } = useMap(
+  const { map, addMarkerToLayer, clearLayerGroup } = useMap(
     mapContainerRef,
     city
   );
 
   useEffect(() => {
-    if (map && addLayerToGroup && clearLayerGroup) {
-      clearLayerGroup();
-
+    if (map) {
       offers.forEach((offer) => {
         const marker = L.marker(
           {
@@ -46,10 +44,14 @@ function Map({ className, offers, activeOfferId }: MapProps): JSX.Element {
               offer.id === activeOfferId ? activeMarkerIcon : defaultMarkerIcon,
           }
         );
-        addLayerToGroup(marker);
+        addMarkerToLayer(marker);
       });
+
+      return () => {
+        clearLayerGroup();
+      };
     }
-  }, [activeOfferId, map, offers, addLayerToGroup, clearLayerGroup]);
+  }, [activeOfferId, map, offers, addMarkerToLayer, clearLayerGroup]);
 
   return <section className={cn(className, 'map')} ref={mapContainerRef} />;
 }
