@@ -160,9 +160,7 @@ export default function OfferScreen({
           {/*   <Map city={city} offers={[offer, ...nearOffers]} /> */}
         </section>
 
-        <div className="container">
-          <NearPlacesList offers={nearOffers} />
-        </div>
+        <NearPlacesList offers={nearOffers} className="near-places places" />
       </main>
     </div>
   );

@@ -7,7 +7,7 @@ type PlacesListProps = {
   className?: string;
 };
 
-function PlacesList({
+export default function PlacesList({
   offers,
   onCardHover,
   className = 'cities__places-list places__list',
@@ -24,5 +24,3 @@ function PlacesList({
     </div>
   );
 }
-
-export default PlacesList;

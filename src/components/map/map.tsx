@@ -1,5 +1,5 @@
 import cn from 'classnames';
-import L, { LayerGroup } from 'leaflet';
+import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { Offer } from '../../types/offer';
 import { useEffect, useRef } from 'react';
@@ -31,16 +31,12 @@ function Map({ className, offers, activeOfferId }: MapProps): JSX.Element {
     city
   );
 
-  const markerLayer = useRef<LayerGroup>(L.layerGroup());
-
   useEffect(() => {
     if (map) {
       map.setView(
         [city.location.latitude, city.location.longitude],
         city.location.zoom
       );
-      markerLayer.current.addTo(map);
-      markerLayer.current.clearLayers();
     }
   }, [city, map]);
 
