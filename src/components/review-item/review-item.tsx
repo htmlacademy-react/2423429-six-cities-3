@@ -1,4 +1,5 @@
 import { TReview } from '../../types/offer';
+import calculateRating from '../../utils';
 
 type TReviewItemProps = {
   review: TReview;
@@ -6,7 +7,6 @@ type TReviewItemProps = {
 
 export default function ReviewItem({ review }: TReviewItemProps): JSX.Element {
   const date = new Date(review.date);
-  const widthPercent = `${(review.rating / 5) * 100}%`;
 
   return (
     <li className="reviews__item" key={review.id}>
@@ -26,7 +26,11 @@ export default function ReviewItem({ review }: TReviewItemProps): JSX.Element {
       <div className="reviews__info">
         <div className="reviews__rating rating">
           <div className="reviews__stars rating__stars">
-            <span style={{ width: widthPercent }}></span>
+            <span
+              style={{
+                width: `${calculateRating({ rating: review.rating })}%`,
+              }}
+            ></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>

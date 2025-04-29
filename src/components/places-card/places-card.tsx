@@ -1,7 +1,7 @@
 import { generatePath, Link } from 'react-router-dom';
 import { Offer } from '../../types/offer';
 import { AppRoute } from '../../const';
-import CalculateRating from '../../utils';
+import calculateRating from '../../utils';
 import cn from 'classnames';
 
 type PlacesCardProps = {
@@ -90,7 +90,7 @@ function PlacesCard({
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{ width: `${CalculateRating(placeOffer)}%` }}></span>
+            <span style={{ width: `${calculateRating(placeOffer)}%` }}></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
