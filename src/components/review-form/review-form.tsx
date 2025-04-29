@@ -19,9 +19,9 @@ export default function ReviewForm({ onSubmit }: ReviewFormProps) {
   });
 
   const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    evt: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    const { name, value } = e.target;
+    const { name, value } = evt.target;
     setFormData((prev) => ({
       ...prev,
       [name]: name === 'rating' ? Number(value) : value,
