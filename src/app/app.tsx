@@ -21,9 +21,17 @@ type AppProps = {
   offers: Offer[];
   reviews: TReview[];
   authorizationStatus: AuthorizationStatus;
+  nearOffers: Offer[];
+  offerTemplate: Offer;
 };
 
-function App({ offers, reviews, authorizationStatus }: AppProps): JSX.Element {
+function App({
+  offers,
+  reviews,
+  authorizationStatus,
+  nearOffers,
+  offerTemplate,
+}: AppProps): JSX.Element {
   return (
     <BrowserRouter>
       <Suspense fallback={<Loader />}>
@@ -44,30 +52,8 @@ function App({ offers, reviews, authorizationStatus }: AppProps): JSX.Element {
               <OfferPreview
                 reviews={reviews}
                 isAuth={false}
-                offer={{
-                  id: '',
-                  city: {
-                    name: '',
-                    location: {
-                      latitude: 0,
-                      longitude: 0,
-                      zoom: 0,
-                    },
-                  },
-                  title: '',
-                  type: '',
-                  price: 0,
-                  previewImage: '',
-                  location: {
-                    latitude: 0,
-                    longitude: 0,
-                    zoom: 0,
-                  },
-                  isFavorite: false,
-                  isPremium: false,
-                  rating: 0,
-                }}
-                nearOffers={[]}
+                nearOffers={nearOffers}
+                offer={offerTemplate}
               />
             }
           />

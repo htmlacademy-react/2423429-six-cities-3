@@ -148,11 +148,9 @@ export default function OfferScreen({
                   </p>
                 </div>
               </div>
+              <Reviews isAuth={isAuth} reviews={reviews} />
             </div>
           </div>
-        </section>
-        <section className="offer__reviews reviews">
-          <Reviews isAuth={isAuth} reviews={reviews} />
         </section>
 
         <section className="offer__map map">

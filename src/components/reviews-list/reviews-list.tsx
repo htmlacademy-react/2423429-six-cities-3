@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, Fragment } from 'react';
 import { TReview } from '../../types/offer';
 import ReviewItem from '../../components/review-item/review-item';
 
@@ -7,7 +7,7 @@ interface ReviewsListProps {
 }
 
 const ReviewsList: FC<ReviewsListProps> = ({ reviews }) => (
-  <section className="offer__reviews reviews">
+  <Fragment>
     <h2 className="reviews__title">
       Reviews · <span className="reviews__amount">{reviews.length}</span>
     </h2>
@@ -16,7 +16,7 @@ const ReviewsList: FC<ReviewsListProps> = ({ reviews }) => (
         <ReviewItem key={review.id} review={review} />
       ))}
     </ul>
-  </section>
+  </Fragment>
 );
 
 export default ReviewsList;

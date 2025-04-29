@@ -6,6 +6,7 @@ import { TReview } from '../../types/offer';
 type ReviewsProps = {
   isAuth: boolean;
   reviews: TReview[];
+  className?: string;
 };
 
 const Reviews: FC<ReviewsProps> = ({ isAuth, reviews }) => {
@@ -14,10 +15,10 @@ const Reviews: FC<ReviewsProps> = ({ isAuth, reviews }) => {
   };
 
   return (
-    <>
+    <section className="offer__reviews reviews">
       <ReviewsList reviews={reviews} />
       {isAuth && <ReviewForm onSubmit={handleReviewSubmit} />}
-    </>
+    </section>
   );
 };
 

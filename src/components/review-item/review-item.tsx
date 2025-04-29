@@ -17,7 +17,7 @@ export default function ReviewItem({ review }: TReviewItemProps): JSX.Element {
             src={review.user.avatarUrl}
             width="54"
             height="54"
-            alt={`Avatar of ${review.user.name}`}
+            alt="Reviews avatar"
           />
         </div>
         <span className="reviews__user-name">{review.user.name}</span>
