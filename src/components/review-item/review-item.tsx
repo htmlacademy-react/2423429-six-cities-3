@@ -30,7 +30,7 @@ export default function ReviewItem({ review }: TReviewItemProps): JSX.Element {
               style={{
                 width: `${calculateRating({ rating: review.rating })}%`,
               }}
-            ></span>
+            />
             <span className="visually-hidden">Rating</span>
           </div>
         </div>

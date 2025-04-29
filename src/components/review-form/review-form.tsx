@@ -32,7 +32,9 @@ export default function ReviewForm({ onSubmit }: ReviewFormProps) {
 
   const handleSubmit = (evt: FormEvent) => {
     evt.preventDefault();
-    if (!isValid) return;
+    if (!isValid) {
+      return;
+    }
     onSubmit({ rating: formData.rating, comment: formData.comment });
     setFormData({ rating: 0, comment: '' });
   };
