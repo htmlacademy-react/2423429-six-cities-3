@@ -7,10 +7,8 @@ import Loader from '../components/loader/loader';
 
 import { Offer, TReview } from '../types/offer';
 
-//Импортируем главный экран
 import Main from '../pages/main/main';
 
-// Динамически импортируем остальные экраны
 const NotFoundPreview = lazy(
   () => import('../pages/page-not-found/page-not-found')
 );
@@ -42,7 +40,36 @@ function App({ offers, reviews, authorizationStatus }: AppProps): JSX.Element {
           />
           <Route
             path={AppRoute.Offer}
-            element={<OfferPreview reviews={reviews} />}
+            element={
+              <OfferPreview
+                reviews={reviews}
+                isAuth={false}
+                offer={{
+                  id: '',
+                  city: {
+                    name: '',
+                    location: {
+                      latitude: 0,
+                      longitude: 0,
+                      zoom: 0,
+                    },
+                  },
+                  title: '',
+                  type: '',
+                  price: 0,
+                  previewImage: '',
+                  location: {
+                    latitude: 0,
+                    longitude: 0,
+                    zoom: 0,
+                  },
+                  isFavorite: false,
+                  isPremium: false,
+                  rating: 0,
+                }}
+                nearOffers={[]}
+              />
+            }
           />
           <Route path="*" element={<NotFoundPreview />} />
         </Routes>

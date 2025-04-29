@@ -2,14 +2,13 @@ import Header from '../../components/header/header';
 //import Map from '../../components/map/map';
 import NearPlacesList from '../../components/near-places-list/near-places-list';
 import Reviews from '../../components/reviews/reviews';
-import { Offer, TReview, City } from '../../types/offer';
+import { Offer, TReview } from '../../types/offer';
 
 type OfferScreenProps = {
   isAuth: boolean;
   offer: Offer;
   reviews: TReview[];
   nearOffers: Offer[];
-  city: City;
 };
 
 export default function OfferScreen({
