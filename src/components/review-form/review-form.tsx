@@ -1,57 +1,83 @@
-import { Fragment, useState, ChangeEvent } from 'react';
+import { Fragment, useState, ChangeEvent, FormEvent } from 'react';
 
-const ratings = [
+const RATINGS = [
   { value: 5, title: 'perfect' },
   { value: 4, title: 'good' },
   { value: 3, title: 'not bad' },
   { value: 2, title: 'badly' },
   { value: 1, title: 'terribly' },
-];
+] as const;
 
-function ReviewForm(): JSX.Element {
-  const [review, setReview] = useState({ rating: 0, review: '' });
+interface ReviewFormProps {
+  onSubmit: (data: { rating: number; comment: string }) => void;
+}
+
+export default function ReviewForm({ onSubmit }: ReviewFormProps) {
+  const [formData, setFormData] = useState({
+    rating: 0,
+    comment: '',
+  });
 
   const handleChange = (
-    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    evt: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    const { name, value } = event.target;
-    setReview({ ...review, [name]: value });
+    const { name, value } = evt.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: name === 'rating' ? Number(value) : value,
+    }));
+  };
+
+  const isValid = formData.rating > 0 && formData.comment.trim().length >= 50;
+
+  const handleSubmit = (evt: FormEvent) => {
+    evt.preventDefault();
+    if (!isValid) {
+      return;
+    }
+    onSubmit({ rating: formData.rating, comment: formData.comment });
+    setFormData({ rating: 0, comment: '' });
   };
 
   return (
-    <form className="reviews__form form" action="#" method="post">
+    <form className="reviews__form form" onSubmit={handleSubmit}>
       <label className="reviews__label form__label" htmlFor="review">
         Your review
       </label>
       <div className="reviews__rating-form form__rating">
-        {ratings.map((rating) => (
-          <Fragment key={rating.value}>
+        {RATINGS.map(({ value, title }) => (
+          <Fragment key={value}>
             <input
               className="form__rating-input visually-hidden"
               name="rating"
-              defaultValue={rating.value}
-              id={`${rating.value}-stars`}
+              value={value}
+              id={`${value}-stars`}
               type="radio"
+              checked={formData.rating === value}
               onChange={handleChange}
             />
             <label
-              htmlFor={`${rating.value}-stars`}
+              htmlFor={`${value}-stars`}
               className="reviews__rating-label form__rating-label"
-              title={rating.title}
+              title={title}
             >
               <svg className="form__star-image" width="37" height="33">
-                <use xlinkHref="#icon-star"></use>
+                <use xlinkHref="#icon-star" />
               </svg>
             </label>
           </Fragment>
         ))}
       </div>
+
       <textarea
         className="reviews__textarea form__textarea"
         id="review"
-        name="review"
-        placeholder="Tell how was your stay, what you like and what can be improved"
+        name="comment"
+        placeholder="Tell how was your stay…"
+        value={formData.comment}
+        onChange={handleChange}
       />
+
       <div className="reviews__button-wrapper">
         <p className="reviews__help">
           To submit review please make sure to set{' '}
@@ -61,7 +87,7 @@ function ReviewForm(): JSX.Element {
         <button
           className="reviews__submit form__submit button"
           type="submit"
-          disabled={review.review.length < 50 && review.rating === 0}
+          disabled={!isValid}
         >
           Submit
         </button>
@@ -69,5 +95,3 @@ function ReviewForm(): JSX.Element {
     </form>
   );
 }
-
-export default ReviewForm;

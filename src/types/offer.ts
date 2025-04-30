@@ -21,3 +21,15 @@ export type Offer = {
   isPremium: boolean;
   rating: number;
 };
+
+export type TReview = {
+  id: string;
+  date: string;
+  user: {
+    name: string;
+    avatarUrl: string;
+    isPro: boolean;
+  };
+  comment: string;
+  rating: number;
+};

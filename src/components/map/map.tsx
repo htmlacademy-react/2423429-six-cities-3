@@ -33,6 +33,15 @@ function Map({ className, offers, activeOfferId }: MapProps): JSX.Element {
 
   useEffect(() => {
     if (map) {
+      map.setView(
+        [city.location.latitude, city.location.longitude],
+        city.location.zoom
+      );
+    }
+  }, [city, map]);
+
+  useEffect(() => {
+    if (map) {
       offers.forEach((offer) => {
         const marker = L.marker(
           {
