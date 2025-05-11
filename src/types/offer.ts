@@ -4,14 +4,12 @@ type Location = {
   zoom: number;
 };
 
-export type City = {
-  name: string;
-  location: Location;
-};
-
 export type Offer = {
   id: string;
-  city: City;
+  city: {
+    name: string;
+    location: Location;
+  };
   title: string;
   type: string;
   price: number;
