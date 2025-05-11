@@ -1,12 +1,12 @@
+// src/index.tsx
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './app/app';
+import { Provider } from 'react-redux';
 
-import { offers } from './mocks/offers';
-import { reviews } from './mocks/reviews';
-import { nearOffers } from './mocks/near-offers';
-import { offerTemplate } from './mocks/offerTemplate';
-import { AuthorizationStatus } from './const';
+import App from './app/app';
+import { store } from './store';
+
+import 'leaflet/dist/leaflet.css';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -14,12 +14,8 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <App
-      offers={offers}
-      reviews={reviews}
-      authorizationStatus={AuthorizationStatus.Auth}
-      nearOffers={nearOffers}
-      offerTemplate={offerTemplate}
-    />
+    <Provider store={store}>
+      <App />
+    </Provider>
   </React.StrictMode>
 );

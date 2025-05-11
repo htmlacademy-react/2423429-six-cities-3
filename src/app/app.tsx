@@ -1,63 +1,49 @@
-import { Route, BrowserRouter, Routes } from 'react-router-dom';
+// src/app/app.tsx
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
-import { AppRoute, AuthorizationStatus } from '../const';
+import { useSelector } from 'react-redux';
 
-import PrivateRoute from '../components/private-route/private-route';
+import { AppRoute } from '../const';
 import Loader from '../components/loader/loader';
-
-import { Offer, TReview } from '../types/offer';
+import PrivateRoute from '../components/private-route/private-route';
 
 import Main from '../pages/main/main';
 
-const NotFoundPreview = lazy(
+const AuthPage = lazy(() => import('../pages/auth/auth'));
+const FavoritesPage = lazy(() => import('../pages/favorites/favorites'));
+const OfferPage = lazy(() => import('../pages/offer/offer'));
+const NotFoundPage = lazy(
   () => import('../pages/page-not-found/page-not-found')
 );
-const AuthPreview = lazy(() => import('../pages/auth/auth'));
 
-const FavoritesPreview = lazy(() => import('../pages/favorites/favorites'));
-const OfferPreview = lazy(() => import('../pages/offer/offer'));
+import { RootState } from '../store';
 
-type AppProps = {
-  offers: Offer[];
-  reviews: TReview[];
-  authorizationStatus: AuthorizationStatus;
-  nearOffers: Offer[];
-  offerTemplate: Offer;
-};
+function App(): JSX.Element {
+  // Название переменной должно совпадать с тем, что передаёте в PrivateRoute
+  const authorizationStatus = useSelector(
+    (state: RootState) => state.user.authorizationStatus
+  );
 
-function App({
-  offers,
-  reviews,
-  authorizationStatus,
-  nearOffers,
-  offerTemplate,
-}: AppProps): JSX.Element {
   return (
     <BrowserRouter>
       <Suspense fallback={<Loader />}>
         <Routes>
-          <Route path={AppRoute.Root} element={<Main offers={offers} />} />
-          <Route path={AppRoute.Login} element={<AuthPreview />} />
+          <Route path={AppRoute.Root} element={<Main />} />
+
+          <Route path={AppRoute.Login} element={<AuthPage />} />
+
           <Route
             path={AppRoute.Favorites}
             element={
               <PrivateRoute authorizationStatus={authorizationStatus}>
-                <FavoritesPreview offers={offers} />
+                <FavoritesPage />
               </PrivateRoute>
             }
           />
-          <Route
-            path={AppRoute.Offer}
-            element={
-              <OfferPreview
-                reviews={reviews}
-                isAuth={false}
-                nearOffers={nearOffers}
-                offer={offerTemplate}
-              />
-            }
-          />
-          <Route path="*" element={<NotFoundPreview />} />
+
+          <Route path={AppRoute.Offer} element={<OfferPage />} />
+
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Suspense>
     </BrowserRouter>

@@ -4,12 +4,14 @@ type Location = {
   zoom: number;
 };
 
+export type City = {
+  name: string;
+  location: Location;
+};
+
 export type Offer = {
   id: string;
-  city: {
-    name: string;
-    location: Location;
-  };
+  city: City;
   title: string;
   type: string;
   price: number;
@@ -31,3 +33,11 @@ export type TReview = {
   comment: string;
   rating: number;
 };
+
+export type CityName =
+  | 'Paris'
+  | 'Cologne'
+  | 'Brussels'
+  | 'Amsterdam'
+  | 'Hamburg'
+  | 'Dusseldorf';

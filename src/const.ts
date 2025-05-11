@@ -12,4 +12,15 @@ export enum AuthorizationStatus {
   Unknown = 'UNKNOWN',
 }
 
-export const RATING = 5 ;
+export const RATING = 5;
+
+import { CityName } from './types/offer';
+
+export const CITIES: CityName[] = [
+  'Paris',
+  'Cologne',
+  'Brussels',
+  'Amsterdam',
+  'Hamburg',
+  'Dusseldorf',
+];

@@ -1,51 +1,48 @@
-import Header from '../../components/header/header';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import type { RootState, AppDispatch } from '../../store';
+import { fetchOffers, setCity } from '../../store/offersSlice';
+
+import CityList from '../../components/city-list/city-list';
 import PlacesList from '../../components/places-list/places-list';
-import Sorting from '../../components/sorting/sorting';
-import Tabs from '../../components/tabs/tabs';
-import { Offer } from '../../types/offer';
-import Map from '../../components/map/map';
-import { Nullable } from 'vitest';
-import { useState } from 'react';
+import MapView from '../../components/map/map';
+import Loader from '../../components/loader/loader';
+import { CITIES } from '../../const';
 
-type MainProps = {
-  offers: Offer[];
-};
+const Main: React.FC = () => {
+  const dispatch = useDispatch<AppDispatch>();
 
-function Main({ offers }: MainProps): JSX.Element {
-  const [activeOffer, setActiveOffer] = useState<Nullable<Offer>>(null);
+  const city = useSelector((state: RootState) => state.offers.city);
+  const items = useSelector((state: RootState) => state.offers.items);
+  const isLoading = useSelector((state: RootState) => state.offers.isLoading);
+  const error = useSelector((state: RootState) => state.offers.error);
 
-  const onCardHover = (offer?: Offer) => {
-    setActiveOffer(offer || null);
-  };
+  useEffect(() => {
+    dispatch(fetchOffers());
+  }, [dispatch]);
+
+  const offersByCity = items.filter((offer) => offer.city === city);
+
+  if (isLoading) {
+    return <Loader />;
+  }
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
   return (
-    <div className="page page--gray page--main">
-      <Header />
+    <div className="page page--main page--gray">
+      <CityList
+        cities={CITIES}
+        selectedCity={city}
+        onSelect={(newCity) => dispatch(setCity(newCity))}
+      />
       <main className="page__main page__main--index">
-        <h1 className="visually-hidden">Cities</h1>
-        <Tabs />
-        <div className="cities">
-          <div className="cities__places-container container">
-            <section className="cities__places places">
-              <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">
-                {offers.length} places to stay in Amsterdam
-              </b>
-              <Sorting />
-              <PlacesList offers={offers} onCardHover={onCardHover} />
-            </section>
-            <div className="cities__right-section">
-              <Map
-                offers={offers}
-                className="cities__map"
-                activeOfferId={activeOffer?.id}
-              />
-            </div>
-          </div>
-        </div>
+        <PlacesList offers={offersByCity} />
+        <MapView offers={offersByCity} className={''} />
       </main>
     </div>
   );
-}
+};
 
 export default Main;

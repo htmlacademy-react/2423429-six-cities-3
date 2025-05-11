@@ -1,13 +1,15 @@
+// src/components/places-card/PlacesCard.tsx
 import { generatePath, Link } from 'react-router-dom';
 import { Offer } from '../../types/offer';
 import { AppRoute } from '../../const';
 import calculateRating from '../../utils';
 import cn from 'classnames';
 
-type PlacesCardProps = {
+export type PlacesCardProps = {
   placeOffer: Offer;
-  onCardHover?: (offer?: Offer) => void;
   variant?: 'cities' | 'favorites';
+  onCardHover?: (offer?: Offer) => void;
+  onBookmarkToggle?: (offerId: number, isFavorite: boolean) => void;
 };
 
 const cardClasses = {
@@ -21,30 +23,26 @@ const imageWrapperClasses = {
 };
 
 const imageSizes = {
-  cities: {
-    width: 260,
-    height: 200,
-  },
-  favorites: {
-    width: 150,
-    height: 110,
-  },
+  cities: { width: 260, height: 200 },
+  favorites: { width: 150, height: 110 },
 };
 
 function PlacesCard({
   placeOffer,
   onCardHover,
+  onBookmarkToggle,
   variant = 'cities',
 }: PlacesCardProps): JSX.Element {
   const containerClass = cardClasses[variant];
   const imageWrapperClass = imageWrapperClasses[variant];
   const { width, height } = imageSizes[variant];
+  const { id, isFavorite } = placeOffer;
 
   return (
     <article
       className={containerClass}
-      onMouseEnter={() => onCardHover && onCardHover(placeOffer)}
-      onMouseLeave={() => onCardHover && onCardHover()}
+      onMouseEnter={() => onCardHover?.(placeOffer)}
+      onMouseLeave={() => onCardHover?.()}
     >
       {placeOffer.isPremium && (
         <div className="place-card__mark">
@@ -52,7 +50,7 @@ function PlacesCard({
         </div>
       )}
       <div className={imageWrapperClass}>
-        <Link to={generatePath(AppRoute.Offer, { id: placeOffer.id })}>
+        <Link to={generatePath(AppRoute.Offer, { id })}>
           <img
             className="place-card__image"
             src={placeOffer.previewImage}
@@ -62,6 +60,7 @@ function PlacesCard({
           />
         </Link>
       </div>
+
       <div
         className={cn(
           'place-card__info',
@@ -70,32 +69,35 @@ function PlacesCard({
       >
         <div className="place-card__price-wrapper">
           <div className="place-card__price">
-            <b className="place-card__price-value">&euro;{placeOffer.price}</b>
-            <span className="place-card__price-text">&#47;&nbsp;night</span>
+            <b className="place-card__price-value">€{placeOffer.price}</b>
+            <span className="place-card__price-text">/ night</span>
           </div>
           <button
             className={cn(
               'place-card__bookmark-button button',
-              placeOffer.isFavorite && 'place-card__bookmark-button--active'
+              isFavorite && 'place-card__bookmark-button--active'
             )}
             type="button"
+            onClick={() => onBookmarkToggle?.(id, isFavorite)}
           >
             <svg className="place-card__bookmark-icon" width="18" height="19">
-              <use xlinkHref="#icon-bookmark"></use>
+              <use xlinkHref="#icon-bookmark" />
             </svg>
             <span className="visually-hidden">
-              {placeOffer.isFavorite ? 'In bookmarks' : 'To bookmarks'}
+              {isFavorite ? 'In bookmarks' : 'To bookmarks'}
             </span>
           </button>
         </div>
+
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
             <span style={{ width: `${calculateRating(placeOffer)}%` }}></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
+
         <h2 className="place-card__name">
-          <Link to={generatePath(AppRoute.Offer, { id: placeOffer.id })}>
+          <Link to={generatePath(AppRoute.Offer, { id })}>
             {placeOffer.title}
           </Link>
         </h2>
