@@ -1,14 +1,13 @@
 import cn from 'classnames';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { City, Offer } from '../../types/offer';
+import { Offer } from '../../types/offer';
 import { useEffect, useRef } from 'react';
 import useMap from '../../hooks/use-map';
 import { CITIES } from '../../const/cities';
 
 type MapProps = {
   offers: Offer[];
-  city: City;
   className: string;
   activeOfferId?: string;
 };

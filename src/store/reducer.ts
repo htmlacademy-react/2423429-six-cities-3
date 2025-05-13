@@ -1,7 +1,7 @@
-import { createReducer} from "@reduxjs/toolkit";
-import { CITIES } from "../const/cities";
-import { changeCity, setOffers} from './action';
-import { City, Offer } from "../types/offer";
+import { createReducer } from '@reduxjs/toolkit';
+import { CITIES } from '../const/cities';
+import { changeCity, setOffers } from './action';
+import { City, Offer } from '../types/offer';
 
 interface AppState {
   city: City;
@@ -23,4 +23,4 @@ const reducer = createReducer(initialState, (builder) => {
     });
 });
 
-export {reducer};
+export { reducer };
