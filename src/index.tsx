@@ -8,18 +8,24 @@ import { nearOffers } from './mocks/near-offers';
 import { offerTemplate } from './mocks/offerTemplate';
 import { AuthorizationStatus } from './const/const';
 
+import { Provider } from 'react-redux';
+import {} from '@reduxjs/toolkit';
+import { store } from './store';
+
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
 root.render(
   <React.StrictMode>
-    <App
-      offers={offers}
-      reviews={reviews}
-      authorizationStatus={AuthorizationStatus.Auth}
-      nearOffers={nearOffers}
-      offerTemplate={offerTemplate}
-    />
+    <Provider store={store}>
+      <App
+        offers={offers}
+        reviews={reviews}
+        authorizationStatus={AuthorizationStatus.Auth}
+        nearOffers={nearOffers}
+        offerTemplate={offerTemplate}
+      />
+    </Provider>
   </React.StrictMode>
 );

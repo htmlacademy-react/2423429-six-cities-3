@@ -3,11 +3,10 @@ import PlacesList from '../../components/places-list/places-list';
 import Sorting from '../../components/sorting/sorting';
 import Tabs from '../../components/tabs/tabs';
 import Map from '../../components/map/map';
-import { Offer } from '../../types/offer';
-import { City } from '../../types/offer';
-import { CITIES } from '../../const/cities';
+import { Offer, State } from '../../types/offer';
 import { Nullable } from 'vitest';
 import { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
 type MainProps = {
   offers: Offer[];
@@ -15,7 +14,9 @@ type MainProps = {
 
 function Main({ offers }: MainProps): JSX.Element {
   const [activeOffer, setActiveOffer] = useState<Nullable<Offer>>(null);
-  const [currentCity, setCurrentCity] = useState<City>(CITIES[0]);
+
+  const currentCity = useSelector((state: State) => state.city);
+  const dispatch = useDispatch();
 
   const filteredOffers = offers.filter(
     (offer) => offer.city.name === currentCity.name
@@ -30,7 +31,7 @@ function Main({ offers }: MainProps): JSX.Element {
       <Header />
       <main className="page__main page__main--index">
         <h1 className="visually-hidden">Cities</h1>
-        <Tabs currentCity={currentCity} onCityChange={setCurrentCity} />
+        <Tabs />
         <div className="cities">
           <div className="cities__places-container container">
             <section className="cities__places places">

@@ -1,12 +1,12 @@
+import { useDispatch, useSelector } from 'react-redux';
+import { changeCity } from '../../store/action'; // Убедитесь в правильности пути
 import { CITIES } from '../../const/cities';
-import { City } from '../../types/offer';
+import { State } from '../../types/offer';
 
-type TabsProps = {
-  currentCity: City;
-  onCityChange: (city: City) => void;
-};
+function Tabs(): JSX.Element {
+  const currentCity = useSelector((state: State) => state.city);
+  const dispatch = useDispatch();
 
-function Tabs({ currentCity, onCityChange }: TabsProps): JSX.Element {
   return (
     <div className="tabs">
       <section className="locations container">
@@ -20,7 +20,7 @@ function Tabs({ currentCity, onCityChange }: TabsProps): JSX.Element {
                 href="#"
                 onClick={(e) => {
                   e.preventDefault();
-                  onCityChange(city);
+                  dispatch(changeCity(city.name));
                 }}
               >
                 <span>{city.name}</span>
