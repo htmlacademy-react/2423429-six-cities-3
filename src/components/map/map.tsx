@@ -4,6 +4,7 @@ import 'leaflet/dist/leaflet.css';
 import { City, Offer } from '../../types/offer';
 import { useEffect, useRef } from 'react';
 import useMap from '../../hooks/use-map';
+import { CITIES } from '../../const/cities';
 
 type MapProps = {
   offers: Offer[];
@@ -24,22 +25,24 @@ const activeMarkerIcon = new L.Icon({
   iconAnchor: [20, 40],
 });
 
-function Map({ className, offers, activeOfferId }: MapProps): JSX.Element {
+function Map({ className, offers = [], activeOfferId }: MapProps): JSX.Element {
   const mapContainerRef = useRef<HTMLDivElement>(null);
-  const city = offers[0].city;
+
+  const currentCity = offers[0]?.city || CITIES[0].name;
+
   const { map, addMarkerToLayer, clearLayerGroup } = useMap(
     mapContainerRef,
-    city
+    currentCity
   );
 
   useEffect(() => {
     if (map) {
       map.setView(
-        [city.location.latitude, city.location.longitude],
-        city.location.zoom
+        [currentCity.location.latitude, currentCity.location.longitude],
+        currentCity.location.zoom
       );
     }
-  }, [city, map]);
+  }, [currentCity, map]);
 
   useEffect(() => {
     if (map) {

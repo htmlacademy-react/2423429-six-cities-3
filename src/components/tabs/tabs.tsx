@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { changeCity } from '../../store/action'; // Убедитесь в правильности пути
+import { changeCity } from '../../store/action';
 import { CITIES } from '../../const/cities';
 import { State } from '../../types/offer';
 
@@ -20,7 +20,7 @@ function Tabs(): JSX.Element {
                 href="#"
                 onClick={(e) => {
                   e.preventDefault();
-                  dispatch(changeCity(city.name));
+                  dispatch(changeCity(city));
                 }}
               >
                 <span>{city.name}</span>

@@ -1,15 +1,15 @@
 import { createReducer} from "@reduxjs/toolkit";
 import { CITIES } from "../const/cities";
 import { changeCity, setOffers} from './action';
-import { Offer } from "../types/offer";
+import { City, Offer } from "../types/offer";
 
 interface AppState {
-  city: string;
+  city: City;
   offers: Offer[];
 }
 
 const initialState: AppState = {
-  city: CITIES[0].name,
+  city: CITIES[0],
   offers: [],
 };
 
