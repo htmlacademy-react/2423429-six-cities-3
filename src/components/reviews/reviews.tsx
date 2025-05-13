@@ -6,7 +6,6 @@ import { TReview } from '../../types/offer';
 type ReviewsProps = {
   isAuth: boolean;
   reviews: TReview[];
-  className?: string;
 };
 
 const Reviews: FC<ReviewsProps> = ({ isAuth, reviews }) => {

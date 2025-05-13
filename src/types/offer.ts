@@ -33,3 +33,8 @@ export type TReview = {
   comment: string;
   rating: number;
 };
+
+export interface State {
+  city: City;
+  offers: Offer[];
+}

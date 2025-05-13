@@ -1,6 +1,6 @@
 import { Route, BrowserRouter, Routes } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
-import { AppRoute, AuthorizationStatus } from '../const';
+import { AppRoute, AuthorizationStatus } from '../const/const';
 
 import PrivateRoute from '../components/private-route/private-route';
 import Loader from '../components/loader/loader';
