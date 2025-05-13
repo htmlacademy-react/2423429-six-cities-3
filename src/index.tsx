@@ -6,7 +6,7 @@ import { offers } from './mocks/offers';
 import { reviews } from './mocks/reviews';
 import { nearOffers } from './mocks/near-offers';
 import { offerTemplate } from './mocks/offerTemplate';
-import { AuthorizationStatus } from './const';
+import { AuthorizationStatus } from './const/const';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

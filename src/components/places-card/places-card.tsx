@@ -1,6 +1,6 @@
 import { generatePath, Link } from 'react-router-dom';
 import { Offer } from '../../types/offer';
-import { AppRoute } from '../../const';
+import { AppRoute } from '../../const/const';
 import calculateRating from '../../utils';
 import cn from 'classnames';
 
