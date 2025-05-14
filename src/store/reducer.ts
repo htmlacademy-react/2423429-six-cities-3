@@ -1,7 +1,8 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { CITIES } from '../const/cities';
-import { changeCity, setOffers } from './action';
+import { changeCity } from './action';
 import { City, Offer } from '../types/offer';
+import { offers } from '../mocks/offers';
 
 interface AppState {
   city: City;
@@ -10,7 +11,7 @@ interface AppState {
 
 const initialState: AppState = {
   city: CITIES[0],
-  offers: [],
+  offers,
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -18,9 +19,6 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(changeCity, (state, action) => {
       state.city = action.payload;
     })
-    .addCase(setOffers, (state, action) => {
-      state.offers = action.payload;
-    });
 });
 
 export { reducer };

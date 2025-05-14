@@ -10,16 +10,13 @@ import { useSelector } from 'react-redux';
 import MainEmpty from '../../components/main-empty/main-empty';
 import cn from 'classnames';
 
-type MainProps = {
-  offers: Offer[];
-};
-
-function Main({ offers }: MainProps): JSX.Element {
+function Main(): JSX.Element {
   const [activeOffer, setActiveOffer] = useState<Nullable<Offer>>(null);
 
   const currentCity = useSelector((state: State) => state.city);
+  const currentOffers = useSelector((state: State) => state.offers);
 
-  const filteredOffers = offers.filter(
+  const filteredOffers = currentOffers.filter(
     (offer) => offer.city.name === currentCity.name
   );
 
@@ -53,7 +50,6 @@ function Main({ offers }: MainProps): JSX.Element {
               <div className="cities__right-section">
                 <Map
                   offers={filteredOffers}
-                  city={currentCity}
                   className="cities__map"
                   activeOfferId={activeOffer?.id}
                   key={currentCity.name}

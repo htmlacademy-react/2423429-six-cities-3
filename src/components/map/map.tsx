@@ -4,7 +4,6 @@ import 'leaflet/dist/leaflet.css';
 import { Offer } from '../../types/offer';
 import { useEffect, useRef } from 'react';
 import useMap from '../../hooks/use-map';
-import { CITIES } from '../../const/cities';
 
 type MapProps = {
   offers: Offer[];
@@ -15,19 +14,19 @@ type MapProps = {
 const defaultMarkerIcon = new L.Icon({
   iconUrl: '../img/pin.svg',
   iconSize: [27, 39],
-  iconAnchor: [20, 40],
+  iconAnchor: [13.5, 39],
 });
 
 const activeMarkerIcon = new L.Icon({
   iconUrl: '../img/pin-active.svg',
   iconSize: [27, 39],
-  iconAnchor: [20, 40],
+  iconAnchor: [13.5, 39],
 });
 
-function Map({ className, offers = [], activeOfferId }: MapProps): JSX.Element {
+function Map({ className, offers, activeOfferId }: MapProps): JSX.Element {
   const mapContainerRef = useRef<HTMLDivElement>(null);
 
-  const currentCity = offers[0]?.city || CITIES[0].name;
+  const currentCity = offers[0].city;
 
   const { map, addMarkerToLayer, clearLayerGroup } = useMap(
     mapContainerRef,
@@ -35,7 +34,7 @@ function Map({ className, offers = [], activeOfferId }: MapProps): JSX.Element {
   );
 
   useEffect(() => {
-    if (map) {
+    if (map && currentCity) {
       map.setView(
         [currentCity.location.latitude, currentCity.location.longitude],
         currentCity.location.zoom
