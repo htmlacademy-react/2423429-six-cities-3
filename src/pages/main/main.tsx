@@ -8,30 +8,47 @@ import { Nullable } from 'vitest';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import MainEmpty from '../../components/main-empty/main-empty';
+import cn from 'classnames';
 
-type MainProps = {
-  offers: Offer[];
-};
-
-function Main({ offers }: MainProps): JSX.Element {
+function Main(): JSX.Element {
   const [activeOffer, setActiveOffer] = useState<Nullable<Offer>>(null);
 
   const currentCity = useSelector((state: State) => state.city);
+  const currentOffers = useSelector((state: State) => state.offers);
+  const currentSortType = useSelector((state: State) => state.sortType);
 
-  const filteredOffers = offers.filter(
+  const filteredOffers = currentOffers.filter(
     (offer) => offer.city.name === currentCity.name
   );
 
-  const hasOffers = filteredOffers.length > 0;
+  const sortedOffers = [...filteredOffers].sort((a, b) => {
+    switch (currentSortType) {
+      case 'PriceLowToHigh':
+        return a.price - b.price;
+      case 'PriceHighToLow':
+        return b.price - a.price;
+      case 'TopRatedFirst':
+        return b.rating - a.rating;
+      case 'Popular':
+      default:
+        return 0;
+    }
+  });
+
+  const hasOffers = sortedOffers.length > 0;
 
   const onCardHover = (offer?: Offer) => {
     setActiveOffer(offer || null);
   };
 
+  const mainClass = cn('page__main', 'page__main--index', {
+    'page__main--index-empty': !hasOffers,
+  });
+
   return (
     <div className="page page--gray page--main">
       <Header />
-      <main className="page__main page__main--index">
+      <main className={mainClass}>
         <h1 className="visually-hidden">Cities</h1>
         <Tabs />
         <div className="cities">
@@ -40,15 +57,14 @@ function Main({ offers }: MainProps): JSX.Element {
               <section className="cities__places places">
                 <h2 className="visually-hidden">Places</h2>
                 <b className="places__found">
-                  {filteredOffers.length} places to stay in {currentCity.name}
+                  {sortedOffers.length} places to stay in {currentCity.name}
                 </b>
                 <Sorting />
-                <PlacesList offers={filteredOffers} onCardHover={onCardHover} />
+                <PlacesList offers={sortedOffers} onCardHover={onCardHover} />
               </section>
               <div className="cities__right-section">
                 <Map
-                  offers={filteredOffers}
-                  city={currentCity}
+                  offers={sortedOffers}
                   className="cities__map"
                   activeOfferId={activeOffer?.id}
                   key={currentCity.name}

@@ -1,3 +1,5 @@
+import { SortType } from '../types/offer';
+
 export enum AppRoute {
   Root = '/',
   Login = '/login',
@@ -12,4 +14,11 @@ export enum AuthorizationStatus {
   Unknown = 'UNKNOWN',
 }
 
-export const RATING = 5 ;
+export const RATING = 5;
+
+export const SORT_TYPES: SortType[] = [
+  'Popular',
+  'PriceLowToHigh',
+  'PriceHighToLow',
+  'TopRatedFirst',
+];

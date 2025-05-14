@@ -36,7 +36,7 @@ function App({
     <BrowserRouter>
       <Suspense fallback={<Loader />}>
         <Routes>
-          <Route path={AppRoute.Root} element={<Main offers={offers} />} />
+          <Route path={AppRoute.Root} element={<Main />} />
           <Route path={AppRoute.Login} element={<AuthPreview />} />
           <Route
             path={AppRoute.Favorites}
