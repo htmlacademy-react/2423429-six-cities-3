@@ -15,12 +15,27 @@ function Main(): JSX.Element {
 
   const currentCity = useSelector((state: State) => state.city);
   const currentOffers = useSelector((state: State) => state.offers);
+  const currentSortType = useSelector((state: State) => state.sortType);
 
   const filteredOffers = currentOffers.filter(
     (offer) => offer.city.name === currentCity.name
   );
 
-  const hasOffers = filteredOffers.length > 0;
+  const sortedOffers = [...filteredOffers].sort((a, b) => {
+    switch (currentSortType) {
+      case 'PriceLowToHigh':
+        return a.price - b.price;
+      case 'PriceHighToLow':
+        return b.price - a.price;
+      case 'TopRatedFirst':
+        return b.rating - a.rating;
+      case 'Popular':
+      default:
+        return 0;
+    }
+  });
+
+  const hasOffers = sortedOffers.length > 0;
 
   const onCardHover = (offer?: Offer) => {
     setActiveOffer(offer || null);
@@ -42,14 +57,14 @@ function Main(): JSX.Element {
               <section className="cities__places places">
                 <h2 className="visually-hidden">Places</h2>
                 <b className="places__found">
-                  {filteredOffers.length} places to stay in {currentCity.name}
+                  {sortedOffers.length} places to stay in {currentCity.name}
                 </b>
                 <Sorting />
-                <PlacesList offers={filteredOffers} onCardHover={onCardHover} />
+                <PlacesList offers={sortedOffers} onCardHover={onCardHover} />
               </section>
               <div className="cities__right-section">
                 <Map
-                  offers={filteredOffers}
+                  offers={sortedOffers}
                   className="cities__map"
                   activeOfferId={activeOffer?.id}
                   key={currentCity.name}

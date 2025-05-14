@@ -5,7 +5,7 @@ export const offers: Offer[] = [
     id: '90bcbf9d-b034-4f15-9e8c-cb5586cf534d',
     title: 'House in countryside',
     type: 'house',
-    price: 552,
+    price: 553,
     previewImage: 'https://15.design.htmlacademy.pro/static/hotel/8.jpg',
     city: {
       name: 'Paris',
@@ -22,7 +22,7 @@ export const offers: Offer[] = [
     },
     isFavorite: true,
     isPremium: true,
-    rating: 3.1,
+    rating: 5,
   },
   {
     id: '2651be00-ab36-4a36-90bf-0e15adfa9713',

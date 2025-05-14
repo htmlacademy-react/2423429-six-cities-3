@@ -34,7 +34,10 @@ export type TReview = {
   rating: number;
 };
 
+export type SortType = 'Popular' | 'PriceLowToHigh' | 'PriceHighToLow' | 'TopRatedFirst';
+
 export interface State {
   city: City;
   offers: Offer[];
+  sortType: SortType;
 }
