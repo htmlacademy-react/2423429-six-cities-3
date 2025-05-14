@@ -8,6 +8,7 @@ import { Nullable } from 'vitest';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import MainEmpty from '../../components/main-empty/main-empty';
+import cn from 'classnames';
 
 type MainProps = {
   offers: Offer[];
@@ -28,10 +29,14 @@ function Main({ offers }: MainProps): JSX.Element {
     setActiveOffer(offer || null);
   };
 
+  const mainClass = cn('page__main', 'page__main--index', {
+    'page__main--index-empty': !hasOffers,
+  });
+
   return (
     <div className="page page--gray page--main">
       <Header />
-      <main className="page__main page__main--index">
+      <main className={mainClass}>
         <h1 className="visually-hidden">Cities</h1>
         <Tabs />
         <div className="cities">
