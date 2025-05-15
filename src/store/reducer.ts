@@ -6,20 +6,19 @@ import {
   requireAuthorization,
   setSortType,
 } from './action';
-import { City, Offer, SortType } from '../types/offer';
-import { offers } from '../mocks/offers';
+import { City, Offers, SortType } from '../types/offer';
 import { AuthorizationStatus } from '../const/const';
 
-interface AppState {
+type InitalState = {
   city: City;
-  offers: Offer[];
+  offers: Offers;
   sortType: SortType;
   authorizationStatus: AuthorizationStatus;
-}
+};
 
-const initialState: AppState = {
+const initialState: InitalState = {
   city: CITIES[0],
-  offers,
+  offers: [],
   sortType: 'Popular',
   authorizationStatus: AuthorizationStatus.Unknown,
 };
