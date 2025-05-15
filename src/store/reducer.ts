@@ -5,6 +5,7 @@ import {
   loadOffers,
   requireAuthorization,
   setSortType,
+  setError,
 } from './action';
 import { City, Offers, SortType } from '../types/offer';
 import { AuthorizationStatus } from '../const/const';
@@ -14,6 +15,7 @@ type InitalState = {
   offers: Offers;
   sortType: SortType;
   authorizationStatus: AuthorizationStatus;
+  error: string | null;
 };
 
 const initialState: InitalState = {
@@ -21,6 +23,7 @@ const initialState: InitalState = {
   offers: [],
   sortType: 'Popular',
   authorizationStatus: AuthorizationStatus.Unknown,
+  error: null,
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -36,6 +39,9 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(requireAuthorization, (state, action) => {
       state.authorizationStatus = action.payload;
+    })
+    .addCase(setError, (state, action) => {
+      state.error = action.payload;
     });
 });
 
