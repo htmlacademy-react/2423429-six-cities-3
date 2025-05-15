@@ -10,7 +10,7 @@ import {
 import { City, Offers, SortType } from '../types/offer';
 import { AuthorizationStatus } from '../const/const';
 
-type InitalState = {
+type InitialState = {
   city: City;
   offers: Offers;
   sortType: SortType;
@@ -18,7 +18,7 @@ type InitalState = {
   error: string | null;
 };
 
-const initialState: InitalState = {
+const initialState: InitialState = {
   city: CITIES[0],
   offers: [],
   sortType: 'Popular',

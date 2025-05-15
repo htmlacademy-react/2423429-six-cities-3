@@ -18,11 +18,11 @@ root.render(
     <Provider store={store}>
       <ErrorMessage />
       <App
-        offers={offers}
         reviews={reviews}
         authorizationStatus={AuthorizationStatus.Auth}
         nearOffers={nearOffers}
         offerTemplate={offerTemplate}
+        offers={[]}
       />
     </Provider>
   </React.StrictMode>
