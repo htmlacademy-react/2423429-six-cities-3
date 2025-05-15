@@ -22,3 +22,9 @@ export const SORT_TYPES: SortType[] = [
   'PriceHighToLow',
   'TopRatedFirst',
 ];
+
+export enum APIRoute {
+  Offers = '/offers',
+  Login = '/login',
+  Logout = '/logout',
+}
