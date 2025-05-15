@@ -8,6 +8,7 @@ import Loader from '../components/loader/loader';
 import { Offer, TReview } from '../types/offer';
 
 import Main from '../pages/main/main';
+import { useAppSelector } from '../hooks';
 
 const NotFoundPreview = lazy(
   () => import('../pages/page-not-found/page-not-found')
@@ -20,7 +21,6 @@ const OfferPreview = lazy(() => import('../pages/offer/offer'));
 type AppProps = {
   offers: Offer[];
   reviews: TReview[];
-  authorizationStatus: AuthorizationStatus;
   nearOffers: Offer[];
   offerTemplate: Offer;
 };
@@ -28,10 +28,23 @@ type AppProps = {
 function App({
   offers,
   reviews,
-  authorizationStatus,
   nearOffers,
   offerTemplate,
 }: AppProps): JSX.Element {
+  const authorizationStatus = useAppSelector(
+    (state) => state.authorizationStatus
+  );
+  const isOffersDataLoading = useAppSelector(
+    (state) => state.isOffersDataLoading
+  );
+
+  if (
+    authorizationStatus === AuthorizationStatus.Unknown ||
+    isOffersDataLoading
+  ) {
+    return <Loader />;
+  }
+
   return (
     <BrowserRouter>
       <Suspense fallback={<Loader />}>

@@ -6,6 +6,10 @@ export const changeCity = createAction<City>('CHANGE_CITY');
 export const setSortType = createAction<SortType>('SET_SORT_TYPE');
 
 export const loadOffers = createAction<Offers>('data/loadOffers');
+export const setOffersDataLoadingStatus = createAction<boolean>(
+  'data/setOffersDataLoadingStatus'
+);
+
 export const requireAuthorization = createAction<AuthorizationStatus>(
   'user/requireAuthorization'
 );

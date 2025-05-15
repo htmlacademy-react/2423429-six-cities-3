@@ -8,8 +8,9 @@ import { offerTemplate } from './mocks/offerTemplate';
 import { AuthorizationStatus } from './const/const';
 import { Provider } from 'react-redux';
 import { store } from './store';
-import { checkAuthAction } from './store/api-actions';
+import { checkAuthAction, fetchOffersAction } from './store/api-actions';
 
+store.dispatch(fetchOffersAction());
 store.dispatch(checkAuthAction());
 
 const root = ReactDOM.createRoot(
@@ -22,7 +23,7 @@ root.render(
       <ErrorMessage />
       <App
         reviews={reviews}
-        authorizationStatus={AuthorizationStatus.Auth}
+        authorizationStatus={AuthorizationStatus.NoAuth}
         nearOffers={nearOffers}
         offerTemplate={offerTemplate}
         offers={[]}
