@@ -50,9 +50,9 @@ export default function App({
     return <Loader />;
   }
 
-  if (isOffersError) {
-    return <FullPageError />;
-  }
+  // if (isOffersError) {
+  //   return <FullPageError />;
+  // }
   return (
     <BrowserRouter>
       <Suspense fallback={<Loader />}>
