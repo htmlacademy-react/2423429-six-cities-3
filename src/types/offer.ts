@@ -22,6 +22,8 @@ export type Offer = {
   rating: number;
 };
 
+export type Offers = Offer[];
+
 export type TReview = {
   id: string;
   date: string;
@@ -34,10 +36,8 @@ export type TReview = {
   rating: number;
 };
 
-export type SortType = 'Popular' | 'PriceLowToHigh' | 'PriceHighToLow' | 'TopRatedFirst';
-
-export interface State {
-  city: City;
-  offers: Offer[];
-  sortType: SortType;
-}
+export type SortType =
+  | 'Popular'
+  | 'PriceLowToHigh'
+  | 'PriceHighToLow'
+  | 'TopRatedFirst';

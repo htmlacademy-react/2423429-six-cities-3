@@ -3,12 +3,14 @@ import PlacesList from '../../components/places-list/places-list';
 import Sorting from '../../components/sorting/sorting';
 import Tabs from '../../components/tabs/tabs';
 import Map from '../../components/map/map';
-import { Offer, State } from '../../types/offer';
+import { Offer } from '../../types/offer';
 import { Nullable } from 'vitest';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import MainEmpty from '../../components/main-empty/main-empty';
 import cn from 'classnames';
+import { State } from '../../store';
+import { getSortedOffers } from '../../utils';
 
 function Main(): JSX.Element {
   const [activeOffer, setActiveOffer] = useState<Nullable<Offer>>(null);
@@ -21,19 +23,7 @@ function Main(): JSX.Element {
     (offer) => offer.city.name === currentCity.name
   );
 
-  const sortedOffers = [...filteredOffers].sort((a, b) => {
-    switch (currentSortType) {
-      case 'PriceLowToHigh':
-        return a.price - b.price;
-      case 'PriceHighToLow':
-        return b.price - a.price;
-      case 'TopRatedFirst':
-        return b.rating - a.rating;
-      case 'Popular':
-      default:
-        return 0;
-    }
-  });
+  const sortedOffers = getSortedOffers(filteredOffers, currentSortType);
 
   const hasOffers = sortedOffers.length > 0;
 
