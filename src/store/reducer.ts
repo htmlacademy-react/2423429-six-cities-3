@@ -7,17 +7,20 @@ import {
   setSortType,
   setError,
   setOffersDataLoadingStatus,
+  loadOffersError,
 } from './action';
 import { City, Offers, SortType } from '../types/offer';
 import { AuthorizationStatus } from '../const/const';
 
 type InitialState = {
+  [x: string]: any;
   city: City;
   offers: Offers;
   sortType: SortType;
   authorizationStatus: AuthorizationStatus;
   isOffersDataLoading: boolean;
-  error: string | null;
+  AliantError: string | null;
+  isOffersError: boolean,
 };
 
 const initialState: InitialState = {
@@ -26,7 +29,8 @@ const initialState: InitialState = {
   sortType: 'Popular',
   authorizationStatus: AuthorizationStatus.Unknown,
   isOffersDataLoading: false,
-  error: null,
+  AliantError: null,
+  isOffersError: false,
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -40,6 +44,10 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(loadOffers, (state, action) => {
       state.offers = action.payload;
     })
+    .addCase(loadOffersError, (state) => {
+      state.isOffersError = true;
+      state.isOffersDataLoading = false;
+    })
     .addCase(setOffersDataLoadingStatus, (state, action) => {
       state.isOffersDataLoading = action.payload;
     })
@@ -47,7 +55,7 @@ const reducer = createReducer(initialState, (builder) => {
       state.authorizationStatus = action.payload;
     })
     .addCase(setError, (state, action) => {
-      state.error = action.payload;
+      state.AliantError = action.payload;
     });
 });
 

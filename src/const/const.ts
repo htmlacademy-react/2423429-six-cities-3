@@ -26,7 +26,7 @@ export const SORT_TYPES: SortType[] = [
 ];
 
 export enum APIRoute {
-  Offers = '/offers',
+  Offers = '/offer',
   Login = '/login',
   Logout = '/logout',
 }

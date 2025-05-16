@@ -41,9 +41,3 @@ export type SortType =
   | 'PriceLowToHigh'
   | 'PriceHighToLow'
   | 'TopRatedFirst';
-
-export interface State {
-  city: City;
-  offers: Offer[];
-  sortType: SortType;
-}

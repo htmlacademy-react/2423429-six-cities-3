@@ -1,6 +1,4 @@
-import { AxiosInstance } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { AppDispatch, State } from '../types/state';
 import { Offers } from '../types/offer';
 import {
   APIRoute,
@@ -9,6 +7,7 @@ import {
 } from '../const/const';
 import {
   loadOffers,
+  loadOffersError,
   requireAuthorization,
   setError,
   setOffersDataLoadingStatus,
@@ -16,7 +15,7 @@ import {
 import { AuthData } from '../types/auth-data';
 import { saveToken, dropToken } from '../services/token';
 import { UserData } from '../types/user-data';
-import { store } from '.';
+import { store, ThunkOptions } from '.';
 
 export const clearErrorAction = createAsyncThunk('/clearError', () => {
   setTimeout(() => store.dispatch(setError(null)), TIMEOUT_SHOW_ERROR);
@@ -25,45 +24,37 @@ export const clearErrorAction = createAsyncThunk('/clearError', () => {
 export const fetchOffersAction = createAsyncThunk<
   void,
   undefined,
-  {
-    dispatch: AppDispatch;
-    state: State;
-    extra: AxiosInstance;
-  }
+  ThunkOptions
 >('data/fetchOffers', async (_arg, { dispatch, extra: api }) => {
-  dispatch(setOffersDataLoadingStatus(true));
-  const { data } = await api.get<Offers>(APIRoute.Offers);
-  dispatch(setOffersDataLoadingStatus(false));
-
-  dispatch(loadOffers(data));
-});
-
-export const checkAuthAction = createAsyncThunk<
-  void,
-  undefined,
-  {
-    dispatch: AppDispatch;
-    state: State;
-    extra: AxiosInstance;
-  }
->('user/checkAuth', async (_arg, { dispatch, extra: api }) => {
   try {
-    await api.get(APIRoute.Login);
-    dispatch(requireAuthorization(AuthorizationStatus.Auth));
-  } catch {
-    dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
+    dispatch(setOffersDataLoadingStatus(true));
+    dispatch(loadOffersError(false));
+    const { data } = await api.get<Offers>(APIRoute.Offers);
+    dispatch(loadOffers(data));
+  } catch (error) {
+    dispatch(setError('Failed to load offers'));
+    dispatch(loadOffersError(true));
+    throw error;
+  } finally {
+    dispatch(setOffersDataLoadingStatus(false));
   }
+
+
 });
 
-export const loginAction = createAsyncThunk<
-  void,
-  AuthData,
-  {
-    dispatch: AppDispatch;
-    state: State;
-    extra: AxiosInstance;
+export const checkAuthAction = createAsyncThunk<void, undefined, ThunkOptions>(
+  'user/checkAuth',
+  async (_arg, { dispatch, extra: api }) => {
+    try {
+      await api.get(APIRoute.Login);
+      dispatch(requireAuthorization(AuthorizationStatus.Auth));
+    } catch {
+      dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
+    }
   }
->(
+);
+
+export const loginAction = createAsyncThunk<void, AuthData, ThunkOptions>(
   'user/login',
   async ({ login: email, password }, { dispatch, extra: api }) => {
     const {
@@ -74,16 +65,13 @@ export const loginAction = createAsyncThunk<
   }
 );
 
-export const logoutAction = createAsyncThunk<
-  void,
-  undefined,
-  {
-    dispatch: AppDispatch;
-    state: State;
-    extra: AxiosInstance;
+export const logoutAction = createAsyncThunk<void, undefined, ThunkOptions>(
+  'user/logout',
+  async (_arg, { dispatch, extra: api }) => {
+    await api.delete(APIRoute.Logout);
+    dropToken();
+    dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
   }
->('user/logout', async (_arg, { dispatch, extra: api }) => {
-  await api.delete(APIRoute.Logout);
-  dropToken();
-  dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
-});
+);
+
+

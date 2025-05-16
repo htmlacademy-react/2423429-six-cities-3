@@ -1,12 +1,13 @@
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { SortType, State } from '../../types/offer';
+import { useDispatch } from 'react-redux';
+import { SortType } from '../../types/offer';
 import { setSortType } from '../../store/action';
 import { SORT_TYPES } from '../../const/const';
+import { State, useAppSelector } from '../../store';
 
 function Sorting(): JSX.Element {
   const [isOpen, setIsOpen] = useState(false);
-  const currentSortType = useSelector((state: State) => state.sortType);
+  const currentSortType = useAppSelector((state: State) => state.sortType);
   const dispatch = useDispatch();
 
   const handleSortClick = (type: SortType) => {
@@ -33,7 +34,7 @@ function Sorting(): JSX.Element {
 
   return (
     <form className="places__sorting" action="#" method="get">
-      <span className="places__sorting-caption">Sort by</span>
+      <span className="places__sorting-caption">Sort by </span>
       <span
         className="places__sorting-type"
         tabIndex={0}

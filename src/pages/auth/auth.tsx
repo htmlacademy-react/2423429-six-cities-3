@@ -1,9 +1,9 @@
 import Logo from '../../components/logo/logo';
 import { FormEvent, useRef } from 'react';
-import { useAppDispatch } from '../../hooks';
 import { useNavigate } from 'react-router-dom';
 import { loginAction } from '../../store/api-actions';
 import { AppRoute } from '../../const/const';
+import { useAppDispatch } from '../../store';
 
 export default function AuthScreen(): JSX.Element {
   const loginRef = useRef<HTMLInputElement | null>(null);

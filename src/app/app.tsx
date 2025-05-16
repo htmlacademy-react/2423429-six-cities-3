@@ -8,7 +8,7 @@ import Loader from '../components/loader/loader';
 import { Offer, TReview } from '../types/offer';
 
 import Main from '../pages/main/main';
-import { useAppSelector } from '../hooks';
+import { useAppSelector } from '../store';
 
 const NotFoundPreview = lazy(
   () => import('../pages/page-not-found/page-not-found')
@@ -17,6 +17,9 @@ const AuthPreview = lazy(() => import('../pages/auth/auth'));
 
 const FavoritesPreview = lazy(() => import('../pages/favorites/favorites'));
 const OfferPreview = lazy(() => import('../pages/offer/offer'));
+const FullPageError = lazy(
+  () => import('../pages/full-page-error/full-page-error')
+);
 
 type AppProps = {
   offers: Offer[];
@@ -25,7 +28,7 @@ type AppProps = {
   offerTemplate: Offer;
 };
 
-function App({
+export default function App({
   offers,
   reviews,
   nearOffers,
@@ -38,6 +41,8 @@ function App({
     (state) => state.isOffersDataLoading
   );
 
+  const isOffersError = useAppSelector((state) => state.isOffersError);
+
   if (
     authorizationStatus === AuthorizationStatus.Unknown ||
     isOffersDataLoading
@@ -45,6 +50,9 @@ function App({
     return <Loader />;
   }
 
+  if (isOffersError) {
+    return <FullPageError />;
+  }
   return (
     <BrowserRouter>
       <Suspense fallback={<Loader />}>
@@ -76,5 +84,3 @@ function App({
     </BrowserRouter>
   );
 }
-
-export default App;

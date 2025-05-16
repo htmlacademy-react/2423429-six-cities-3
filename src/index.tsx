@@ -5,7 +5,6 @@ import ErrorMessage from './components/error-message/error-message';
 import { reviews } from './mocks/reviews';
 import { nearOffers } from './mocks/near-offers';
 import { offerTemplate } from './mocks/offerTemplate';
-import { AuthorizationStatus } from './const/const';
 import { Provider } from 'react-redux';
 import { store } from './store';
 import { checkAuthAction, fetchOffersAction } from './store/api-actions';
@@ -23,7 +22,6 @@ root.render(
       <ErrorMessage />
       <App
         reviews={reviews}
-        authorizationStatus={AuthorizationStatus.NoAuth}
         nearOffers={nearOffers}
         offerTemplate={offerTemplate}
         offers={[]}

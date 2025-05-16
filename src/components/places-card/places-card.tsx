@@ -1,7 +1,7 @@
 import { generatePath, Link } from 'react-router-dom';
 import { Offer } from '../../types/offer';
 import { AppRoute } from '../../const/const';
-import calculateRating from '../../utils';
+import { calculateRating, capitalizeFirstLetter } from '../../utils';
 import cn from 'classnames';
 
 type PlacesCardProps = {
@@ -99,7 +99,9 @@ function PlacesCard({
             {placeOffer.title}
           </Link>
         </h2>
-        <p className="place-card__type">{placeOffer.type}</p>
+        <p className="place-card__type">
+          {capitalizeFirstLetter(placeOffer.type)}
+        </p>
       </div>
     </article>
   );
