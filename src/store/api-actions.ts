@@ -38,8 +38,6 @@ export const fetchOffersAction = createAsyncThunk<
   } finally {
     dispatch(setOffersDataLoadingStatus(false));
   }
-
-
 });
 
 export const checkAuthAction = createAsyncThunk<void, undefined, ThunkOptions>(
@@ -73,5 +71,3 @@ export const logoutAction = createAsyncThunk<void, undefined, ThunkOptions>(
     dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
   }
 );
-
-

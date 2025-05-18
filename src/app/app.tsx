@@ -13,7 +13,7 @@ import { useAppSelector } from '../store';
 const NotFoundPreview = lazy(
   () => import('../pages/page-not-found/page-not-found')
 );
-const AuthPreview = lazy(() => import('../pages/auth/auth'));
+const AuthPreview = lazy(() => import('../pages/login/login'));
 
 const FavoritesPreview = lazy(() => import('../pages/favorites/favorites'));
 const OfferPreview = lazy(() => import('../pages/offer/offer'));

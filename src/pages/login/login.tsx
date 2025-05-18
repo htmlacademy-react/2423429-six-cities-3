@@ -1,11 +1,11 @@
-import Logo from '../../components/logo/logo';
 import { FormEvent, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { loginAction } from '../../store/api-actions';
 import { AppRoute } from '../../const/const';
 import { useAppDispatch } from '../../store';
+import Header from '../../components/header/header';
 
-export default function AuthScreen(): JSX.Element {
+export default function LoginScreen(): JSX.Element {
   const loginRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
 
@@ -27,15 +27,7 @@ export default function AuthScreen(): JSX.Element {
 
   return (
     <div className="page page--gray page--login">
-      <header className="header">
-        <div className="container">
-          <div className="header__wrapper">
-            <div className="header__left">
-              <Logo type={'header'} />
-            </div>
-          </div>
-        </div>
-      </header>
+      <Header showNav={false} />
 
       <main className="page__main page__main--login">
         <div className="page__login-container container">
