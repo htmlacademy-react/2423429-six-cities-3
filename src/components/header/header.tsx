@@ -1,10 +1,19 @@
 import Logo from '../logo/logo';
+import { logoutAction } from '../../store/api-actions';
+import { useAppDispatch } from '../../store';
 
 type HeaderProps = {
   showNav?: boolean;
 };
 
 function Header({ showNav = true }: HeaderProps): JSX.Element {
+  const dispatch = useAppDispatch();
+
+  const handleLogout = (evt: React.MouseEvent) => {
+    evt.preventDefault();
+    dispatch(logoutAction());
+  };
+
   return (
     <header className="header">
       <div className="container">
@@ -28,7 +37,11 @@ function Header({ showNav = true }: HeaderProps): JSX.Element {
                   </a>
                 </li>
                 <li className="header__nav-item">
-                  <a className="header__nav-link" href="#">
+                  <a
+                    className="header__nav-link"
+                    href="#"
+                    onClick={handleLogout}
+                  >
                     <span className="header__signout">Sign out</span>
                   </a>
                 </li>

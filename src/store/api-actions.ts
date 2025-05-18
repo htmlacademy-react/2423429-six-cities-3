@@ -9,6 +9,7 @@ import {
   loadOffers,
   loadOffersError,
   requireAuthorization,
+  setAuthLoadingStatus,
   setError,
   setOffersDataLoadingStatus,
 } from './action';
@@ -55,19 +56,34 @@ export const checkAuthAction = createAsyncThunk<void, undefined, ThunkOptions>(
 export const loginAction = createAsyncThunk<void, AuthData, ThunkOptions>(
   'user/login',
   async ({ login: email, password }, { dispatch, extra: api }) => {
-    const {
-      data: { token },
-    } = await api.post<UserData>(APIRoute.Login, { email, password });
-    saveToken(token);
-    dispatch(requireAuthorization(AuthorizationStatus.Auth));
+    try {
+      dispatch(setAuthLoadingStatus(true));
+      const {
+        data: { token },
+      } = await api.post<UserData>(APIRoute.Login, { email, password });
+      saveToken(token);
+      dispatch(requireAuthorization(AuthorizationStatus.Auth));
+    } catch (error) {
+      dispatch(
+        setError(error instanceof Error ? error.message : 'Unknown error')
+      );
+      throw error;
+    } finally {
+      dispatch(setAuthLoadingStatus(false));
+    }
   }
 );
 
 export const logoutAction = createAsyncThunk<void, undefined, ThunkOptions>(
   'user/logout',
   async (_arg, { dispatch, extra: api }) => {
-    await api.delete(APIRoute.Logout);
-    dropToken();
-    dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
+    try {
+      await api.delete(APIRoute.Logout);
+      dropToken();
+      dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
+      dispatch(setError(null));
+    } catch (error) {
+      dispatch(setError('Logout failed'));
+    }
   }
 );

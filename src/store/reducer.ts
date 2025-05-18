@@ -8,19 +8,20 @@ import {
   setError,
   setOffersDataLoadingStatus,
   loadOffersError,
+  setAuthLoadingStatus,
 } from './action';
 import { City, Offers, SortType } from '../types/offer';
 import { AuthorizationStatus } from '../const/const';
 
 type InitialState = {
-  [x: string]: any;
   city: City;
   offers: Offers;
   sortType: SortType;
   authorizationStatus: AuthorizationStatus;
   isOffersDataLoading: boolean;
   AliantError: string | null;
-  isOffersError: boolean,
+  isOffersError: boolean;
+  isAuthLoading: boolean;
 };
 
 const initialState: InitialState = {
@@ -31,6 +32,7 @@ const initialState: InitialState = {
   isOffersDataLoading: false,
   AliantError: null,
   isOffersError: false,
+  isAuthLoading: false,
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -56,6 +58,9 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(setError, (state, action) => {
       state.AliantError = action.payload;
+    })
+    .addCase(setAuthLoadingStatus, (state, action) => {
+      state.isAuthLoading = action.payload;
     });
 });
 
