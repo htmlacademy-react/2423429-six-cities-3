@@ -1,5 +1,5 @@
 import { TReview } from '../../types/offer';
-import calculateRating from '../../utils';
+import { calculateRating } from '../../utils';
 
 type TReviewItemProps = {
   review: TReview;
