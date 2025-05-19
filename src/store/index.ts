@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { createAPI } from '../services/api';
-import  offersReducer  from './offers-slice';
-import  userReducer  from './user-slice';
+import offersReducer from './offers-slice';
+import userReducer from './user-slice';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { AxiosInstance } from 'axios';
 
@@ -21,6 +21,7 @@ export const store = configureStore({
 });
 
 export type State = ReturnType<typeof store.getState>;
+
 export type AppDispatch = typeof store.dispatch;
 
 export type ThunkOptions = {
@@ -31,4 +32,3 @@ export type ThunkOptions = {
 
 export const useAppDispatch = () => useDispatch<AppDispatch>();
 export const useAppSelector: TypedUseSelectorHook<State> = useSelector;
-

@@ -11,7 +11,9 @@ export default function LoginScreen(): JSX.Element {
   const passwordRef = useRef<HTMLInputElement | null>(null);
 
   const { isLoading: isAuthLoading } = useAppSelector((state) => state.user);
-  const authorizationStatus = useAppSelector((state) => state.user);
+  const authorizationStatus = useAppSelector(
+    (state) => state.user.authorizationStatus
+  );
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 

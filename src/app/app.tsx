@@ -33,13 +33,11 @@ export default function App({
   offerTemplate,
 }: AppProps): JSX.Element {
   const authorizationStatus = useAppSelector(
-    (state) => state.authorizationStatus
+    (state) => state.user.authorizationStatus
   );
-  const isOffersDataLoading = useAppSelector(
-    (state) => state.isOffersDataLoading
-  );
+  const isOffersDataLoading = useAppSelector((state) => state.offers.isLoading);
 
-  const isOffersError = useAppSelector((state) => state.isOffersError);
+  const isOffersError = useAppSelector((state) => state.offers.hasError);
 
   if (
     authorizationStatus === AuthorizationStatus.Unknown ||
