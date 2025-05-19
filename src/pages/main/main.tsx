@@ -15,12 +15,12 @@ import { getSortedOffers } from '../../utils';
 function Main(): JSX.Element {
   const [activeOffer, setActiveOffer] = useState<Nullable<Offer>>(null);
 
-  const currentCity = useSelector((state: State) => state.city);
-  const currentOffers = useSelector((state: State) => state.offers);
-  const currentSortType = useSelector((state: State) => state.sortType);
+  const currentCity = useSelector((state: State) => state.offers.city);
+  const currentOffers = useSelector((state: State) => state.offers.offers);
+  const currentSortType = useSelector((state: State) => state.offers.sortType);
 
   const filteredOffers = currentOffers.filter(
-    (offer) => offer.city.name === currentCity.name
+    (offer: Offer) => offer.city.name === currentCity.name
   );
 
   const sortedOffers = getSortedOffers(filteredOffers, currentSortType);

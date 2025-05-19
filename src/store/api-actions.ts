@@ -8,11 +8,11 @@ import {
 import {
   loadOffers,
   loadOffersError,
-  requireAuthorization,
-  setAuthLoadingStatus,
   setError,
   setOffersDataLoadingStatus,
-} from './action';
+} from '../store/offers-slice';
+import {  requireAuthorization,
+  setAuthLoadingStatus} from '../store/user-slice'
 import { AuthData } from '../types/auth-data';
 import { saveToken, dropToken } from '../services/token';
 import { UserData } from '../types/user-data';

@@ -1,19 +1,17 @@
 import { FormEvent, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { loginAction } from '../../store/api-actions';
+import { loginAction } from '../../store/user-slice';
 import { AppRoute, AuthorizationStatus } from '../../const/const';
 import { useAppDispatch, useAppSelector } from '../../store';
 import Header from '../../components/header/header';
-import { setError } from '../../store/action';
+import { setError } from '../../store/offers-slice';
 
 export default function LoginScreen(): JSX.Element {
   const loginRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
-  const isAuthLoading = useAppSelector((state) => state.isAuthLoading);
 
-  const authorizationStatus = useAppSelector(
-    (state) => state.authorizationStatus
-  );
+  const { isLoading: isAuthLoading } = useAppSelector((state) => state.user);
+  const authorizationStatus = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
