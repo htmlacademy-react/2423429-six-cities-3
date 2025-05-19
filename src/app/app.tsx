@@ -8,6 +8,7 @@ import Loader from '../components/loader/loader';
 import { Offer, TReview } from '../types/offer';
 
 import Main from '../pages/main/main';
+import FullPageError from '../pages/full-page-error/full-page-error';
 import { useAppSelector } from '../store';
 
 const NotFoundPreview = lazy(
@@ -17,9 +18,6 @@ const AuthPreview = lazy(() => import('../pages/login/login'));
 
 const FavoritesPreview = lazy(() => import('../pages/favorites/favorites'));
 const OfferPreview = lazy(() => import('../pages/offer/offer'));
-const FullPageError = lazy(
-  () => import('../pages/full-page-error/full-page-error')
-);
 
 type AppProps = {
   offers: Offer[];
@@ -50,9 +48,9 @@ export default function App({
     return <Loader />;
   }
 
-  // if (isOffersError) {
-  //   return <FullPageError />;
-  // }
+  if (isOffersError) {
+    return <FullPageError />;
+  }
   return (
     <BrowserRouter>
       <Suspense fallback={<Loader />}>
