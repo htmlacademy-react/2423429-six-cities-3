@@ -1,5 +1,5 @@
 import Logo from '../logo/logo';
-import { logoutAction } from '../../store/api-actions';
+import { logoutAction } from '../../store/user-slice';
 import { useAppDispatch } from '../../store';
 
 type HeaderProps = {

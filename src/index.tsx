@@ -7,7 +7,8 @@ import { nearOffers } from './mocks/near-offers';
 import { offerTemplate } from './mocks/offerTemplate';
 import { Provider } from 'react-redux';
 import { store } from './store';
-import { checkAuthAction, fetchOffersAction } from './store/api-actions';
+import { checkAuthAction } from './store/user-slice';
+import { fetchOffersAction } from './store/offers-slice';
 
 store.dispatch(fetchOffersAction());
 store.dispatch(checkAuthAction());
