@@ -31,16 +31,6 @@ export const fetchOffersAction = createAsyncThunk<
   return data;
 });
 
-export const clearErrorAction = createAsyncThunk(
-  'offers/clearError',
-  (_, { dispatch }) => {
-    setTimeout(
-      () => dispatch(offersSlice.actions.clearError()),
-      TIMEOUT_SHOW_ERROR
-    );
-  }
-);
-
 const offersSlice = createSlice({
   name: 'offers',
   initialState,
@@ -84,6 +74,16 @@ const offersSlice = createSlice({
       });
   },
 });
+
+export const clearErrorAction = createAsyncThunk(
+  'offers/clearError',
+  (_, { dispatch }) => {
+    setTimeout(
+      () => dispatch(offersSlice.actions.clearError()),
+      TIMEOUT_SHOW_ERROR
+    );
+  }
+);
 
 export const {
   loadOffers,

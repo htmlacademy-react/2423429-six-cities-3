@@ -1,4 +1,4 @@
-import { FormEvent, useRef, useEffect } from 'react';
+import { FormEvent, useRef, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { loginAction } from '../../store/user-slice';
 import { AppRoute, AuthorizationStatus } from '../../const/const';
@@ -9,11 +9,9 @@ import { setError } from '../../store/offers-slice';
 export default function LoginScreen(): JSX.Element {
   const loginRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
-
   const { isLoading: isAuthLoading } = useAppSelector((state) => state.user);
-  const authorizationStatus = useAppSelector(
-    (state) => state.user.authorizationStatus
-  );
+  const { authorizationStatus } = useAppSelector((state) => state.user);
+
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -23,48 +21,53 @@ export default function LoginScreen(): JSX.Element {
     }
   }, [authorizationStatus, navigate]);
 
-  const validateEmail = (email: string): boolean => {
+  const validateEmail = useCallback((email: string): boolean => {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     return emailRegex.test(email);
-  };
+  }, []);
 
-  const validatePassword = (password: string): boolean => {
+  const validatePassword = useCallback((password: string): boolean => {
     const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d).+$/;
     return passwordRegex.test(password);
-  };
+  }, []);
 
-  const handleSubmit = async (evt: FormEvent<HTMLFormElement>) => {
-    evt.preventDefault();
+  const handleSubmit = useCallback(
+    (evt: FormEvent<HTMLFormElement>) => {
+      evt.preventDefault();
 
-    if (!loginRef.current || !passwordRef.current) {
-      return;
-    }
+      if (!loginRef.current || !passwordRef.current) {
+        return;
+      }
 
-    const email = loginRef.current.value.trim();
-    const password = passwordRef.current.value.trim();
+      const email = loginRef.current.value.trim();
+      const password = passwordRef.current.value.trim();
 
-    const isValid = validateEmail(email) && validatePassword(password);
+      const isValid = validateEmail(email) && validatePassword(password);
 
-    if (!isValid) {
-      dispatch(
-        setError(
-          'password should contain at least one letter and on number and email should be valid'
-        )
-      );
-      return;
-    }
+      if (!isValid) {
+        dispatch(
+          setError(
+            'password should contain at least one letter and one number and email should be valid'
+          )
+        );
+        return;
+      }
 
-    try {
-      await dispatch(
-        loginAction({
-          login: email,
-          password: password,
-        })
-      ).unwrap();
-    } catch (error) {
-      dispatch(setError('Failed to login. Please try again.'));
-    }
-  };
+      void (async () => {
+        try {
+          await dispatch(
+            loginAction({
+              login: email,
+              password: password,
+            })
+          ).unwrap();
+        } catch (error) {
+          dispatch(setError('Failed to login. Please try again.'));
+        }
+      })();
+    },
+    [dispatch, validateEmail, validatePassword]
+  );
 
   return (
     <div className="page page--gray page--login">

@@ -11,8 +11,10 @@ import {
   setError,
   setOffersDataLoadingStatus,
 } from '../store/offers-slice';
-import {  requireAuthorization,
-  setAuthLoadingStatus} from '../store/user-slice'
+import {
+  requireAuthorization,
+  setAuthLoadingStatus,
+} from '../store/user-slice';
 import { AuthData } from '../types/auth-data';
 import { saveToken, dropToken } from '../services/token';
 import { UserData } from '../types/user-data';
