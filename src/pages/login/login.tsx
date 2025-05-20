@@ -6,6 +6,16 @@ import { useAppDispatch, useAppSelector } from '../../store';
 import Header from '../../components/header/header';
 import { setError } from '../../store/offers-slice';
 
+const validateEmail = (email: string): boolean => {
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  return emailRegex.test(email);
+};
+
+const validatePassword = (password: string): boolean => {
+  const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d).+$/;
+  return passwordRegex.test(password);
+};
+
 export default function LoginScreen(): JSX.Element {
   const loginRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
@@ -21,17 +31,7 @@ export default function LoginScreen(): JSX.Element {
     }
   }, [authorizationStatus, navigate]);
 
-  const validateEmail = (email: string): boolean => {
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    return emailRegex.test(email);
-  };
-
-  const validatePassword = (password: string): boolean => {
-    const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d).+$/;
-    return passwordRegex.test(password);
-  };
-
-  const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
 
     if (!loginRef.current || !passwordRef.current) {
@@ -52,18 +52,17 @@ export default function LoginScreen(): JSX.Element {
       return;
     }
 
-    void (async () => {
-      try {
-        await dispatch(
-          loginAction({
-            login: email,
-            password: password,
-          })
-        ).unwrap();
-      } catch (error) {
-        dispatch(setError('Failed to login. Please try again.'));
-      }
-    })();
+    try {
+      await dispatch(
+        loginAction({
+          login: email,
+          password: password,
+        })
+      ).unwrap();
+      navigate(AppRoute.Root);
+    } catch (error) {
+      dispatch(setError('Failed to login. Please try again.'));
+    }
   };
 
   return (
