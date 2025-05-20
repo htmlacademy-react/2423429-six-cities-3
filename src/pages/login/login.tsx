@@ -1,4 +1,4 @@
-import { FormEvent, useRef, useEffect, useCallback } from 'react';
+import { FormEvent, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { loginAction } from '../../store/user-slice';
 import { AppRoute, AuthorizationStatus } from '../../const/const';
@@ -21,53 +21,50 @@ export default function LoginScreen(): JSX.Element {
     }
   }, [authorizationStatus, navigate]);
 
-  const validateEmail = useCallback((email: string): boolean => {
+  const validateEmail = (email: string): boolean => {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     return emailRegex.test(email);
-  }, []);
+  };
 
-  const validatePassword = useCallback((password: string): boolean => {
+  const validatePassword = (password: string): boolean => {
     const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d).+$/;
     return passwordRegex.test(password);
-  }, []);
+  };
 
-  const handleSubmit = useCallback(
-    (evt: FormEvent<HTMLFormElement>) => {
-      evt.preventDefault();
+  const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
+    evt.preventDefault();
 
-      if (!loginRef.current || !passwordRef.current) {
-        return;
+    if (!loginRef.current || !passwordRef.current) {
+      return;
+    }
+
+    const email = loginRef.current.value.trim();
+    const password = passwordRef.current.value.trim();
+
+    const isValid = validateEmail(email) && validatePassword(password);
+
+    if (!isValid) {
+      dispatch(
+        setError(
+          'password should contain at least one letter and one number and email should be valid'
+        )
+      );
+      return;
+    }
+
+    void (async () => {
+      try {
+        await dispatch(
+          loginAction({
+            login: email,
+            password: password,
+          })
+        ).unwrap();
+      } catch (error) {
+        dispatch(setError('Failed to login. Please try again.'));
       }
-
-      const email = loginRef.current.value.trim();
-      const password = passwordRef.current.value.trim();
-
-      const isValid = validateEmail(email) && validatePassword(password);
-
-      if (!isValid) {
-        dispatch(
-          setError(
-            'password should contain at least one letter and one number and email should be valid'
-          )
-        );
-        return;
-      }
-
-      void (async () => {
-        try {
-          await dispatch(
-            loginAction({
-              login: email,
-              password: password,
-            })
-          ).unwrap();
-        } catch (error) {
-          dispatch(setError('Failed to login. Please try again.'));
-        }
-      })();
-    },
-    [dispatch, validateEmail, validatePassword]
-  );
+    })();
+  };
 
   return (
     <div className="page page--gray page--login">

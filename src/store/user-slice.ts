@@ -8,12 +8,16 @@ import { saveToken, dropToken } from '../services/token';
 type UserState = {
   authorizationStatus: AuthorizationStatus;
   isLoading: boolean;
+  userData: {
+    email: string;
+  } | null;
   error: string | null;
 };
 
 const initialState: UserState = {
   authorizationStatus: AuthorizationStatus.Unknown,
   isLoading: false,
+  userData: null,
   error: null,
 };
 
