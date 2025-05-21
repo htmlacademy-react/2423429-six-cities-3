@@ -14,8 +14,6 @@ function Header({ showNav = true }: HeaderProps): JSX.Element {
     (state) => state.user
   );
 
-  const currentEmail = userData?.email;
-  console.log(currentEmail);
   const isAuth = authorizationStatus === AuthorizationStatus.Auth;
 
   const handleLogout = (evt: React.MouseEvent) => {

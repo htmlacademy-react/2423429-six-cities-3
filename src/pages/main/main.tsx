@@ -9,15 +9,17 @@ import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import MainEmpty from '../../components/main-empty/main-empty';
 import cn from 'classnames';
-import { State } from '../../store';
+import { RootState } from '../../store';
 import { getSortedOffers } from '../../utils';
 
 function Main(): JSX.Element {
   const [activeOffer, setActiveOffer] = useState<Nullable<Offer>>(null);
 
-  const currentCity = useSelector((state: State) => state.offers.city);
-  const currentOffers = useSelector((state: State) => state.offers.offers);
-  const currentSortType = useSelector((state: State) => state.offers.sortType);
+  const currentCity = useSelector((state: RootState) => state.offers.city);
+  const currentOffers = useSelector((state: RootState) => state.offers.offers);
+  const currentSortType = useSelector(
+    (state: RootState) => state.offers.sortType
+  );
 
   const filteredOffers = currentOffers.filter(
     (offer: Offer) => offer.city.name === currentCity.name
