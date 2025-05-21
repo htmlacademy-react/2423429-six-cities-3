@@ -21,14 +21,15 @@ const initialState: UserState = {
   error: null,
 };
 
-export const checkAuthAction = createAsyncThunk<void, undefined, ThunkOptions>(
+export const checkAuthAction = createAsyncThunk<UserData, void, ThunkOptions>(
   'user/checkAuth',
   async (_arg, { extra: api }) => {
-    await api.get(APIRoute.Login);
+    const { data } = await api.get<UserData>(APIRoute.Login);
+    return data;
   }
 );
 
-export const loginAction = createAsyncThunk<void, AuthData, ThunkOptions>(
+export const loginAction = createAsyncThunk<UserData, AuthData, ThunkOptions>(
   'user/login',
   async ({ login: email, password }, { extra: api }) => {
     const { data } = await api.post<UserData>(APIRoute.Login, {
@@ -36,12 +37,13 @@ export const loginAction = createAsyncThunk<void, AuthData, ThunkOptions>(
       password,
     });
     saveToken(data.token);
+    return data;
   }
 );
 
-export const logoutAction = createAsyncThunk<void, undefined, ThunkOptions>(
+export const logoutAction = createAsyncThunk<void, void, ThunkOptions>(
   'user/logout',
-  async (_arg, { extra: api }) => {
+  async (_, { extra: api }) => {
     await api.delete(APIRoute.Logout);
     dropToken();
   }
@@ -63,21 +65,22 @@ const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(logoutAction.rejected, (state, action) => {
-        state.error = action.error.message || 'Logout failed';
-      })
-      .addCase(checkAuthAction.fulfilled, (state) => {
+      .addCase(checkAuthAction.fulfilled, (state, action) => {
         state.authorizationStatus = AuthorizationStatus.Auth;
+        state.userData = { email: action.payload.email };
       })
       .addCase(checkAuthAction.rejected, (state) => {
         state.authorizationStatus = AuthorizationStatus.NoAuth;
+        state.userData = null;
       })
       .addCase(loginAction.pending, (state) => {
         state.isLoading = true;
+        state.error = null;
       })
-      .addCase(loginAction.fulfilled, (state) => {
+      .addCase(loginAction.fulfilled, (state, action) => {
         state.authorizationStatus = AuthorizationStatus.Auth;
         state.isLoading = false;
+        state.userData = { email: action.payload.email };
       })
       .addCase(loginAction.rejected, (state, action) => {
         state.isLoading = false;
@@ -85,6 +88,10 @@ const userSlice = createSlice({
       })
       .addCase(logoutAction.fulfilled, (state) => {
         state.authorizationStatus = AuthorizationStatus.NoAuth;
+        state.userData = null;
+      })
+      .addCase(logoutAction.rejected, (state, action) => {
+        state.error = action.error.message || 'Logout failed';
       });
   },
 });
