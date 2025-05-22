@@ -5,6 +5,10 @@ import { AppRoute, AuthorizationStatus } from '../../const/const';
 import { useAppDispatch, useAppSelector } from '../../store';
 import Header from '../../components/header/header';
 import { setError } from '../../store/offers-slice';
+import {
+  getAuthorizationStatus,
+  getAuthLoadingStatus,
+} from '../../store/user-process/selectors';
 
 const validateEmail = (email: string): boolean => {
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -19,8 +23,8 @@ const validatePassword = (password: string): boolean => {
 export default function LoginScreen(): JSX.Element {
   const loginRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
-  const { isLoading: isAuthLoading } = useAppSelector((state) => state.user);
-  const { authorizationStatus } = useAppSelector((state) => state.user);
+  const isAuthLoading = useAppSelector(getAuthLoadingStatus);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -59,7 +63,6 @@ export default function LoginScreen(): JSX.Element {
           password: password,
         })
       ).unwrap();
-      navigate(AppRoute.Root);
     } catch (error) {
       dispatch(setError('Failed to login. Please try again.'));
     }

@@ -6,20 +6,22 @@ import Map from '../../components/map/map';
 import { Offer } from '../../types/offer';
 import { Nullable } from 'vitest';
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
 import MainEmpty from '../../components/main-empty/main-empty';
 import cn from 'classnames';
-import { RootState } from '../../store';
+import { useAppSelector } from '../../store';
 import { getSortedOffers } from '../../utils';
+import {
+  getCity,
+  getOffers,
+  getSortType,
+} from '../../store/offers-process/selectors';
 
 function Main(): JSX.Element {
   const [activeOffer, setActiveOffer] = useState<Nullable<Offer>>(null);
 
-  const currentCity = useSelector((state: RootState) => state.offers.city);
-  const currentOffers = useSelector((state: RootState) => state.offers.offers);
-  const currentSortType = useSelector(
-    (state: RootState) => state.offers.sortType
-  );
+  const currentCity = useAppSelector(getCity);
+  const currentOffers = useAppSelector(getOffers);
+  const currentSortType = useAppSelector(getSortType);
 
   const filteredOffers = currentOffers.filter(
     (offer: Offer) => offer.city.name === currentCity.name

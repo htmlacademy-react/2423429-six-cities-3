@@ -10,6 +10,11 @@ import { Offer, TReview } from '../types/offer';
 import Main from '../pages/main/main';
 import FullPageError from '../pages/full-page-error/full-page-error';
 import { useAppSelector } from '../store';
+import { getAuthorizationStatus } from '../store/user-process/selectors';
+import {
+  getHasError,
+  getOffersLoadingStatus,
+} from '../store/offers-process/selectors';
 
 const NotFoundPreview = lazy(
   () => import('../pages/page-not-found/page-not-found')
@@ -32,12 +37,9 @@ export default function App({
   nearOffers,
   offerTemplate,
 }: AppProps): JSX.Element {
-  const authorizationStatus = useAppSelector(
-    (state) => state.user.authorizationStatus
-  );
-  const isOffersDataLoading = useAppSelector((state) => state.offers.isLoading);
-
-  const isOffersError = useAppSelector((state) => state.offers.hasError);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const isOffersDataLoading = useAppSelector(getOffersLoadingStatus);
+  const isOffersError = useAppSelector(getHasError);
 
   if (
     authorizationStatus === AuthorizationStatus.Unknown ||
