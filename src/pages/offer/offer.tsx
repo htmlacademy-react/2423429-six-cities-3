@@ -151,13 +151,15 @@ export default function OfferScreen({
               <Reviews isAuth={isAuth} reviews={reviews} />
             </div>
           </div>
+          <section className="offer__map map">
+            {/*   <Map city={city} offers={[offer, ...nearOffers]} /> */}
+          </section>
         </section>
 
-        <section className="offer__map map">
-          {/*   <Map city={city} offers={[offer, ...nearOffers]} /> */}
-        </section>
-
-        <NearPlacesList offers={nearOffers} className="near-places places" />
+        <NearPlacesList
+          offers={nearOffers}
+          className="near-places__list places__list"
+        />
       </main>
     </div>
   );

@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { City, Offers, SortType } from '../types/offer';
 import { ThunkOptions } from '.';
-import { APIRoute } from '../const/const';
+import { APIRoute, TIMEOUT_SHOW_ERROR } from '../const/const';
 import { CITIES } from '../const/cities';
 
 type OffersState = {
@@ -44,6 +44,9 @@ const offersSlice = createSlice({
     setSortType: (state, action: PayloadAction<SortType>) => {
       state.sortType = action.payload;
     },
+    clearError: (state) => {
+      state.error = null;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -63,6 +66,15 @@ const offersSlice = createSlice({
   },
 });
 
+export const clearErrorAction = createAsyncThunk(
+  'offers/clearError',
+  (_, { dispatch }) => {
+    setTimeout(
+      () => dispatch(offersSlice.actions.clearError()),
+      TIMEOUT_SHOW_ERROR
+    );
+  }
+);
 
 export const {
   setError,

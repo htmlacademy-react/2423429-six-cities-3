@@ -5,11 +5,16 @@ import userReducer from './user-slice';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { AxiosInstance } from 'axios';
 
+import commentsReducer from './comments-slice';
+import nearbyOffersReducer from './nearby-offers-slice';
+
 export const api = createAPI();
 
 const rootReducer = combineReducers({
   offers: offersReducer,
   user: userReducer,
+  comments: commentsReducer,
+  nearby: nearbyOffersReducer,
 });
 
 export const store = configureStore({
