@@ -31,12 +31,7 @@ type AppProps = {
   offerTemplate: Offer;
 };
 
-export default function App({
-  offers,
-  reviews,
-  nearOffers,
-  offerTemplate,
-}: AppProps): JSX.Element {
+export default function App({ offers, offerTemplate }: AppProps): JSX.Element {
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const isOffersDataLoading = useAppSelector(getOffersLoadingStatus);
   const isOffersError = useAppSelector(getHasError);
@@ -67,14 +62,7 @@ export default function App({
           />
           <Route
             path={AppRoute.Offer}
-            element={
-              <OfferPreview
-                reviews={reviews}
-                isAuth={false}
-                nearOffers={nearOffers}
-                offer={offerTemplate}
-              />
-            }
+            element={<OfferPreview isAuth={false} offer={offerTemplate} />}
           />
           <Route path="*" element={<NotFoundPreview />} />
         </Routes>

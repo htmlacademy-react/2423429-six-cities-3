@@ -1,21 +1,68 @@
+import { useParams } from 'react-router-dom';
 import Header from '../../components/header/header';
 //import Map from '../../components/map/map';
 import NearPlacesList from '../../components/near-places-list/near-places-list';
 import Reviews from '../../components/reviews/reviews';
-import { Offer, TReview } from '../../types/offer';
+import { useAppDispatch, useAppSelector } from '../../store';
+import {
+  getNearbyError,
+  getNearbyLoadingStatus,
+  getNearOffers,
+} from '../../store/nearby-offers-process/selectors.ts';
+import { Offer } from '../../types/offer';
+import { useEffect } from 'react';
+import {
+  fetchNearbyOffers,
+  resetNearby,
+} from '../../store/nearby-offers-slice.ts';
+import {
+  getComments,
+  getCommentsError,
+  getCommentsLoading,
+} from '../../store/commments-process/selectors.ts';
+import { fetchComments, resetComments } from '../../store/comments-slice.ts';
+import FullPageError from '../full-page-error/full-page-error.tsx';
+import Loader from '../../components/loader/loader.tsx';
 
 type OfferScreenProps = {
   isAuth: boolean;
   offer: Offer;
-  reviews: TReview[];
-  nearOffers: Offer[];
 };
 
-export default function OfferScreen({
-  isAuth,
-  reviews,
-  nearOffers,
-}: OfferScreenProps): JSX.Element {
+export default function OfferScreen({ isAuth }: OfferScreenProps): JSX.Element {
+  const { id } = useParams<{ id: string }>();
+  const dispatch = useAppDispatch();
+
+  const nearOffers = useAppSelector(getNearOffers);
+  const nearbyLoadingStatus = useAppSelector(getNearbyLoadingStatus);
+  const nearbyError = useAppSelector(getNearbyError);
+
+  const comments = useAppSelector(getComments);
+  const commentsLoading = useAppSelector(getCommentsLoading);
+  const commentsError = useAppSelector(getCommentsError);
+
+  useEffect(() => {
+    if (id) {
+      dispatch(fetchNearbyOffers(id));
+      dispatch(fetchComments(id));
+    }
+  }, [dispatch, id]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(resetNearby());
+      dispatch(resetComments());
+    };
+  }, [dispatch]);
+
+  if (nearbyLoadingStatus || commentsLoading) {
+    return <Loader />;
+  }
+
+  if (nearbyError || commentsError) {
+    return <FullPageError />;
+  }
+
   return (
     <div className="page">
       <Header />
@@ -148,7 +195,7 @@ export default function OfferScreen({
                   </p>
                 </div>
               </div>
-              <Reviews isAuth={isAuth} reviews={reviews} />
+              <Reviews isAuth={isAuth} reviews={comments} />
             </div>
           </div>
           <section className="offer__map map">
