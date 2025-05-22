@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { APIRoute, AuthorizationStatus } from '../const/const';
 import { ThunkOptions } from '.';
 import { AuthData } from '../types/auth-data';
@@ -7,7 +7,7 @@ import { saveToken, dropToken } from '../services/token';
 
 type UserState = {
   authorizationStatus: AuthorizationStatus;
-  isLoading: boolean;
+  isAuthLoading: boolean;
   userData: {
     email: string;
   } | null;
@@ -16,7 +16,7 @@ type UserState = {
 
 const initialState: UserState = {
   authorizationStatus: AuthorizationStatus.Unknown,
-  isLoading: false,
+  isAuthLoading: false,
   userData: null,
   error: null,
 };
@@ -43,7 +43,7 @@ export const loginAction = createAsyncThunk<UserData, AuthData, ThunkOptions>(
 
 export const logoutAction = createAsyncThunk<void, void, ThunkOptions>(
   'user/logout',
-  async (_, { extra: api }) => {
+  async (_arg, { extra: api }) => {
     await api.delete(APIRoute.Logout);
     dropToken();
   }
@@ -52,17 +52,7 @@ export const logoutAction = createAsyncThunk<void, void, ThunkOptions>(
 const userSlice = createSlice({
   name: 'user',
   initialState,
-  reducers: {
-    requireAuthorization: (
-      state,
-      action: PayloadAction<AuthorizationStatus>
-    ) => {
-      state.authorizationStatus = action.payload;
-    },
-    setAuthLoadingStatus: (state, action: PayloadAction<boolean>) => {
-      state.isLoading = action.payload;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(checkAuthAction.fulfilled, (state, action) => {
@@ -74,16 +64,16 @@ const userSlice = createSlice({
         state.userData = null;
       })
       .addCase(loginAction.pending, (state) => {
-        state.isLoading = true;
+        state.isAuthLoading = true;
         state.error = null;
       })
       .addCase(loginAction.fulfilled, (state, action) => {
         state.authorizationStatus = AuthorizationStatus.Auth;
-        state.isLoading = false;
+        state.isAuthLoading = false;
         state.userData = { email: action.payload.email };
       })
       .addCase(loginAction.rejected, (state, action) => {
-        state.isLoading = false;
+        state.isAuthLoading = false;
         state.error = action.error.message || 'Login failed';
       })
       .addCase(logoutAction.fulfilled, (state) => {
@@ -97,4 +87,3 @@ const userSlice = createSlice({
 });
 
 export default userSlice.reducer;
-export const { requireAuthorization, setAuthLoadingStatus } = userSlice.actions;
