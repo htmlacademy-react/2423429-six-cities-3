@@ -1,14 +1,16 @@
 import { FormEvent, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { loginAction } from '../../store/user-slice';
-import { AppRoute, AuthorizationStatus } from '../../const/const';
+
+import { AppRoute, AuthorizationStatus } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../store';
 import Header from '../../components/header/header';
-import { setError } from '../../store/offers-slice';
+
 import {
   getAuthorizationStatus,
   getAuthLoadingStatus,
-} from '../../store/user-process/selectors';
+} from '../../store/user/selectors';
+import { setError } from '../../store/offers/offers-slice';
+import { loginAction } from '../../store/user/user-slice';
 
 const validateEmail = (email: string): boolean => {
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;

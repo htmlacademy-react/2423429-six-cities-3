@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { SortType } from '../../types/offer';
-import { setSortType } from '../../store/offers-slice';
-import { SORT_TYPES } from '../../const/const';
+import { SORT_TYPES } from '../../const';
 import { useAppSelector } from '../../store';
-import { getSortType } from '../../store/offers-process/selectors';
+import { getSortType } from '../../store/offers/selectors';
+import { setSortType } from '../../store/offers/offers-slice';
 
 function Sorting(): JSX.Element {
   const [isOpen, setIsOpen] = useState(false);

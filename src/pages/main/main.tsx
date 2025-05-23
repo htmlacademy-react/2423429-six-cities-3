@@ -10,11 +10,7 @@ import MainEmpty from '../../components/main-empty/main-empty';
 import cn from 'classnames';
 import { useAppSelector } from '../../store';
 import { getSortedOffers } from '../../utils';
-import {
-  getCity,
-  getOffers,
-  getSortType,
-} from '../../store/offers-process/selectors';
+import { getCity, getOffers, getSortType } from '../../store/offers/selectors';
 
 function Main(): JSX.Element {
   const [activeOffer, setActiveOffer] = useState<Nullable<Offer>>(null);

@@ -1,5 +1,5 @@
 import { useAppSelector } from '../../store';
-import { getHasError } from '../../store/offers-process/selectors';
+import { getHasError } from '../../store/offers/selectors';
 import './error-message.css';
 
 function ErrorMessage(): JSX.Element | null {

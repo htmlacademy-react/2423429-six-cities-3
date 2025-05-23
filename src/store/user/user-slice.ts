@@ -1,9 +1,9 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { APIRoute, AuthorizationStatus } from '../const/const';
-import { ThunkOptions } from '.';
-import { AuthData } from '../types/auth-data';
-import { UserData } from '../types/user-data';
-import { saveToken, dropToken } from '../services/token';
+import { APIRoute, AuthorizationStatus } from '../../const';
+import { AuthData, UserData } from '../../types/auth';
+import { ThunkOptions } from '..';
+import { saveToken, dropToken } from '../../services/token';
+
 
 type UserState = {
   authorizationStatus: AuthorizationStatus;

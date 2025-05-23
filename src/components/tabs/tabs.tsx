@@ -1,8 +1,8 @@
-import { changeCity } from '../../store/offers-slice';
+import { changeCity } from '../../store/offers/offers-slice';
 import { CITIES } from '../../const/cities';
 
 import { useAppDispatch, useAppSelector } from '../../store';
-import { getCity } from '../../store/offers-process/selectors';
+import { getCity } from '../../store/offers/selectors';
 
 function Tabs(): JSX.Element {
   const currentCity = useAppSelector(getCity);

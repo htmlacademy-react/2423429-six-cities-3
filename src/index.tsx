@@ -2,13 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './app/app';
 import ErrorMessage from './components/error-message/error-message';
-import { reviews } from './mocks/reviews';
-import { nearOffers } from './mocks/near-offers';
-import { offerTemplate } from './mocks/offerTemplate';
 import { Provider } from 'react-redux';
 import { store } from './store';
-import { checkAuthAction } from './store/user-slice';
-import { fetchOffersAction } from './store/offers-slice';
+import { fetchOffersAction } from './store/offers/offers-slice';
+import { checkAuthAction } from './store/user/user-slice';
 
 store.dispatch(fetchOffersAction());
 store.dispatch(checkAuthAction());
@@ -21,12 +18,7 @@ root.render(
   <React.StrictMode>
     <Provider store={store}>
       <ErrorMessage />
-      <App
-        reviews={reviews}
-        nearOffers={nearOffers}
-        offerTemplate={offerTemplate}
-        offers={[]}
-      />
+      <App />
     </Provider>
   </React.StrictMode>
 );

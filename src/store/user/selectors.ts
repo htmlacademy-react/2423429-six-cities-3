@@ -1,4 +1,4 @@
-import { AuthorizationStatus } from '../../const/const';
+import { AuthorizationStatus } from '../../const';
 import { RootState } from '../index';
 
 export const getAuthorizationStatus = (state: RootState): AuthorizationStatus =>

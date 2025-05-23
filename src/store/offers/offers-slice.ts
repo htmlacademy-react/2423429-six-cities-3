@@ -1,10 +1,12 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { City, Offers, SortType } from '../types/offer';
-import { ThunkOptions } from '.';
-import { APIRoute, TIMEOUT_SHOW_ERROR } from '../const/const';
-import { CITIES } from '../const/cities';
+import { City, Offers, SortType } from '../../types/offer';
+import { ThunkOptions } from '..';
+import { CITIES } from '../../const/cities';
+import { APIRoute, TIMEOUT_SHOW_ERROR } from '../../const';
+
 
 type OffersState = {
+  [x: string]: any;
   offers: Offers;
   city: City;
   sortType: SortType;

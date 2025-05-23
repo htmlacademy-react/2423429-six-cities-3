@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { Offer } from '../types/offer';
-import { ThunkOptions } from '.';
-import { APIRoute } from '../const/const';
+import { Offer } from '../../types/offer';
+import { ThunkOptions } from '..';
+import { APIRoute } from '../../const';
 
 type NearbyOffersState = {
   offers: Offer[];
@@ -15,20 +15,21 @@ const initialState: NearbyOffersState = {
   error: null,
 };
 
-export const fetchNearbyOffers = createAsyncThunk<Offer[], string, ThunkOptions>(
-  'nearby/fetch',
-  async (offerId, { extra: api }) => {
-    const { data } = await api.get<Offer[]>(`${APIRoute.Offers}/${offerId}/nearby`);
-    return data;
-  }
-);
+export const fetchNearbyOffers = createAsyncThunk<
+  Offer[],
+  string,
+  ThunkOptions
+>('nearby/fetch', async (offerId, { extra: api }) => {
+  const { data } = await api.get<Offer[]>(
+    `${APIRoute.Offers}/${offerId}/nearby`
+  );
+  return data;
+});
 
 const nearbyOffersSlice = createSlice({
   name: 'nearby',
   initialState,
-  reducers: {
-    resetNearby: () => initialState,
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchNearbyOffers.pending, (state) => {
@@ -46,5 +47,4 @@ const nearbyOffersSlice = createSlice({
   },
 });
 
-export const { resetNearby } = nearbyOffersSlice.actions;
 export default nearbyOffersSlice.reducer;

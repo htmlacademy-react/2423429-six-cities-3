@@ -1,4 +1,4 @@
-import { RATING } from './const/const';
+import { RATING } from './const';
 import { Offer, SortType } from './types/offer';
 
 export function calculateRating(placeOffer: { rating: number }): number {

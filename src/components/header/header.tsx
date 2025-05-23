@@ -1,8 +1,8 @@
 import Logo from '../logo/logo';
-import { logoutAction } from '../../store/user-slice';
 import { useAppDispatch, useAppSelector } from '../../store';
 import { Link } from 'react-router-dom';
-import { AppRoute, AuthorizationStatus } from '../../const/const';
+import { AppRoute, AuthorizationStatus } from '../../const';
+import { logoutAction } from '../../store/user/user-slice';
 
 type HeaderProps = {
   showNav?: boolean;

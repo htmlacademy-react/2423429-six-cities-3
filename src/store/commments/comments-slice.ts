@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { TReview } from '../types/offer';
-import { ThunkOptions } from '.';
-import { APIRoute } from '../const/const';
+import { TReview } from '../../types/review';
+import { ThunkOptions } from '..';
+import { APIRoute } from '../../const';
 
 type CommentsState = {
   comments: TReview[];
@@ -18,7 +18,9 @@ const initialState: CommentsState = {
 export const fetchComments = createAsyncThunk<TReview[], string, ThunkOptions>(
   'comments/fetch',
   async (offerId, { extra: api }) => {
-    const { data } = await api.get<TReview[]>(`${APIRoute.Comments}/${offerId}`);
+    const { data } = await api.get<TReview[]>(
+      `${APIRoute.Comments}/${offerId}`
+    );
     return data;
   }
 );
@@ -26,9 +28,7 @@ export const fetchComments = createAsyncThunk<TReview[], string, ThunkOptions>(
 const commentsSlice = createSlice({
   name: 'comments',
   initialState,
-  reducers: {
-    resetComments: () => initialState,
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchComments.pending, (state) => {
@@ -46,5 +46,4 @@ const commentsSlice = createSlice({
   },
 });
 
-export const { resetComments } = commentsSlice.actions;
 export default commentsSlice.reducer;

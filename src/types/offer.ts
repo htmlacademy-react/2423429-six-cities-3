@@ -1,7 +1,14 @@
+
 type Location = {
   latitude: number;
   longitude: number;
   zoom: number;
+};
+
+type HostType = {
+  name: string;
+  avatarUrl: string;
+  isPro: boolean;
 };
 
 export type City = {
@@ -9,32 +16,31 @@ export type City = {
   location: Location;
 };
 
-export type Offer = {
+export type BaseOffer = {
   id: string;
   city: City;
   title: string;
   type: string;
   price: number;
-  previewImage: string;
   location: Location;
   isFavorite: boolean;
   isPremium: boolean;
   rating: number;
+  previewImage: string;
 };
+
+export type Offer = BaseOffer & {
+  bedrooms: number;
+  maxAdults: number;
+  goods: string[];
+  host: HostType;
+  images: string[];
+  description: string;
+};
+
+export type ShortOffer = BaseOffer; // Для списка предложений
 
 export type Offers = Offer[];
-
-export type TReview = {
-  id: string;
-  date: string;
-  user: {
-    name: string;
-    avatarUrl: string;
-    isPro: boolean;
-  };
-  comment: string;
-  rating: number;
-};
 
 export type SortType =
   | 'Popular'
