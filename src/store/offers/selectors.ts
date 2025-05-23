@@ -7,4 +7,5 @@ export const getSortType = (state: RootState): SortType =>
   state.offers.sortType;
 export const getOffersLoadingStatus = (state: RootState): boolean =>
   state.offers.isOffersLoading;
-export const getHasError = (state: RootState): boolean => state.offers.hasError;
+export const getHasError = (state: RootState): boolean =>
+  state.offers.hasOffersError;

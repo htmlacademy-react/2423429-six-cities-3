@@ -2,16 +2,15 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { City, Offers, SortType } from '../../types/offer';
 import { ThunkOptions } from '..';
 import { APIRoute } from '../../const';
-import { setError } from '../app/app-slice';
 import { CITIES } from '../../const/cities';
 
 type OffersState = {
-  [x: string]: any;
   offers: Offers;
   city: City;
   sortType: SortType;
   isOffersLoading: boolean;
   hasOffersError: boolean;
+  offersError: string | null;
 };
 
 const initialState: OffersState = {
@@ -20,19 +19,16 @@ const initialState: OffersState = {
   sortType: 'Popular',
   isOffersLoading: false,
   hasOffersError: false,
+  offersError: null,
 };
 
 export const fetchOffersAction = createAsyncThunk<
   Offers,
   undefined,
   ThunkOptions
->('offers/fetch', async (_arg, { dispatch, extra: api }) => {
-  try {
-    const { data } = await api.get<Offers>(APIRoute.Offers);
-    return data;
-  } catch (error) {
-    dispatch(setError('Failed to load offers. Please try again.'));
-  }
+>('offers/fetch', async (_arg, { extra: api }) => {
+  const { data } = await api.get<Offers>(APIRoute.Offers);
+  return data;
 });
 
 const offersSlice = createSlice({
@@ -50,7 +46,7 @@ const offersSlice = createSlice({
     builder
       .addCase(fetchOffersAction.pending, (state) => {
         state.isOffersLoading = true;
-        state.hasError = false;
+        state.hasOffersError = false;
       })
       .addCase(fetchOffersAction.fulfilled, (state, action) => {
         state.offers = action.payload;
@@ -58,8 +54,8 @@ const offersSlice = createSlice({
       })
       .addCase(fetchOffersAction.rejected, (state, action) => {
         state.isOffersLoading = false;
-        state.hasError = true;
-        state.error = action.error.message || 'Failed to load offers';
+        state.hasOffersError = true;
+        state.offersError = action.error.message || 'Failed to load offers';
       });
   },
 });
