@@ -15,8 +15,8 @@ import {
   getComments,
   getCommentsError,
   getCommentsLoading,
-} from '../../store/commments/selectors.ts';
-import { fetchComments } from '../../store/commments/comments-slice.ts';
+} from '../../store/comments/selectors.ts';
+import { fetchComments } from '../../store/comments/comments-slice.ts';
 import Loader from '../../components/loader/loader.tsx';
 import { fetchOffer } from '../../store/offer/offer-slice.ts';
 import {
@@ -27,7 +27,6 @@ import {
 
 import FullPageError from '../full-page-error/full-page-error.tsx';
 import { calculateRating } from '../../utils.ts';
-import { Offer } from '../../types/offer.ts';
 
 type OfferScreenProps = {
   isAuth: boolean;
@@ -175,7 +174,7 @@ export default function OfferScreen({ isAuth }: OfferScreenProps): JSX.Element {
           <section className="offer__map map">
             <Map
               className="offer__map"
-              offers={[offer as Offer, ...nearOffers]}
+              offers={[offer, ...nearOffers]}
               activeOfferId={offer.id}
             />
           </section>
