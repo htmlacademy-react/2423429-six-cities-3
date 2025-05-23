@@ -26,9 +26,7 @@ export const fetchOffer = createAsyncThunk<Offer, string, ThunkOptions>(
 const offerSlice = createSlice({
   name: 'offer',
   initialState,
-  reducers: {
-    resetOffer: () => initialState,
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchOffer.pending, (state) => {
@@ -46,5 +44,5 @@ const offerSlice = createSlice({
   },
 });
 
-export const { resetOffer } = offerSlice.actions;
+
 export default offerSlice.reducer;

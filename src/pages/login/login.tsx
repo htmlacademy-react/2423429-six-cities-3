@@ -9,8 +9,9 @@ import {
   getAuthorizationStatus,
   getAuthLoadingStatus,
 } from '../../store/user/selectors';
-import { setError } from '../../store/offers/offers-slice';
+
 import { loginAction } from '../../store/user/user-slice';
+import { setError } from '../../store/offers-process/offers-slice';
 
 const validateEmail = (email: string): boolean => {
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;

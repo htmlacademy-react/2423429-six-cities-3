@@ -1,5 +1,5 @@
 import { changeCity } from '../../store/offers/offers-slice';
-import { CITIES } from '../../const/cities';
+import { CITIES } from '../../const/CITIES';
 
 import { useAppDispatch, useAppSelector } from '../../store';
 import { getCity } from '../../store/offers/selectors';

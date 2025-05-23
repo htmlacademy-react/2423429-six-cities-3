@@ -2,7 +2,8 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { City, Offers, SortType } from '../../types/offer';
 import { ThunkOptions } from '..';
 import { CITIES } from '../../const/CITIES';
-import { APIRoute } from '../../const';
+import { APIRoute, TIMEOUT_SHOW_ERROR } from '../../const';
+
 
 type OffersState = {
   [x: string]: any;
@@ -10,7 +11,8 @@ type OffersState = {
   city: City;
   sortType: SortType;
   isOffersLoading: boolean;
-  hasOffersError: boolean;
+  hasError: boolean;
+  error: string | null;
 };
 
 const initialState: OffersState = {
@@ -18,7 +20,8 @@ const initialState: OffersState = {
   city: CITIES[0],
   sortType: 'Popular',
   isOffersLoading: false,
-  hasOffersError: false,
+  hasError: false,
+  error: null,
 };
 
 export const fetchOffersAction = createAsyncThunk<
@@ -59,5 +62,19 @@ const offersSlice = createSlice({
   },
 });
 
-export const { changeCity, setSortType } = offersSlice.actions;
+export const clearErrorAction = createAsyncThunk(
+  'offers/clearError',
+  (_, { dispatch }) => {
+    setTimeout(
+      () => dispatch(offersSlice.actions.clearError()),
+      TIMEOUT_SHOW_ERROR
+    );
+  }
+);
+
+export const {
+  setError,
+  changeCity,
+  setSortType,
+} = offersSlice.actions;
 export default offersSlice.reducer;

@@ -4,6 +4,7 @@ import offersReducer from './offers/offers-slice';
 import userReducer from './user/user-slice';
 import commentsReducer from './commments/comments-slice';
 import nearbyOffersReducer from './nearby-offers/nearby-offers-slice';
+import appReducer from './app/app-slice'
 
 export const rootReducer = combineReducers({
   offer: offerReducer,
@@ -11,4 +12,5 @@ export const rootReducer = combineReducers({
   user: userReducer,
   comments: commentsReducer,
   nearby: nearbyOffersReducer,
+  app: appReducer,
 });
