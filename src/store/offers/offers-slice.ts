@@ -3,6 +3,7 @@ import { City, Offers, SortType } from '../../types/offer';
 import { ThunkOptions } from '..';
 import { CITIES } from '../../const/CITIES';
 import { APIRoute } from '../../const';
+import { setError } from '../app/app-slice';
 
 type OffersState = {
   [x: string]: any;
@@ -25,9 +26,13 @@ export const fetchOffersAction = createAsyncThunk<
   Offers,
   undefined,
   ThunkOptions
->('offers/fetch', async (_arg, { extra: api }) => {
+>('offers/fetch', async (_arg, { dispatch, extra: api }) => {
+  try {
   const { data } = await api.get<Offers>(APIRoute.Offers);
   return data;
+  } catch (error) {
+    dispatch(setError('Failed to load offers. Please try again.'))
+  }
 });
 
 const offersSlice = createSlice({

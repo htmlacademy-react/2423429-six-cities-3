@@ -11,7 +11,7 @@ import {
 } from '../../store/user/selectors';
 
 import { loginAction } from '../../store/user/user-slice';
-import { setError } from '../../store/offers-process/offers-slice';
+import { setError } from '../../store/app/app-slice';
 
 const validateEmail = (email: string): boolean => {
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
