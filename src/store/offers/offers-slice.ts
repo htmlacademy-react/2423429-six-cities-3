@@ -1,9 +1,9 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { City, Offers, SortType } from '../../types/offer';
 import { ThunkOptions } from '..';
-import { CITIES } from '../../const/CITIES';
 import { APIRoute } from '../../const';
 import { setError } from '../app/app-slice';
+import { CITIES } from '../../const/cities';
 
 type OffersState = {
   [x: string]: any;
@@ -28,10 +28,10 @@ export const fetchOffersAction = createAsyncThunk<
   ThunkOptions
 >('offers/fetch', async (_arg, { dispatch, extra: api }) => {
   try {
-  const { data } = await api.get<Offers>(APIRoute.Offers);
-  return data;
+    const { data } = await api.get<Offers>(APIRoute.Offers);
+    return data;
   } catch (error) {
-    dispatch(setError('Failed to load offers. Please try again.'))
+    dispatch(setError('Failed to load offers. Please try again.'));
   }
 });
 

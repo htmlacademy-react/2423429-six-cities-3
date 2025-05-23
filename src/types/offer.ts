@@ -1,4 +1,3 @@
-
 type Location = {
   latitude: number;
   longitude: number;
@@ -38,7 +37,7 @@ export type Offer = BaseOffer & {
   description: string;
 };
 
-export type ShortOffer = BaseOffer; // Для списка предложений
+export type ShortOffer = BaseOffer;
 
 export type Offers = Offer[];
 
