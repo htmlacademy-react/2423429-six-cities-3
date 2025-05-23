@@ -1,4 +1,4 @@
-import { RATING } from './const/const';
+import { RATING } from './const';
 import { Offer, SortType } from './types/offer';
 
 export function calculateRating(placeOffer: { rating: number }): number {
@@ -8,8 +8,11 @@ export function capitalizeFirstLetter(string: string): string {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-export const getSortedOffers = (offers: Offer[], currentSortType: SortType): Offer[] => {
-  let sortedOffers = [...offers]; 
+export const getSortedOffers = (
+  offers: Offer[],
+  currentSortType: SortType
+): Offer[] => {
+  const sortedOffers = [...offers];
 
   switch (currentSortType) {
     case 'PriceLowToHigh':

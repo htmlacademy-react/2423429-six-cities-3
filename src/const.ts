@@ -1,4 +1,4 @@
-import { SortType } from '../types/offer';
+import { SortType } from './types/offer';
 
 export const TIMEOUT_SHOW_ERROR = 2000;
 
@@ -29,4 +29,7 @@ export enum APIRoute {
   Offers = '/offers',
   Login = '/login',
   Logout = '/logout',
+  Comments = '/comments',
 }
+
+export const MAX_NEARBY_OFFERS = 3;

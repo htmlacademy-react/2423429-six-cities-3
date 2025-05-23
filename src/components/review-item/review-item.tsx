@@ -1,4 +1,4 @@
-import { TReview } from '../../types/offer';
+import { TReview } from '../../types/review';
 import { calculateRating } from '../../utils';
 
 type TReviewItemProps = {

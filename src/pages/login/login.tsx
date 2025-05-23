@@ -1,19 +1,34 @@
 import { FormEvent, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { loginAction } from '../../store/api-actions';
-import { AppRoute, AuthorizationStatus } from '../../const/const';
+
+import { AppRoute, AuthorizationStatus } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../store';
 import Header from '../../components/header/header';
-import { setError } from '../../store/action';
+
+import {
+  getAuthorizationStatus,
+  getAuthLoadingStatus,
+} from '../../store/user/selectors';
+
+import { loginAction } from '../../store/user/user-slice';
+import { setError } from '../../store/app/app-slice';
+
+const validateEmail = (email: string): boolean => {
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  return emailRegex.test(email);
+};
+
+const validatePassword = (password: string): boolean => {
+  const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d).+$/;
+  return passwordRegex.test(password);
+};
 
 export default function LoginScreen(): JSX.Element {
   const loginRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
-  const isAuthLoading = useAppSelector((state) => state.isAuthLoading);
+  const isAuthLoading = useAppSelector(getAuthLoadingStatus);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
 
-  const authorizationStatus = useAppSelector(
-    (state) => state.authorizationStatus
-  );
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -22,16 +37,6 @@ export default function LoginScreen(): JSX.Element {
       navigate(AppRoute.Root);
     }
   }, [authorizationStatus, navigate]);
-
-  const validateEmail = (email: string): boolean => {
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    return emailRegex.test(email);
-  };
-
-  const validatePassword = (password: string): boolean => {
-    const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d).+$/;
-    return passwordRegex.test(password);
-  };
 
   const handleSubmit = async (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
@@ -48,7 +53,7 @@ export default function LoginScreen(): JSX.Element {
     if (!isValid) {
       dispatch(
         setError(
-          'password should contain at least one letter and on number and email should be valid'
+          'password should contain at least one letter and one number and email should be valid'
         )
       );
       return;

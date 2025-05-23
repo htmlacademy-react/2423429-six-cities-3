@@ -1,12 +1,12 @@
-import { useDispatch } from 'react-redux';
-import { changeCity } from '../../store/action';
+import { changeCity } from '../../store/offers/offers-slice';
 import { CITIES } from '../../const/cities';
 
-import { State, useAppSelector } from '../../store';
+import { useAppDispatch, useAppSelector } from '../../store';
+import { getCity } from '../../store/offers/selectors';
 
 function Tabs(): JSX.Element {
-  const currentCity = useAppSelector((state: State) => state.city);
-  const dispatch = useDispatch();
+  const currentCity = useAppSelector(getCity);
+  const dispatch = useAppDispatch();
 
   return (
     <div className="tabs">

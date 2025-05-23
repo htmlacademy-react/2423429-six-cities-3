@@ -8,7 +8,6 @@ type FavoritesProps = {
 };
 
 function Favorites({ offers }: FavoritesProps): JSX.Element {
-  // Группируем предложения по городу
   const groupedOffers = offers.reduce((acc: Record<string, Offer[]>, offer) => {
     const cityName = offer.city.name;
     if (!acc[cityName]) {

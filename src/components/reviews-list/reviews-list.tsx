@@ -1,5 +1,5 @@
 import { FC, Fragment } from 'react';
-import { TReview } from '../../types/offer';
+import { TReview } from '../../types/review';
 import ReviewItem from '../../components/review-item/review-item';
 
 interface ReviewsListProps {
