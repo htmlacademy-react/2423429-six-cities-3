@@ -1,4 +1,10 @@
-function FullPageError(): JSX.Element {
+import { Nullable } from 'vitest';
+
+function FullPageError({
+  message,
+}: {
+  message?: Nullable<string>;
+}): JSX.Element {
   return (
     <div className="page page--gray page--login">
       <main className="page__main page__main--login">
@@ -16,7 +22,7 @@ function FullPageError(): JSX.Element {
                   window.location.reload();
                 }}
               >
-                <span>Somethin went wrong</span>
+                <span>{message || 'Something went wrong'}</span>
               </a>
             </div>
           </section>

@@ -1,12 +1,12 @@
 import cn from 'classnames';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { Offer } from '../../types/offer';
+import { Offer, ShortOffer } from '../../types/offer';
 import { useEffect, useRef } from 'react';
 import useMap from '../../hooks/use-map';
 
 type MapProps = {
-  offers: Offer[];
+  offers: (Offer | ShortOffer)[];
   className: string;
   activeOfferId?: string;
 };
@@ -26,7 +26,7 @@ const activeMarkerIcon = new L.Icon({
 function Map({ className, offers, activeOfferId }: MapProps): JSX.Element {
   const mapContainerRef = useRef<HTMLDivElement>(null);
 
-  const currentCity = offers[0].city;
+  const currentCity = offers[0]?.city;
 
   const { map, addMarkerToLayer, clearLayerGroup } = useMap(
     mapContainerRef,
