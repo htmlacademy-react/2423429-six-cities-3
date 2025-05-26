@@ -1,4 +1,8 @@
-import { Fragment, useState, ChangeEvent, FormEvent } from 'react';
+import { Fragment, useState, FormEvent, ChangeEvent } from 'react';
+
+import { useAppDispatch, useAppSelector } from '../../store';
+import { getPostError, getPosting } from '../../store/comments/selectors';
+import { postComment } from '../../store/comments/comments-slice';
 
 const RATINGS = [
   { value: 5, title: 'perfect' },
@@ -9,34 +13,54 @@ const RATINGS = [
 ] as const;
 
 interface ReviewFormProps {
-  onSubmit: (data: { rating: number; comment: string }) => void;
+  offerId: string;
 }
 
-export default function ReviewForm({ onSubmit }: ReviewFormProps) {
+export default function ReviewForm({ onSubmit, offerId }: ReviewFormProps) {
+  const dispatch = useAppDispatch();
+  const isPosting = useAppSelector(getPosting);
+  const postError = useAppSelector(getPostError);
+
   const [formData, setFormData] = useState({
     rating: 0,
     comment: '',
   });
 
+  const isValid =
+    formData.rating > 0 &&
+    formData.comment.trim().length >= 50 &&
+    formData.comment.trim().length <= 300;
+
   const handleChange = (
-    evt: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    evt: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>
   ) => {
-    const { name, value } = evt.target;
+    const target = evt.target as HTMLInputElement | HTMLTextAreaElement;
+    const { name, value } = target;
     setFormData((prev) => ({
       ...prev,
       [name]: name === 'rating' ? Number(value) : value,
     }));
   };
 
-  const isValid = formData.rating > 0 && formData.comment.trim().length >= 50;
-
-  const handleSubmit = (evt: FormEvent) => {
+  const handleSubmit = async (evt: FormEvent) => {
     evt.preventDefault();
-    if (!isValid) {
+    if (!isValid || isPosting) {
       return;
     }
-    onSubmit({ rating: formData.rating, comment: formData.comment });
-    setFormData({ rating: 0, comment: '' });
+
+    try {
+      await dispatch(
+        postComment({
+          offerId,
+          comment: formData.comment.trim(),
+          rating: formData.rating,
+        })
+      ).unwrap();
+
+      setFormData({ rating: 0, comment: '' });
+    } catch (err) {
+      // Ошибка уже обрабатывается через postError
+    }
   };
 
   return (
@@ -76,9 +100,12 @@ export default function ReviewForm({ onSubmit }: ReviewFormProps) {
         placeholder="Tell how was your stay…"
         value={formData.comment}
         onChange={handleChange}
+        maxLength={300}
+        disabled={isPosting}
       />
 
       <div className="reviews__button-wrapper">
+        {postError && <div className="reviews__error-message">{postError}</div>}
         <p className="reviews__help">
           To submit review please make sure to set{' '}
           <span className="reviews__star">rating</span> and describe your stay
@@ -87,9 +114,9 @@ export default function ReviewForm({ onSubmit }: ReviewFormProps) {
         <button
           className="reviews__submit form__submit button"
           type="submit"
-          disabled={!isValid}
+          disabled={!isValid || isPosting}
         >
-          Submit
+          {isPosting ? 'Submitting...' : 'Submit'}
         </button>
       </div>
     </form>

@@ -168,14 +168,10 @@ export default function OfferScreen({ isAuth }: OfferScreenProps): JSX.Element {
                   )}
                 </div>
                 <div className="offer__description">
-                  {offer.description.split('\n').map((text, index) => (
-                    <p className="offer__text" key={index}>
-                      {text}
-                    </p>
-                  ))}
+                  <p className="offer__text">{offer.description}</p>
                 </div>
               </div>
-              <Reviews isAuth={isAuth} reviews={comments} />
+              <Reviews isAuth={isAuth} reviews={comments} offerId={offer.id} />
             </div>
           </div>
           <section className="offer__map map">

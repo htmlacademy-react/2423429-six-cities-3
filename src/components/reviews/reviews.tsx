@@ -6,19 +6,14 @@ import { TReview } from '../../types/review';
 type ReviewsProps = {
   isAuth: boolean;
   reviews: TReview[];
+  offerId: string;
 };
 
-const Reviews: FC<ReviewsProps> = ({ isAuth, reviews }) => {
-  const handleReviewSubmit = (data: { rating: number; comment: string }) => {
-    console.log('New review:', data);
-  };
-
-  return (
-    <section className="offer__reviews reviews">
-      <ReviewsList reviews={reviews} />
-      {isAuth && <ReviewForm onSubmit={handleReviewSubmit} />}
-    </section>
-  );
-};
+const Reviews: FC<ReviewsProps> = ({ isAuth, reviews, offerId }) => (
+  <section className="offer__reviews reviews">
+    <ReviewsList reviews={reviews} />
+    {isAuth && <ReviewForm offerId={offerId} />}
+  </section>
+);
 
 export default Reviews;

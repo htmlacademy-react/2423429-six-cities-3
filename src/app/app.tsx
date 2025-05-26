@@ -50,7 +50,11 @@ export default function App(): JSX.Element {
           />
           <Route
             path={AppRoute.Offer}
-            element={<OfferPreview isAuth={false} />}
+            element={
+              <OfferPreview
+                isAuth={authorizationStatus === AuthorizationStatus.Auth}
+              />
+            }
           />
           <Route path="*" element={<NotFoundPreview />} />
         </Routes>
