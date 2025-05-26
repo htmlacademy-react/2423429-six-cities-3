@@ -171,7 +171,7 @@ export default function OfferScreen({ isAuth }: OfferScreenProps): JSX.Element {
                   <p className="offer__text">{offer.description}</p>
                 </div>
               </div>
-              <Reviews isAuth={isAuth} reviews={comments} />
+              <Reviews isAuth={isAuth} reviews={comments} offerId={offer.id} />
             </div>
           </div>
           <section className="offer__map map">

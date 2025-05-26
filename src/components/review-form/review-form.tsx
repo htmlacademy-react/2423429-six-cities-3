@@ -16,7 +16,7 @@ interface ReviewFormProps {
   offerId: string;
 }
 
-export default function ReviewForm({ offerId }: ReviewFormProps) {
+export default function ReviewForm({ onSubmit, offerId }: ReviewFormProps) {
   const dispatch = useAppDispatch();
   const isPosting = useAppSelector(getPosting);
   const postError = useAppSelector(getPostError);
