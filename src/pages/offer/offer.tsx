@@ -63,7 +63,7 @@ export default function OfferScreen({ isAuth }: OfferScreenProps): JSX.Element {
     return <Loader />;
   }
 
-  if ((offerErrorStatus = 404)) {
+  if (offerErrorStatus === 404) {
     return <Navigate to={AppRoute.NotFound} />;
   }
 
