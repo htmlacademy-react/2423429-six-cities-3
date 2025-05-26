@@ -8,6 +8,7 @@ export enum AppRoute {
   Favorites = '/favorites',
   FavoritesEmpty = '/favorites-empty',
   Offer = '/offer/:id',
+  NotFound = '/*'
 }
 
 export enum AuthorizationStatus {

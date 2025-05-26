@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
 import Header from '../../components/header/header';
 import Map from '../../components/map/map';
 import NearPlacesList from '../../components/near-places-list/near-places-list';
@@ -22,11 +22,13 @@ import { fetchOffer } from '../../store/offer/offer-slice.ts';
 import {
   getOffer,
   getOfferError,
+  getOfferErrorStatus,
   getOfferLoadingStatus,
 } from '../../store/offer/selectors.ts';
 
 import FullPageError from '../full-page-error/full-page-error.tsx';
 import { calculateRating } from '../../utils.ts';
+import { AppRoute } from '../../const.ts';
 
 type OfferScreenProps = {
   isAuth: boolean;
@@ -39,6 +41,7 @@ export default function OfferScreen({ isAuth }: OfferScreenProps): JSX.Element {
   const offer = useAppSelector(getOffer);
   const offerLoadingStatus = useAppSelector(getOfferLoadingStatus);
   const offerError = useAppSelector(getOfferError);
+  let offerErrorStatus = useAppSelector(getOfferErrorStatus);
 
   const nearOffers = useAppSelector(getNearOffers);
   const nearbyLoadingStatus = useAppSelector(getNearbyLoadingStatus);
@@ -58,6 +61,10 @@ export default function OfferScreen({ isAuth }: OfferScreenProps): JSX.Element {
 
   if (offerLoadingStatus || nearbyLoadingStatus || commentsLoading) {
     return <Loader />;
+  }
+
+  if ((offerErrorStatus = 404)) {
+    return <Navigate to={AppRoute.NotFound} />;
   }
 
   if (offerError || nearbyError || commentsError) {
