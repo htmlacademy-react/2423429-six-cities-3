@@ -41,7 +41,7 @@ export default function OfferScreen({ isAuth }: OfferScreenProps): JSX.Element {
   const offer = useAppSelector(getOffer);
   const offerLoadingStatus = useAppSelector(getOfferLoadingStatus);
   const offerError = useAppSelector(getOfferError);
-  let offerErrorStatus = useAppSelector(getOfferErrorStatus);
+  const offerErrorStatus = useAppSelector(getOfferErrorStatus);
 
   const nearOffers = useAppSelector(getNearOffers);
   const nearbyLoadingStatus = useAppSelector(getNearbyLoadingStatus);
