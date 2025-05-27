@@ -1,21 +1,41 @@
+import { useEffect } from 'react';
 import Footer from '../../components/footer/footer';
 import Header from '../../components/header/header';
 import PlacesCard from '../../components/places-card/places-card';
+import { useAppDispatch, useAppSelector } from '../../store';
+import { fetchFavorites } from '../../store/favorites/favorite-slice';
+import {
+  getFavorites,
+  getFavoritesLoadingStatus,
+} from '../../store/favorites/selectors';
 import { Offer } from '../../types/offer';
+import Loader from '../../components/loader/loader';
+import { FavoritesEmpty } from '../favorites-empty/favorites-empty';
 
-type FavoritesProps = {
-  offers: Offer[];
-};
+function Favorites(): JSX.Element {
+  const dispatch = useAppDispatch();
+  const favorites = useAppSelector(getFavorites);
+  const isLoading = useAppSelector(getFavoritesLoadingStatus);
 
-function Favorites({ offers }: FavoritesProps): JSX.Element {
-  const groupedOffers = offers.reduce((acc: Record<string, Offer[]>, offer) => {
-    const cityName = offer.city.name;
-    if (!acc[cityName]) {
-      acc[cityName] = [];
-    }
-    acc[cityName].push(offer);
-    return acc;
-  }, {});
+  useEffect(() => {
+    dispatch(fetchFavorites());
+  }, [dispatch]);
+
+  if (!favorites.length) {
+    return <FavoritesEmpty />;
+  }
+
+  const groupedOffers = favorites.reduce(
+    (acc: Record<string, Offer[]>, offer) => {
+      const cityName = offer.city.name;
+      if (!acc[cityName]) {
+        acc[cityName] = [];
+      }
+      acc[cityName].push(offer);
+      return acc;
+    },
+    {}
+  );
 
   const cities = Object.keys(groupedOffers);
 

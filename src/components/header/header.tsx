@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from '../../store';
 import { Link } from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from '../../const';
 import { logoutAction } from '../../store/user/user-slice';
+import { getFavoritesCount } from '../../store/favorites/selectors';
 
 type HeaderProps = {
   showNav?: boolean;
@@ -13,8 +14,9 @@ function Header({ showNav = true }: HeaderProps): JSX.Element {
   const { authorizationStatus, userData } = useAppSelector(
     (state) => state.user
   );
-
   const isAuth = authorizationStatus === AuthorizationStatus.Auth;
+
+  const favoritesCount = useAppSelector(getFavoritesCount);
 
   const handleLogout = (evt: React.MouseEvent) => {
     evt.preventDefault();
@@ -42,7 +44,9 @@ function Header({ showNav = true }: HeaderProps): JSX.Element {
                         <span className="header__user-name user__name">
                           {userData?.email}
                         </span>
-                        <span className="header__favorite-count">3</span>
+                        <span className="header__favorite-count">
+                          {favoritesCount}
+                        </span>
                       </Link>
                     </li>
                     <li className="header__nav-item">

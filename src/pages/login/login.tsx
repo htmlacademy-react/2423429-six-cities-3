@@ -1,4 +1,4 @@
-import { FormEvent, useRef, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { AppRoute, AuthorizationStatus } from '../../const';
@@ -38,9 +38,7 @@ export default function LoginScreen(): JSX.Element {
     }
   }, [authorizationStatus, navigate]);
 
-  const handleSubmit = async (evt: FormEvent<HTMLFormElement>) => {
-    evt.preventDefault();
-
+  const handleSubmit = async () => {
     if (!loginRef.current || !passwordRef.current) {
       return;
     }
@@ -82,7 +80,10 @@ export default function LoginScreen(): JSX.Element {
             <form
               className="login__form form"
               action="#"
-              onSubmit={handleSubmit}
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleSubmit();
+              }}
               method="post"
             >
               <div className="login__input-wrapper form__input-wrapper">
