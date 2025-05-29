@@ -29,7 +29,6 @@ import {
 import FullPageError from '../full-page-error/full-page-error.tsx';
 import { calculateRating } from '../../utils.ts';
 import { AppRoute } from '../../const.ts';
-import { toggleFavorite } from '../../store/favorites/favorite-slice.ts';
 import cn from 'classnames';
 
 type OfferScreenProps = {
@@ -60,17 +59,6 @@ export default function OfferScreen({ isAuth }: OfferScreenProps): JSX.Element {
       dispatch(fetchComments(id));
     }
   }, [dispatch, id]);
-
-  const handleBookmarkClick = () => {
-    if (offer) {
-      dispatch(
-        toggleFavorite({
-          offerId: offer.id,
-          status: offer.isFavorite ? 0 : 1,
-        })
-      );
-    }
-  };
 
   if (offerLoadingStatus || nearbyLoadingStatus || commentsLoading) {
     return <Loader />;
@@ -125,7 +113,6 @@ export default function OfferScreen({ isAuth }: OfferScreenProps): JSX.Element {
                     offer.isFavorite && 'offer__bookmark-button--active'
                   )}
                   type="button"
-                  onClick={handleBookmarkClick}
                 >
                   <svg className="offer__bookmark-icon" width="31" height="33">
                     <use xlinkHref="#icon-bookmark"></use>
