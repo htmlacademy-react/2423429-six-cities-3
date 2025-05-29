@@ -3,6 +3,8 @@ import { Offer } from '../../types/offer';
 import { AppRoute } from '../../const';
 import { calculateRating, capitalizeFirstLetter } from '../../utils';
 import cn from 'classnames';
+import { useAppDispatch } from '../../store';
+import { toggleFavorite } from '../../store/favorites/favorite-slice';
 
 type PlacesCardProps = {
   placeOffer: Offer;
@@ -39,6 +41,18 @@ function PlacesCard({
   const containerClass = cardClasses[variant];
   const imageWrapperClass = imageWrapperClasses[variant];
   const { width, height } = imageSizes[variant];
+
+  const dispatch = useAppDispatch();
+
+  const handleFavoriteClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    dispatch(
+      toggleFavorite({
+        offerId: placeOffer.id,
+        status: placeOffer.isFavorite ? 0 : 1,
+      })
+    );
+  };
 
   return (
     <article
@@ -79,6 +93,7 @@ function PlacesCard({
               placeOffer.isFavorite && 'place-card__bookmark-button--active'
             )}
             type="button"
+            onClick={() => handleFavoriteClick}
           >
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use xlinkHref="#icon-bookmark"></use>

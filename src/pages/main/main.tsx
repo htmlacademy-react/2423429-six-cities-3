@@ -11,7 +11,6 @@ import cn from 'classnames';
 import { useAppSelector } from '../../store';
 import { getSortedOffers } from '../../utils';
 import { getCity, getOffers, getSortType } from '../../store/offers/selectors';
-import { useAppSelector } from '../../store';
 
 function Main(): JSX.Element {
   const [activeOffer, setActiveOffer] = useState<Nullable<Offer>>(null);

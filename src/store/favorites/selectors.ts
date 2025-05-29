@@ -1,6 +1,7 @@
 import { RootState } from '..';
 
 export const getFavorites = (state: RootState) => state.favorites.favorites;
-export const getFavoritesCount = (state: RootState) => state.favorites.favoritesCount;
 export const getFavoritesLoadingStatus = (state: RootState) => state.favorites.isLoadingFavorites;
-export const getFavoritesError = (state: RootState) => state.favorites.error;
+export const getFavoritesError = (state: RootState) => state.favorites.errorFavorites;
+
+

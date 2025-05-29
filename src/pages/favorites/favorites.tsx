@@ -21,6 +21,10 @@ function Favorites(): JSX.Element {
     dispatch(fetchFavorites());
   }, [dispatch]);
 
+  if (isLoading) {
+    return <Loader />;
+  }
+
   if (!favorites.length) {
     return <FavoritesEmpty />;
   }
