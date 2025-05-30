@@ -5,7 +5,10 @@ import { calculateRating, capitalizeFirstLetter } from '../../utils';
 import cn from 'classnames';
 import { useAppDispatch, useAppSelector } from '../../store';
 import { toggleFavorite } from '../../store/favorites/favorite-slice';
-import { getFavorites } from '../../store/favorites/selectors';
+import {
+  getChangingFavoriteStatus,
+  getFavorites,
+} from '../../store/favorites/selectors';
 
 type PlacesCardProps = {
   placeOffer: Offer;
@@ -44,8 +47,9 @@ function PlacesCard({
   const { width, height } = imageSizes[variant];
 
   const dispatch = useAppDispatch();
-  const favoriteOffers = useAppSelector(getFavorites); // Получаем массив избранных
-  const isFavorite = favoriteOffers.some((offer) => offer.id === placeOffer.id); // Проверяем наличие
+  const favoriteOffers = useAppSelector(getFavorites);
+  const isChangingStatus = useAppSelector(getChangingFavoriteStatus);
+  const isFavorite = favoriteOffers.some((offer) => offer.id === placeOffer.id);
 
   const handleFavoriteClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -97,6 +101,7 @@ function PlacesCard({
             )}
             type="button"
             onClick={handleFavoriteClick}
+            disabled={isChangingStatus}
           >
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use xlinkHref="#icon-bookmark"></use>

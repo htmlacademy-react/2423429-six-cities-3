@@ -31,7 +31,10 @@ import { calculateRating } from '../../utils.ts';
 import { AppRoute } from '../../const.ts';
 import cn from 'classnames';
 import { toggleFavorite } from '../../store/favorites/favorite-slice.ts';
-import { getFavorites } from '../../store/favorites/selectors.ts';
+import {
+  getChangingFavoriteStatus,
+  getFavorites,
+} from '../../store/favorites/selectors.ts';
 
 type OfferScreenProps = {
   isAuth: boolean;
@@ -54,6 +57,7 @@ export default function OfferScreen({ isAuth }: OfferScreenProps): JSX.Element {
   const commentsLoading = useAppSelector(getCommentsLoading);
   const commentsError = useAppSelector(getCommentsError);
 
+  const isChangingStatus = useAppSelector(getChangingFavoriteStatus);
   const favoriteOffers = useAppSelector(getFavorites);
   const isFavorite = favoriteOffers.some((off) => off.id === id);
 
@@ -130,6 +134,7 @@ export default function OfferScreen({ isAuth }: OfferScreenProps): JSX.Element {
                   )}
                   type="button"
                   onClick={handleBookmarkClick}
+                  disabled={isChangingStatus}
                 >
                   <svg className="offer__bookmark-icon" width="31" height="33">
                     <use xlinkHref="#icon-bookmark"></use>

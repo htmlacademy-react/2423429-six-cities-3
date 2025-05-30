@@ -1,9 +1,8 @@
-import { useEffect } from 'react';
 import Footer from '../../components/footer/footer';
 import Header from '../../components/header/header';
 import PlacesCard from '../../components/places-card/places-card';
-import { useAppDispatch, useAppSelector } from '../../store';
-import { fetchFavorites } from '../../store/favorites/favorite-slice';
+import { useAppSelector } from '../../store';
+
 import {
   getFavorites,
   getFavoritesLoadingStatus,
@@ -13,13 +12,8 @@ import Loader from '../../components/loader/loader';
 import { FavoritesEmpty } from '../favorites-empty/favorites-empty';
 
 function Favorites(): JSX.Element {
-  const dispatch = useAppDispatch();
   const favorites = useAppSelector(getFavorites);
   const isLoading = useAppSelector(getFavoritesLoadingStatus);
-
-  useEffect(() => {
-    dispatch(fetchFavorites());
-  }, [dispatch]);
 
   if (isLoading) {
     return <Loader />;
