@@ -9,12 +9,14 @@ type FavoriteState = {
   favorites: Offer[];
   isLoadingFavorites: boolean;
   errorFavorites: string | null;
+  isChangingFavoriteStatus: boolean;
 };
 
 const initialState: FavoriteState = {
   favorites: [],
   isLoadingFavorites: false,
   errorFavorites: null,
+  isChangingFavoriteStatus: false
 };
 
 export const fetchFavorites = createAsyncThunk<Offer[], void, ThunkOptions>(
@@ -66,14 +68,17 @@ const favoriteSlice = createSlice({
     builder
       .addCase(fetchFavorites.pending, (state) => {
         state.isLoadingFavorites = true;
+        state.isChangingFavoriteStatus = true;
         state.errorFavorites = null;
       })
       .addCase(fetchFavorites.fulfilled, (state, action) => {
         state.favorites = action.payload;
         state.isLoadingFavorites = false;
+        state.isChangingFavoriteStatus = false;
       })
       .addCase(fetchFavorites.rejected, (state, action) => {
         state.isLoadingFavorites = false;
+        state.isChangingFavoriteStatus = false;
         state.errorFavorites = action.payload as string;
       })
 
@@ -87,7 +92,6 @@ const favoriteSlice = createSlice({
         }
       })
       .addCase(toggleFavorite.rejected, (state, action) => {
-        state.isLoadingFavorites = false;
         state.errorFavorites = action.payload as string;
       });
   },

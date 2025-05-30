@@ -3,8 +3,9 @@ import { Offer } from '../../types/offer';
 import { AppRoute } from '../../const';
 import { calculateRating, capitalizeFirstLetter } from '../../utils';
 import cn from 'classnames';
-import { useAppDispatch } from '../../store';
+import { useAppDispatch, useAppSelector } from '../../store';
 import { toggleFavorite } from '../../store/favorites/favorite-slice';
+import { getFavorites } from '../../store/favorites/selectors';
 
 type PlacesCardProps = {
   placeOffer: Offer;
@@ -43,13 +44,15 @@ function PlacesCard({
   const { width, height } = imageSizes[variant];
 
   const dispatch = useAppDispatch();
+  const favoriteOffers = useAppSelector(getFavorites); // Получаем массив избранных
+  const isFavorite = favoriteOffers.some((offer) => offer.id === placeOffer.id); // Проверяем наличие
 
   const handleFavoriteClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     dispatch(
       toggleFavorite({
         offerId: placeOffer.id,
-        status: placeOffer.isFavorite ? 0 : 1,
+        status: isFavorite ? 0 : 1,
       })
     );
   };
@@ -90,10 +93,10 @@ function PlacesCard({
           <button
             className={cn(
               'place-card__bookmark-button button',
-              placeOffer.isFavorite && 'place-card__bookmark-button--active'
+              isFavorite && 'place-card__bookmark-button--active'
             )}
             type="button"
-            onClick={() => handleFavoriteClick}
+            onClick={handleFavoriteClick}
           >
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use xlinkHref="#icon-bookmark"></use>

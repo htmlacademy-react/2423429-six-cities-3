@@ -31,6 +31,7 @@ import { calculateRating } from '../../utils.ts';
 import { AppRoute } from '../../const.ts';
 import cn from 'classnames';
 import { toggleFavorite } from '../../store/favorites/favorite-slice.ts';
+import { getFavorites } from '../../store/favorites/selectors.ts';
 
 type OfferScreenProps = {
   isAuth: boolean;
@@ -53,6 +54,9 @@ export default function OfferScreen({ isAuth }: OfferScreenProps): JSX.Element {
   const commentsLoading = useAppSelector(getCommentsLoading);
   const commentsError = useAppSelector(getCommentsError);
 
+  const favoriteOffers = useAppSelector(getFavorites);
+  const isFavorite = favoriteOffers.some((off) => off.id === id);
+
   useEffect(() => {
     if (id) {
       dispatch(fetchOffer(id));
@@ -66,7 +70,7 @@ export default function OfferScreen({ isAuth }: OfferScreenProps): JSX.Element {
       dispatch(
         toggleFavorite({
           offerId: offer.id,
-          status: offer.isFavorite ? 0 : 1,
+          status: isFavorite ? 0 : 1,
         })
       );
     }
@@ -122,7 +126,7 @@ export default function OfferScreen({ isAuth }: OfferScreenProps): JSX.Element {
                 <button
                   className={cn(
                     'offer__bookmark-button button',
-                    offer.isFavorite && 'offer__bookmark-button--active'
+                    isFavorite && 'offer__bookmark-button--active'
                   )}
                   type="button"
                   onClick={handleBookmarkClick}
