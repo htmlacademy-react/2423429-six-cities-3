@@ -68,21 +68,23 @@ const favoriteSlice = createSlice({
     builder
       .addCase(fetchFavorites.pending, (state) => {
         state.isLoadingFavorites = true;
-        state.isChangingFavoriteStatus = true;
         state.errorFavorites = null;
       })
       .addCase(fetchFavorites.fulfilled, (state, action) => {
         state.favorites = action.payload;
         state.isLoadingFavorites = false;
-        state.isChangingFavoriteStatus = false;
       })
       .addCase(fetchFavorites.rejected, (state, action) => {
         state.isLoadingFavorites = false;
-        state.isChangingFavoriteStatus = false;
         state.errorFavorites = action.payload as string;
       })
 
+      .addCase(toggleFavorite.pending, (state) => {
+        state.isChangingFavoriteStatus = true;
+      })
       .addCase(toggleFavorite.fulfilled, (state, action) => {
+        state.isChangingFavoriteStatus = false;
+
         if (action.payload.isFavorite) {
           state.favorites.push(action.payload);
         } else {
@@ -92,6 +94,7 @@ const favoriteSlice = createSlice({
         }
       })
       .addCase(toggleFavorite.rejected, (state, action) => {
+        state.isChangingFavoriteStatus = false;
         state.errorFavorites = action.payload as string;
       });
   },
