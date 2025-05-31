@@ -16,7 +16,7 @@ const initialState: FavoriteState = {
   favorites: [],
   isLoadingFavorites: false,
   errorFavorites: null,
-  isChangingFavoriteStatus: false
+  isChangingFavoriteStatus: false,
 };
 
 export const fetchFavorites = createAsyncThunk<Offer[], void, ThunkOptions>(

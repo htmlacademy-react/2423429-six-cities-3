@@ -28,13 +28,15 @@ import {
 
 import FullPageError from '../full-page-error/full-page-error.tsx';
 import { calculateRating } from '../../utils.ts';
-import { AppRoute } from '../../const.ts';
+import { AppRoute, AuthorizationStatus } from '../../const.ts';
 import cn from 'classnames';
 import { toggleFavorite } from '../../store/favorites/favorite-slice.ts';
 import {
   getChangingFavoriteStatus,
   getFavorites,
 } from '../../store/favorites/selectors.ts';
+import { clearErrorAction, setError } from '../../store/app/app-slice.ts';
+import { getAuthorizationStatus } from '../../store/user/selectors.ts';
 
 type OfferScreenProps = {
   isAuth: boolean;
@@ -45,6 +47,8 @@ export default function OfferScreen({ isAuth }: OfferScreenProps): JSX.Element {
   const dispatch = useAppDispatch();
 
   const offer = useAppSelector(getOffer);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+
   const offerLoadingStatus = useAppSelector(getOfferLoadingStatus);
   const offerError = useAppSelector(getOfferError);
   const offerErrorStatus = useAppSelector(getOfferErrorStatus);
@@ -71,10 +75,16 @@ export default function OfferScreen({ isAuth }: OfferScreenProps): JSX.Element {
 
   const handleBookmarkClick = () => {
     if (offer) {
+      if (authorizationStatus !== AuthorizationStatus.Auth) {
+        dispatch(setError('You need to log in to add to favorites'));
+        dispatch(clearErrorAction());
+        return;
+      }
+      const status = isFavorite ? 0 : 1;
       dispatch(
         toggleFavorite({
           offerId: offer.id,
-          status: isFavorite ? 0 : 1,
+          status: status,
         })
       );
     }
@@ -88,11 +98,7 @@ export default function OfferScreen({ isAuth }: OfferScreenProps): JSX.Element {
     return <Navigate to={AppRoute.NotFound} />;
   }
 
-  if (offerError || nearbyError || commentsError) {
-    return <FullPageError />;
-  }
-
-  if (!offer) {
+  if (offerError || nearbyError || commentsError || !offer) {
     return <FullPageError />;
   }
 

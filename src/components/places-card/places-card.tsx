@@ -1,6 +1,6 @@
 import { generatePath, Link } from 'react-router-dom';
 import { Offer } from '../../types/offer';
-import { AppRoute } from '../../const';
+import { AppRoute, AuthorizationStatus } from '../../const';
 import { calculateRating, capitalizeFirstLetter } from '../../utils';
 import cn from 'classnames';
 import { useAppDispatch, useAppSelector } from '../../store';
@@ -9,6 +9,8 @@ import {
   getChangingFavoriteStatus,
   getFavorites,
 } from '../../store/favorites/selectors';
+import { getAuthorizationStatus } from '../../store/user/selectors';
+import { clearErrorAction, setError } from '../../store/app/app-slice';
 
 type PlacesCardProps = {
   placeOffer: Offer;
@@ -47,16 +49,25 @@ function PlacesCard({
   const { width, height } = imageSizes[variant];
 
   const dispatch = useAppDispatch();
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+
   const favoriteOffers = useAppSelector(getFavorites);
   const isChangingStatus = useAppSelector(getChangingFavoriteStatus);
   const isFavorite = favoriteOffers.some((offer) => offer.id === placeOffer.id);
 
   const handleFavoriteClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+
+    if (authorizationStatus !== AuthorizationStatus.Auth) {
+      dispatch(setError('You need to log in to add to favorites'));
+      dispatch(clearErrorAction());
+      return;
+    }
+    const status = isFavorite ? 0 : 1;
     dispatch(
       toggleFavorite({
         offerId: placeOffer.id,
-        status: isFavorite ? 0 : 1,
+        status,
       })
     );
   };

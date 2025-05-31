@@ -34,4 +34,3 @@ export const clearErrorAction = createAsyncThunk(
 
 export const { setError, clearError } = appSlice.actions;
 export default appSlice.reducer;
-
