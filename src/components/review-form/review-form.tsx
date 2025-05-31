@@ -51,7 +51,8 @@ export default function ReviewForm({ offerId }: ReviewFormProps) {
       .unwrap()
       .then(() => {
         setFormData({ rating: 0, comment: '' });
-      });
+      })
+      .catch(() => {});
   };
 
   return (

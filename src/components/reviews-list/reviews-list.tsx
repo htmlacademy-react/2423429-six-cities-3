@@ -8,7 +8,10 @@ interface ReviewsListProps {
 }
 
 const ReviewsList: FC<ReviewsListProps> = ({ reviews }) => {
-  const displayedReviews = reviews.slice(0, MAX_REVIEWS_COUNT);
+  const sortedReviews = [...reviews].sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+  );
+  const displayedReviews = sortedReviews.slice(0, MAX_REVIEWS_COUNT);
 
   return (
     <Fragment>

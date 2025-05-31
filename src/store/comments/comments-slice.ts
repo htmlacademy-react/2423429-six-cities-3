@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { TReview } from '../../types/review';
 import { ThunkOptions } from '..';
 import { APIRoute } from '../../const';
@@ -65,10 +65,13 @@ const commentsSlice = createSlice({
         state.isCommentsLoading = true;
         state.error = null;
       })
-      .addCase(fetchComments.fulfilled, (state, action) => {
-        state.comments = action.payload;
-        state.isCommentsLoading = false;
-      })
+      .addCase(
+        fetchComments.fulfilled,
+        (state, action: PayloadAction<TReview[]>) => {
+          state.comments = action.payload;
+          state.isCommentsLoading = false;
+        }
+      )
       .addCase(fetchComments.rejected, (state, action) => {
         state.isCommentsLoading = false;
         state.error = action.error.message || 'Failed to load comments';
@@ -77,9 +80,13 @@ const commentsSlice = createSlice({
         state.isPosting = true;
         state.postError = null;
       })
-      .addCase(postComment.fulfilled, (state) => {
-        state.isPosting = false;
-      })
+      .addCase(
+        postComment.fulfilled,
+        (state, action: PayloadAction<TReview>) => {
+          state.isPosting = false;
+          state.comments = [action.payload, ...state.comments];
+        }
+      )
       .addCase(postComment.rejected, (state, action) => {
         state.isPosting = false;
 
