@@ -38,7 +38,7 @@ function Header({ showNav = true }: HeaderProps): JSX.Element {
                   <>
                     <li className="header__nav-item user">
                       <Link
-                        className="header__nav-link header__nav-link--profile"
+                        className="header__nav-link header__nav-link--profile header__login"
                         to={AppRoute.Favorites}
                       >
                         <div className="header__avatar-wrapper user__avatar-wrapper"></div>
@@ -63,7 +63,7 @@ function Header({ showNav = true }: HeaderProps): JSX.Element {
                 ) : (
                   <li className="header__nav-item">
                     <Link
-                      className="header__nav-link header__nav-link--profile"
+                      className="header__nav-link header__nav-link--profile header__login"
                       to={AppRoute.Login}
                     >
                       <span className="header__signin">Sign in</span>
