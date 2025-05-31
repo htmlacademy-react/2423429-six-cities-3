@@ -2,7 +2,8 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { TReview } from '../../types/review';
 import { ThunkOptions } from '..';
 import { APIRoute } from '../../const';
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
+import { DetailMessageType } from '../../services/api';
 
 type CommentsState = {
   comments: TReview[];
@@ -30,17 +31,26 @@ export const fetchComments = createAsyncThunk<TReview[], string, ThunkOptions>(
   }
 );
 
-export const postComment = createAsyncThunk<TReview, { offerId: string; comment: string; rating: number }, ThunkOptions>(
+export const postComment = createAsyncThunk<
+  TReview,
+  { offerId: string; comment: string; rating: number },
+  ThunkOptions & { rejectValue: string }
+>(
   'comments/post',
   async ({ offerId, comment, rating }, { extra: api, rejectWithValue }) => {
     try {
-      const { data } = await api.post<TReview>(`${APIRoute.Comments}/${offerId}`, { comment, rating });
+      const { data } = await api.post<TReview>(
+        `${APIRoute.Comments}/${offerId}`,
+        { comment, rating }
+      );
       return data;
     } catch (err: unknown) {
-      if (axios.isAxiosError(err)) {
-        return rejectWithValue(err.response?.data?.error || 'Failed to post comment');
+      if (axios.isAxiosError<DetailMessageType>(err) && err.response?.data) {
+        return rejectWithValue(
+          err.response?.data?.message || 'Failed to post comment'
+        );
       }
-      return rejectWithValue('An unexpected error occurred');
+      return rejectWithValue('Failed to post comment');
     }
   }
 );
@@ -72,11 +82,9 @@ const commentsSlice = createSlice({
       })
       .addCase(postComment.rejected, (state, action) => {
         state.isPosting = false;
-        const error = action.payload;
-        if (error instanceof AxiosError) {
-          state.postError = error.response?.data?.error || 'Failed to post comment';
-        } else {
-          state.postError = typeof error === 'string' ? error : 'Unknown error occurred';
+
+        if (action.payload) {
+          state.postError = action.payload;
         }
       });
   },
