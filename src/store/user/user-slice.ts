@@ -3,8 +3,7 @@ import { APIRoute, AuthorizationStatus } from '../../const';
 import { AuthData, UserData } from '../../types/auth';
 import { ThunkOptions } from '..';
 import { saveToken, dropToken } from '../../services/token';
-import { fetchFavorites } from '../favorites/favorite-slice';
-
+import { fetchFavorites, resetFavorites } from '../favorites/favorite-slice';
 
 type UserState = {
   authorizationStatus: AuthorizationStatus;
@@ -38,7 +37,7 @@ export const loginAction = createAsyncThunk<UserData, AuthData, ThunkOptions>(
       email,
       password,
     });
-    dispatch(fetchFavorites());
+    dispatch(resetFavorites());
     saveToken(data.token);
     return data;
   }
@@ -46,8 +45,9 @@ export const loginAction = createAsyncThunk<UserData, AuthData, ThunkOptions>(
 
 export const logoutAction = createAsyncThunk<void, void, ThunkOptions>(
   'user/logout',
-  async (_arg, { extra: api }) => {
+  async (_arg, { extra: api, dispatch }) => {
     await api.delete(APIRoute.Logout);
+    dispatch(resetFavorites());
     dropToken();
   }
 );
