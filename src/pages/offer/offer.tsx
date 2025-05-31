@@ -135,8 +135,11 @@ export default function OfferScreen({ isAuth }: OfferScreenProps): JSX.Element {
 
                 <button
                   className={cn(
-                    'offer__bookmark-button button',
-                    isFavorite && 'offer__bookmark-button--active'
+                    'offer__bookmark-button',
+                    {
+                      'offer__bookmark-button--active': isFavorite,
+                    },
+                    'button'
                   )}
                   type="button"
                   onClick={handleBookmarkClick}
