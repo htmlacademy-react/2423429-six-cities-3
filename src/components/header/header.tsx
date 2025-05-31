@@ -62,8 +62,11 @@ function Header({ showNav = true }: HeaderProps): JSX.Element {
                   </>
                 ) : (
                   <li className="header__nav-item">
-                    <Link className="header__nav-link" to={AppRoute.Login}>
-                      <span className="header__signout">Sign in</span>
+                    <Link
+                      className="header__nav-link header__nav-link--profile"
+                      to={AppRoute.Login}
+                    >
+                      <span className="header__signin">Sign in</span>
                     </Link>
                   </li>
                 )}
