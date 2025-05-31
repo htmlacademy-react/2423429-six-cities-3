@@ -31,6 +31,7 @@ export enum APIRoute {
   Login = '/login',
   Logout = '/logout',
   Comments = '/comments',
+  Favorites = '/favorite',
 }
 
 export const MAX_NEARBY_OFFERS = 3;

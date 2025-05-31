@@ -1,4 +1,4 @@
-import { FormEvent, useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { AppRoute, AuthorizationStatus } from '../../const';
@@ -12,6 +12,9 @@ import {
 
 import { loginAction } from '../../store/user/user-slice';
 import { setError } from '../../store/app/app-slice';
+import { CITIES } from '../../const/cities';
+import { City } from '../../types/offer';
+import { changeCity } from '../../store/offers/offers-slice';
 
 const validateEmail = (email: string): boolean => {
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -28,9 +31,24 @@ export default function LoginScreen(): JSX.Element {
   const passwordRef = useRef<HTMLInputElement | null>(null);
   const isAuthLoading = useAppSelector(getAuthLoadingStatus);
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
-
+  const [randomCity, setRandomCity] = useState<City | null>(null);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const [, setEmail] = useState('');
+  const [, setPassword] = useState('');
+
+  useEffect(
+    () => () => {
+      setEmail('');
+      setPassword('');
+    },
+    []
+  );
+
+  useEffect(() => {
+    const randomIndex = Math.floor(Math.random() * CITIES.length);
+    setRandomCity(CITIES[randomIndex]);
+  }, []);
 
   useEffect(() => {
     if (authorizationStatus === AuthorizationStatus.Auth) {
@@ -38,17 +56,15 @@ export default function LoginScreen(): JSX.Element {
     }
   }, [authorizationStatus, navigate]);
 
-  const handleSubmit = async (evt: FormEvent<HTMLFormElement>) => {
-    evt.preventDefault();
-
+  const handleSubmit = async () => {
     if (!loginRef.current || !passwordRef.current) {
       return;
     }
 
-    const email = loginRef.current.value.trim();
-    const password = passwordRef.current.value.trim();
+    const testEmail = loginRef.current.value.trim();
+    const testPassword = passwordRef.current.value.trim();
 
-    const isValid = validateEmail(email) && validatePassword(password);
+    const isValid = validateEmail(testEmail) && validatePassword(testPassword);
 
     if (!isValid) {
       dispatch(
@@ -62,12 +78,22 @@ export default function LoginScreen(): JSX.Element {
     try {
       await dispatch(
         loginAction({
-          login: email,
-          password: password,
+          login: testEmail,
+          password: testPassword,
         })
       ).unwrap();
+      setEmail('');
+      setPassword('');
     } catch (error) {
       dispatch(setError('Failed to login. Please try again.'));
+    }
+  };
+
+  const handleCityClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (randomCity) {
+      dispatch(changeCity(randomCity));
+      navigate(AppRoute.Root);
     }
   };
 
@@ -82,7 +108,10 @@ export default function LoginScreen(): JSX.Element {
             <form
               className="login__form form"
               action="#"
-              onSubmit={handleSubmit}
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleSubmit();
+              }}
               method="post"
             >
               <div className="login__input-wrapper form__input-wrapper">
@@ -120,8 +149,12 @@ export default function LoginScreen(): JSX.Element {
           </section>
           <section className="locations locations--login locations--current">
             <div className="locations__item">
-              <a className="locations__item-link" href="#">
-                <span>Amsterdam</span>
+              <a
+                className="locations__item-link"
+                href="#"
+                onClick={handleCityClick}
+              >
+                <span>{randomCity?.name}</span>
               </a>
             </div>
           </section>

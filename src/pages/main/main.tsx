@@ -9,7 +9,7 @@ import { useState } from 'react';
 import MainEmpty from '../../components/main-empty/main-empty';
 import cn from 'classnames';
 import { useAppSelector } from '../../store';
-import { getSortedOffers } from '../../utils';
+import { capitalizeFirstLetter, getSortedOffers } from '../../utils';
 import { getCity, getOffers, getSortType } from '../../store/offers/selectors';
 
 function Main(): JSX.Element {
@@ -19,6 +19,8 @@ function Main(): JSX.Element {
   const currentOffers = useAppSelector(getOffers);
   const currentSortType = useAppSelector(getSortType);
 
+  const validCityName = capitalizeFirstLetter(currentCity.name);
+
   const filteredOffers = currentOffers.filter(
     (offer: Offer) => offer.city.name === currentCity.name
   );
@@ -26,6 +28,8 @@ function Main(): JSX.Element {
   const sortedOffers = getSortedOffers(filteredOffers, currentSortType);
 
   const hasOffers = sortedOffers.length > 0;
+
+  const getPlacesText = (count: number) => (count === 1 ? 'place' : 'places');
 
   const onCardHover = (offer?: Offer) => {
     setActiveOffer(offer || null);
@@ -47,7 +51,8 @@ function Main(): JSX.Element {
               <section className="cities__places places">
                 <h2 className="visually-hidden">Places</h2>
                 <b className="places__found">
-                  {sortedOffers.length} places to stay in {currentCity.name}
+                  {sortedOffers.length} {getPlacesText(sortedOffers.length)} to
+                  stay in {validCityName}
                 </b>
                 <Sorting />
                 <PlacesList offers={sortedOffers} onCardHover={onCardHover} />
@@ -57,12 +62,12 @@ function Main(): JSX.Element {
                   offers={sortedOffers}
                   className="cities__map"
                   activeOfferId={activeOffer?.id}
-                  key={currentCity.name}
+                  key={validCityName}
                 />
               </div>
             </div>
           ) : (
-            <MainEmpty currentCity={currentCity.name} />
+            <MainEmpty currentCity={validCityName} />
           )}
         </div>
       </main>

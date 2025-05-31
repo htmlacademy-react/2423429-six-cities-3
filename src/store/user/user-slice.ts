@@ -3,7 +3,7 @@ import { APIRoute, AuthorizationStatus } from '../../const';
 import { AuthData, UserData } from '../../types/auth';
 import { ThunkOptions } from '..';
 import { saveToken, dropToken } from '../../services/token';
-
+import { fetchFavorites, resetFavorites } from '../favorites/favorite-slice';
 
 type UserState = {
   authorizationStatus: AuthorizationStatus;
@@ -23,19 +23,21 @@ const initialState: UserState = {
 
 export const checkAuthAction = createAsyncThunk<UserData, void, ThunkOptions>(
   'user/checkAuth',
-  async (_arg, { extra: api }) => {
+  async (_arg, { extra: api, dispatch }) => {
     const { data } = await api.get<UserData>(APIRoute.Login);
+    dispatch(fetchFavorites());
     return data;
   }
 );
 
 export const loginAction = createAsyncThunk<UserData, AuthData, ThunkOptions>(
   'user/login',
-  async ({ login: email, password }, { extra: api }) => {
+  async ({ login: email, password }, { extra: api, dispatch }) => {
     const { data } = await api.post<UserData>(APIRoute.Login, {
       email,
       password,
     });
+    dispatch(resetFavorites());
     saveToken(data.token);
     return data;
   }
@@ -43,8 +45,9 @@ export const loginAction = createAsyncThunk<UserData, AuthData, ThunkOptions>(
 
 export const logoutAction = createAsyncThunk<void, void, ThunkOptions>(
   'user/logout',
-  async (_arg, { extra: api }) => {
+  async (_arg, { extra: api, dispatch }) => {
     await api.delete(APIRoute.Logout);
+    dispatch(resetFavorites());
     dropToken();
   }
 );

@@ -6,9 +6,10 @@ import axios, {
 import { getToken } from './token';
 import { processErrorHandle } from './process-error-handle';
 
-type DetailMessageType = {
-  type: string;
+export type DetailMessageType = {
+  errorType: string;
   message: string;
+  details: string[];
 };
 
 const BACKEND_URL = 'https://15.design.htmlacademy.pro/six-cities';
