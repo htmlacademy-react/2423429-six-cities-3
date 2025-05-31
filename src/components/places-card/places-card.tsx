@@ -107,8 +107,11 @@ function PlacesCard({
           </div>
           <button
             className={cn(
-              'place-card__bookmark-button button',
-              isFavorite && 'place-card__bookmark-button--active'
+              'place-card__bookmark-button',
+              {
+                'place-card__bookmark-button--active': isFavorite,
+              },
+              'button'
             )}
             type="button"
             onClick={handleFavoriteClick}
