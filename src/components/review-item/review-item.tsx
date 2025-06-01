@@ -1,13 +1,11 @@
 import { TReview } from '../../types/review';
-import { calculateRating } from '../../utils';
+import { calculateRating, formatDateTime, formatReviewDate } from '../../utils';
 
 type TReviewItemProps = {
   review: TReview;
 };
 
 export default function ReviewItem({ review }: TReviewItemProps): JSX.Element {
-  const date = new Date(review.date);
-
   return (
     <li className="reviews__item" key={review.id}>
       <div className="reviews__user user">
@@ -35,11 +33,8 @@ export default function ReviewItem({ review }: TReviewItemProps): JSX.Element {
           </div>
         </div>
         <p className="reviews__text">{review.comment}</p>
-        <time
-          className="reviews__time"
-          dateTime={date.toISOString().slice(0, 10)}
-        >
-          {date.toLocaleString('default', { month: 'long', year: 'numeric' })}
+        <time className="reviews__time" dateTime={formatDateTime(review.date)}>
+          {formatReviewDate(review.date)}
         </time>
       </div>
     </li>

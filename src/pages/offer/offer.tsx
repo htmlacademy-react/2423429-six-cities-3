@@ -1,4 +1,4 @@
-import { Navigate, useParams } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import Header from '../../components/header/header';
 import Map from '../../components/map/map';
 import NearPlacesList from '../../components/near-places-list/near-places-list';
@@ -28,7 +28,15 @@ import {
 
 import FullPageError from '../full-page-error/full-page-error.tsx';
 import { calculateRating } from '../../utils.ts';
-import { AppRoute } from '../../const.ts';
+import { AppRoute, AuthorizationStatus } from '../../const.ts';
+import cn from 'classnames';
+import { toggleFavorite } from '../../store/favorites/favorite-slice.ts';
+import {
+  getChangingFavoriteStatus,
+  getFavorites,
+} from '../../store/favorites/selectors.ts';
+import { clearErrorAction, setError } from '../../store/app/app-slice.ts';
+import { getAuthorizationStatus } from '../../store/user/selectors.ts';
 
 type OfferScreenProps = {
   isAuth: boolean;
@@ -39,6 +47,8 @@ export default function OfferScreen({ isAuth }: OfferScreenProps): JSX.Element {
   const dispatch = useAppDispatch();
 
   const offer = useAppSelector(getOffer);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+
   const offerLoadingStatus = useAppSelector(getOfferLoadingStatus);
   const offerError = useAppSelector(getOfferError);
   const offerErrorStatus = useAppSelector(getOfferErrorStatus);
@@ -51,6 +61,12 @@ export default function OfferScreen({ isAuth }: OfferScreenProps): JSX.Element {
   const commentsLoading = useAppSelector(getCommentsLoading);
   const commentsError = useAppSelector(getCommentsError);
 
+  const isChangingStatus = useAppSelector(getChangingFavoriteStatus);
+  const favoriteOffers = useAppSelector(getFavorites);
+  const isFavorite = favoriteOffers.some((off) => off.id === id);
+
+  const navigate = useNavigate();
+
   useEffect(() => {
     if (id) {
       dispatch(fetchOffer(id));
@@ -58,6 +74,24 @@ export default function OfferScreen({ isAuth }: OfferScreenProps): JSX.Element {
       dispatch(fetchComments(id));
     }
   }, [dispatch, id]);
+
+  const handleBookmarkClick = () => {
+    if (offer) {
+      if (authorizationStatus !== AuthorizationStatus.Auth) {
+        dispatch(setError('You need to log in to add to favorites'));
+        dispatch(clearErrorAction());
+        navigate(AppRoute.Login);
+        return;
+      }
+      const status = isFavorite ? 0 : 1;
+      dispatch(
+        toggleFavorite({
+          offerId: offer.id,
+          status: status,
+        })
+      );
+    }
+  };
 
   if (offerLoadingStatus || nearbyLoadingStatus || commentsLoading) {
     return <Loader />;
@@ -67,15 +101,11 @@ export default function OfferScreen({ isAuth }: OfferScreenProps): JSX.Element {
     return <Navigate to={AppRoute.NotFound} />;
   }
 
-  if (offerError || nearbyError || commentsError) {
+  if (offerError || nearbyError || commentsError || !offer) {
     return <FullPageError />;
   }
 
-  if (!offer) {
-    return <FullPageError />;
-  }
-
-  const ratingWidth = `${Math.round(calculateRating(offer))}%`;
+  const ratingWidth = `${calculateRating(offer)}%`;
   const { host, images, goods } = offer;
 
   return (
@@ -105,7 +135,19 @@ export default function OfferScreen({ isAuth }: OfferScreenProps): JSX.Element {
               )}
               <div className="offer__name-wrapper">
                 <h1 className="offer__name">{offer.title}</h1>
-                <button className="offer__bookmark-button button" type="button">
+
+                <button
+                  className={cn(
+                    'offer__bookmark-button',
+                    {
+                      'offer__bookmark-button--active': isFavorite,
+                    },
+                    'button'
+                  )}
+                  type="button"
+                  onClick={handleBookmarkClick}
+                  disabled={isChangingStatus}
+                >
                   <svg className="offer__bookmark-icon" width="31" height="33">
                     <use xlinkHref="#icon-bookmark"></use>
                   </svg>

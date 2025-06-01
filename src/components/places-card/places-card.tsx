@@ -1,8 +1,16 @@
-import { generatePath, Link } from 'react-router-dom';
+import { generatePath, Link, useNavigate } from 'react-router-dom';
 import { Offer } from '../../types/offer';
-import { AppRoute } from '../../const';
+import { AppRoute, AuthorizationStatus } from '../../const';
 import { calculateRating, capitalizeFirstLetter } from '../../utils';
 import cn from 'classnames';
+import { useAppDispatch, useAppSelector } from '../../store';
+import { toggleFavorite } from '../../store/favorites/favorite-slice';
+import {
+  getChangingFavoriteStatus,
+  getFavorites,
+} from '../../store/favorites/selectors';
+import { getAuthorizationStatus } from '../../store/user/selectors';
+import { clearErrorAction, setError } from '../../store/app/app-slice';
 
 type PlacesCardProps = {
   placeOffer: Offer;
@@ -40,6 +48,33 @@ function PlacesCard({
   const imageWrapperClass = imageWrapperClasses[variant];
   const { width, height } = imageSizes[variant];
 
+  const dispatch = useAppDispatch();
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+
+  const favoriteOffers = useAppSelector(getFavorites);
+  const isChangingStatus = useAppSelector(getChangingFavoriteStatus);
+  const isFavorite = favoriteOffers.some((offer) => offer.id === placeOffer.id);
+
+  const navigate = useNavigate();
+
+  const handleFavoriteClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+
+    if (authorizationStatus !== AuthorizationStatus.Auth) {
+      dispatch(setError('You need to log in to add to favorites'));
+      dispatch(clearErrorAction());
+      navigate(AppRoute.Login);
+      return;
+    }
+    const status = isFavorite ? 0 : 1;
+    dispatch(
+      toggleFavorite({
+        offerId: placeOffer.id,
+        status,
+      })
+    );
+  };
+
   return (
     <article
       className={containerClass}
@@ -75,10 +110,15 @@ function PlacesCard({
           </div>
           <button
             className={cn(
-              'place-card__bookmark-button button',
-              placeOffer.isFavorite && 'place-card__bookmark-button--active'
+              'place-card__bookmark-button',
+              {
+                'place-card__bookmark-button--active': isFavorite,
+              },
+              'button'
             )}
             type="button"
+            onClick={handleFavoriteClick}
+            disabled={isChangingStatus}
           >
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use xlinkHref="#icon-bookmark"></use>

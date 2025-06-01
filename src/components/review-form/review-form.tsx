@@ -1,22 +1,15 @@
-import { Fragment, useState, FormEvent, ChangeEvent } from 'react';
+import { Fragment, useState, ChangeEvent } from 'react';
 
 import { useAppDispatch, useAppSelector } from '../../store';
 import { getPostError, getPosting } from '../../store/comments/selectors';
 import { postComment } from '../../store/comments/comments-slice';
-
-const RATINGS = [
-  { value: 5, title: 'perfect' },
-  { value: 4, title: 'good' },
-  { value: 3, title: 'not bad' },
-  { value: 2, title: 'badly' },
-  { value: 1, title: 'terribly' },
-] as const;
+import { MIN_COMMENT_LENGTH, MAX_COMMENT_LENGTH, RATINGS } from './const';
 
 interface ReviewFormProps {
   offerId: string;
 }
 
-export default function ReviewForm({ onSubmit, offerId }: ReviewFormProps) {
+export default function ReviewForm({ offerId }: ReviewFormProps) {
   const dispatch = useAppDispatch();
   const isPosting = useAppSelector(getPosting);
   const postError = useAppSelector(getPostError);
@@ -28,43 +21,48 @@ export default function ReviewForm({ onSubmit, offerId }: ReviewFormProps) {
 
   const isValid =
     formData.rating > 0 &&
-    formData.comment.trim().length >= 50 &&
-    formData.comment.trim().length <= 300;
+    formData.comment.trim().length >= MIN_COMMENT_LENGTH &&
+    formData.comment.trim().length <= MAX_COMMENT_LENGTH;
 
   const handleChange = (
-    evt: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>
+    evt: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    const target = evt.target as HTMLInputElement | HTMLTextAreaElement;
+    const target = evt.target;
     const { name, value } = target;
+
     setFormData((prev) => ({
       ...prev,
       [name]: name === 'rating' ? Number(value) : value,
     }));
   };
 
-  const handleSubmit = async (evt: FormEvent) => {
-    evt.preventDefault();
+  const handleSubmit = () => {
     if (!isValid || isPosting) {
       return;
     }
 
-    try {
-      await dispatch(
-        postComment({
-          offerId,
-          comment: formData.comment.trim(),
-          rating: formData.rating,
-        })
-      ).unwrap();
-
-      setFormData({ rating: 0, comment: '' });
-    } catch (err) {
-      // Ошибка уже обрабатывается через postError
-    }
+    dispatch(
+      postComment({
+        offerId,
+        comment: formData.comment.trim(),
+        rating: formData.rating,
+      })
+    )
+      .unwrap()
+      .then(() => {
+        setFormData({ rating: 0, comment: '' });
+      })
+      .catch(() => {});
   };
 
   return (
-    <form className="reviews__form form" onSubmit={handleSubmit}>
+    <form
+      className="reviews__form form"
+      onSubmit={(e) => {
+        e.preventDefault();
+        handleSubmit();
+      }}
+    >
       <label className="reviews__label form__label" htmlFor="review">
         Your review
       </label>
@@ -79,6 +77,7 @@ export default function ReviewForm({ onSubmit, offerId }: ReviewFormProps) {
               type="radio"
               checked={formData.rating === value}
               onChange={handleChange}
+              disabled={isPosting}
             />
             <label
               htmlFor={`${value}-stars`}

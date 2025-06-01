@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from '../../store';
 import { Link } from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from '../../const';
 import { logoutAction } from '../../store/user/user-slice';
+import { getFavorites } from '../../store/favorites/selectors';
 
 type HeaderProps = {
   showNav?: boolean;
@@ -10,16 +11,18 @@ type HeaderProps = {
 
 function Header({ showNav = true }: HeaderProps): JSX.Element {
   const dispatch = useAppDispatch();
-  const { authorizationStatus, userData } = useAppSelector(
-    (state) => state.user
-  );
-
-  const isAuth = authorizationStatus === AuthorizationStatus.Auth;
 
   const handleLogout = (evt: React.MouseEvent) => {
     evt.preventDefault();
     dispatch(logoutAction());
   };
+
+  const { authorizationStatus, userData } = useAppSelector(
+    (state) => state.user
+  );
+  const currentFavorites = useAppSelector(getFavorites);
+
+  const isAuth = authorizationStatus === AuthorizationStatus.Auth;
 
   return (
     <header className="header">
@@ -35,14 +38,16 @@ function Header({ showNav = true }: HeaderProps): JSX.Element {
                   <>
                     <li className="header__nav-item user">
                       <Link
-                        className="header__nav-link header__nav-link--profile"
+                        className="header__nav-link header__nav-link--profile header__login"
                         to={AppRoute.Favorites}
                       >
                         <div className="header__avatar-wrapper user__avatar-wrapper"></div>
                         <span className="header__user-name user__name">
                           {userData?.email}
                         </span>
-                        <span className="header__favorite-count">3</span>
+                        <span className="header__favorite-count">
+                          {currentFavorites.length}
+                        </span>
                       </Link>
                     </li>
                     <li className="header__nav-item">
@@ -57,8 +62,11 @@ function Header({ showNav = true }: HeaderProps): JSX.Element {
                   </>
                 ) : (
                   <li className="header__nav-item">
-                    <Link className="header__nav-link" to={AppRoute.Login}>
-                      <span className="header__signout">Sign in</span>
+                    <Link
+                      className="header__nav-link header__nav-link--profile header__login"
+                      to={AppRoute.Login}
+                    >
+                      <span className="header__signin">Sign in</span>
                     </Link>
                   </li>
                 )}

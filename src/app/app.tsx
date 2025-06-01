@@ -44,7 +44,7 @@ export default function App(): JSX.Element {
             path={AppRoute.Favorites}
             element={
               <PrivateRoute authorizationStatus={authorizationStatus}>
-                <FavoritesPreview offers={[]} />
+                <FavoritesPreview />
               </PrivateRoute>
             }
           />
