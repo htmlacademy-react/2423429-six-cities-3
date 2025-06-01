@@ -1,4 +1,4 @@
-import { Navigate, useParams } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import Header from '../../components/header/header';
 import Map from '../../components/map/map';
 import NearPlacesList from '../../components/near-places-list/near-places-list';
@@ -65,6 +65,8 @@ export default function OfferScreen({ isAuth }: OfferScreenProps): JSX.Element {
   const favoriteOffers = useAppSelector(getFavorites);
   const isFavorite = favoriteOffers.some((off) => off.id === id);
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     if (id) {
       dispatch(fetchOffer(id));
@@ -78,6 +80,7 @@ export default function OfferScreen({ isAuth }: OfferScreenProps): JSX.Element {
       if (authorizationStatus !== AuthorizationStatus.Auth) {
         dispatch(setError('You need to log in to add to favorites'));
         dispatch(clearErrorAction());
+        navigate(AppRoute.Login);
         return;
       }
       const status = isFavorite ? 0 : 1;
@@ -102,7 +105,7 @@ export default function OfferScreen({ isAuth }: OfferScreenProps): JSX.Element {
     return <FullPageError />;
   }
 
-  const ratingWidth = `${Math.round(calculateRating(offer))}%`;
+  const ratingWidth = `${calculateRating(offer)}%`;
   const { host, images, goods } = offer;
 
   return (

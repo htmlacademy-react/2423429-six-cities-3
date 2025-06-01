@@ -1,4 +1,4 @@
-import { generatePath, Link } from 'react-router-dom';
+import { generatePath, Link, useNavigate } from 'react-router-dom';
 import { Offer } from '../../types/offer';
 import { AppRoute, AuthorizationStatus } from '../../const';
 import { calculateRating, capitalizeFirstLetter } from '../../utils';
@@ -55,12 +55,15 @@ function PlacesCard({
   const isChangingStatus = useAppSelector(getChangingFavoriteStatus);
   const isFavorite = favoriteOffers.some((offer) => offer.id === placeOffer.id);
 
+  const navigate = useNavigate();
+
   const handleFavoriteClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
     if (authorizationStatus !== AuthorizationStatus.Auth) {
       dispatch(setError('You need to log in to add to favorites'));
       dispatch(clearErrorAction());
+      navigate(AppRoute.Login);
       return;
     }
     const status = isFavorite ? 0 : 1;

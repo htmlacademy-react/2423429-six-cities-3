@@ -2,7 +2,8 @@ import { RATING } from './const';
 import { Offer, SortType } from './types/offer';
 
 export function calculateRating(placeOffer: { rating: number }): number {
-  return (placeOffer.rating / RATING) * 100;
+  const rawPercentage = (placeOffer.rating / RATING) * 100;
+  return Math.round(rawPercentage / 20) * 20;
 }
 export function capitalizeFirstLetter(string: string): string {
   return string.charAt(0).toUpperCase() + string.slice(1);
